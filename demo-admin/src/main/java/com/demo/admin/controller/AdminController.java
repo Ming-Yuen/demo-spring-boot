@@ -24,4 +24,11 @@ public class AdminController {
         token.put("token", adminService.login(admin.getUserName(), admin.getPassword()));
         return token;
     }
+
+    @PostMapping(path = "123", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, String> jwtLogin2(@Valid @RequestBody AdminLoginRequest admin){
+//        Map<String, String> token = new HashMap<>();
+//        token.put("token", adminService.login(admin.getUserName(), admin.getPassword()));
+        return null;
+    }
 }

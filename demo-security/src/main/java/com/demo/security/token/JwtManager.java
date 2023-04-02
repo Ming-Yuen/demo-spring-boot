@@ -9,6 +9,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.HashMap;
+
 @Slf4j
 @Component
 public class JwtManager {
@@ -19,9 +21,13 @@ public class JwtManager {
     private Long expiration;
 
     public String generateToken(String username, String password) {
+        HashMap map = new HashMap();
+        map.put("sub", username);
+        map.put("created", new Date());
+
         return Jwts.builder()
-                .claim("username", username)
-                .claim("password", password)
+                .setId(username)
+                .setClaims(map)
                 .setExpiration(generateExpirationDate())
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
