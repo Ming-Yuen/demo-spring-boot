@@ -1,6 +1,6 @@
 package com.demo.admin.eneity;
 
-import com.demo.entity.BaseEntity;
+import com.demo.common.entity.BaseEntity;
 import lombok.Data;
 
 import javax.persistence.Column;

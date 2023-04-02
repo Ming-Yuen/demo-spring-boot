@@ -1,27 +1,27 @@
 package com.demo.admin.controller;
 
+import com.demo.admin.bo.AdminLoginRequest;
 import com.demo.admin.service.AdminService;
-import com.demo.controller.ControllerPath;
+import com.demo.common.controller.ControllerPath;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
-@Controller
+@RestController
 @RequestMapping(ControllerPath.admin)
 public class AdminController {
 
     @Autowired
     private AdminService adminService;
 
-    @PostMapping(path = ControllerPath.jwtLogin)
-    public Map<String, String> jwtLogin(@RequestParam String username, @RequestParam String password){
+    @PostMapping(path = ControllerPath.jwtLogin, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, String> jwtLogin(@Valid @RequestBody AdminLoginRequest admin){
         Map<String, String> token = new HashMap<>();
-        token.put("token", adminService.login(username, password));
+        token.put("token", adminService.login(admin.getUserName(), admin.getPassword()));
         return token;
     }
 }
