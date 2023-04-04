@@ -7,8 +7,9 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="demo-security" />
         <module name="demo-common" />
+        <module name="demo-schedule" />
+        <module name="demo-security" />
         <module name="demo-admin" />
       </profile>
     </annotationProcessing>
@@ -17,6 +18,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="demo-admin" options="-parameters" />
       <module name="demo-common" options="-parameters" />
+      <module name="demo-schedule" options="-parameters" />
       <module name="demo-security" options="-parameters" />
     </option>
   </component>

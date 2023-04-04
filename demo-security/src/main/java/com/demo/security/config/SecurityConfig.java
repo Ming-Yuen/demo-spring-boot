@@ -1,8 +1,8 @@
 package com.demo.security.config;
 
 import com.demo.security.bo.AdminUserDetails;
-import com.demo.security.dao.AdminDao;
-import com.demo.security.entity.Admin;
+import com.demo.security.dao.UserDao;
+import com.demo.security.entity.User;
 import com.demo.security.filter.JwtAuthenticationTokenFilter;
 import com.demo.security.filter.RestfulAccessDeniedHandler;
 import com.demo.security.filter.RestAuthenticationEntryPoint;
@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -40,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
 
     @Autowired
-    private AdminDao userDao;
+    private UserDao userDao;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -72,13 +73,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception{
+        auth.inMemoryAuthentication().withUser("admin").password("123456").
+                authorities("showOrder","addOrder","updateOrder","deleteOrder");
+        // 添加userAdd账号
+        auth.inMemoryAuthentication().withUser("userAdd").password("123456").authorities("showOrder","addOrder");
+        // 如果想实现动态账号与数据库关联 在该地方改为查询数据库
+    }
+
     @Bean
     public UserDetailsService userDetailsService() {
         //获取登录用户信息
         return new UserDetailsService() {
             @Override
             public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                Admin umsAdminList = userDao.findByAdminId(username);
+                User umsAdminList = userDao.findByUserId(username);
                 if (umsAdminList != null) {
                     return new AdminUserDetails(umsAdminList);
                 }

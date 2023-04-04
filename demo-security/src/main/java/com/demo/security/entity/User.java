@@ -10,11 +10,17 @@ import javax.validation.constraints.NotBlank;
 
 @Data
 @Entity
-@Table(name = "admin")
-public class Admin extends BaseEntity {
+@Table(name = "user")
+public class User extends BaseEntity {
     @NotBlank
     @Column(nullable = false)
-    private String adminId;
+    private String userId;
+
+    @Column(nullable = true)
+    private String firstName;
+
+    @Column(nullable = true)
+    private String lastName;
     @NotBlank
     @Column(nullable = false)
     private String password;

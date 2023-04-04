@@ -1,6 +1,6 @@
 package com.demo.security.bo;
 
-import com.demo.security.entity.Admin;
+import com.demo.security.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,9 +9,9 @@ import java.util.Arrays;
 import java.util.Collection;
 
 public class AdminUserDetails  implements UserDetails {
-    private Admin admin;
+    private User admin;
 
-    public AdminUserDetails(Admin admin) {
+    public AdminUserDetails(User admin) {
         this.admin = admin;
     }
 
@@ -28,7 +28,7 @@ public class AdminUserDetails  implements UserDetails {
 
     @Override
     public String getUsername() {
-        return admin.getAdminId();
+        return admin.getUserId();
     }
 
     @Override

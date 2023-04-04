@@ -1,8 +1,8 @@
 package com.demo.admin.service.impl;
 
-import com.demo.admin.service.AdminService;
-import com.demo.security.dao.AdminDao;
-import com.demo.security.entity.Admin;
+import com.demo.admin.service.UserService;
+import com.demo.security.dao.UserDao;
+import com.demo.security.entity.User;
 import com.demo.security.token.JwtManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 
 @Service
-public class AdminServiceImpl implements AdminService {
+public class UserServiceImpl implements UserService {
 
     @Autowired
     private JwtManager jwt;
@@ -21,7 +21,7 @@ public class AdminServiceImpl implements AdminService {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private AdminDao adminDao;
+    private UserDao userDao;
 
     @Value("${admin.adminId}")
     private String adminId;
@@ -34,37 +34,47 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public String login(String username, String password) {
-        Admin user = getUser(username, password);
+        User user = userDao.findByUserId(adminId);
+        accountValid(password, user);
+
+        return jwt.generateToken(user.getUserId(), user.getPassword());
+    }
+
+    public void accountValid(String password, User user){
         if(user == null){
             throw new IllegalArgumentException("User not found");
         }
 
-        return jwt.generateToken(user.getAdminId(), user.getPassword());
+        if(!passwordMatch(password, user)){
+            throw new IllegalArgumentException("Password not correct");
+        }
     }
 
-    @Override
-    public Admin getUser(String username, String password) {
-        Admin admin = adminDao.findByAdminId(adminId);
-        if(admin != null && passwordEncoder.matches(password, admin.getPassword())){
-            return admin;
-        }
-        return null;
+    public boolean passwordMatch(String password, User admin){
+        return passwordEncoder.matches(password, admin.getPassword());
     }
     @Override
-    public Admin adminRegistration(){
-        Admin admin = adminDao.findByAdminId(adminId);
+    public User adminRegistration(){
+        User admin = userDao.findByUserId(adminId);
         if(admin == null){
-            admin = new Admin();
+            admin = new User();
             admin.setEmail(adminDefaultEmailAddress);
             admin.setPassword(passwordEncoder.encode(adminDefaultPassword));
             admin.setGender("M");
-            admin.setAdminId(adminId);
+            admin.setUserId(adminId);
             admin.setCreator(adminId);
             admin.setModifier(adminId);
             admin.setCreation_time(new Timestamp(System.currentTimeMillis()));
             admin.setModification_time(new Timestamp(System.currentTimeMillis()));
-            adminDao.save(admin);
+            userDao.save(admin);
         }
         return admin;
+    }
+
+    @Override
+    public void update(User request) {
+        User user = userDao.findByUserId(adminId);
+        accountValid(request.getPassword(), user);
+        userDao.save(user);
     }
 }
