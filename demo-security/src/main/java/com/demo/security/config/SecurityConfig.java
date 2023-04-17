@@ -54,7 +54,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         registry.antMatchers(HttpMethod.GET)
                 .permitAll();
-
+//        http.authorizeRequests()
+//                .antMatchers("/admin/**").hasRole("admin")
+//                .antMatchers("/user/**").hasRole("user")
+//                .anyRequest().authenticated()
+//                .and()
         registry.anyRequest()
                 .authenticated()
                 // 关闭跨站请求防护及不使用session
@@ -75,12 +79,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception{
-        auth.inMemoryAuthentication().withUser("admin").password("123456").
-                authorities("showOrder","addOrder","updateOrder","deleteOrder");
+        auth.inMemoryAuthentication().withUser("admin").password("123456").roles("admin").authorities("showOrder","addOrder","updateOrder","deleteOrder");
         // 添加userAdd账号
         auth.inMemoryAuthentication().withUser("userAdd").password("123456").authorities("showOrder","addOrder");
         // 如果想实现动态账号与数据库关联 在该地方改为查询数据库
     }
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.inMemoryAuthentication()
+//                .withUser("javaboy")
+//                .password("123").roles("admin")
+//                .and()
+//                .withUser("江南一点雨")
+//                .password("123")
+//                .roles("user");
+//    }
+//    @Bean
+//    RoleHierarchy roleHierarchy() {
+//        RoleHierarchyImpl hierarchy = new RoleHierarchyImpl();
+//        hierarchy.setHierarchy("ROLE_admin > ROLE_user");
+//        return hierarchy;
+//    }
 
     @Bean
     public UserDetailsService userDetailsService() {

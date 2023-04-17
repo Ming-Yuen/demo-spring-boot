@@ -18,9 +18,4 @@ public class UserBean {
     public PasswordEncoder getPasswordEncoder(){
         return new BCryptPasswordEncoder();
     }
-
-    @Bean
-    public User getAdmin(){
-        return adminService.adminRegistration();
-    }
 }

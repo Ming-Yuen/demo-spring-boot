@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank;
 
 @Data
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class User extends BaseEntity {
     @NotBlank
     @Column(nullable = false)
