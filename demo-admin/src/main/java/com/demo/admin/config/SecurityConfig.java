@@ -1,8 +1,8 @@
-package com.demo.security.config;
+package com.demo.admin.config;
 
-import com.demo.security.bo.AdminUserDetails;
-import com.demo.security.dao.UserDao;
-import com.demo.security.entity.User;
+import com.demo.admin.bo.AdminUserDetails;
+import com.demo.admin.entity.User;
+import com.demo.admin.service.UserService;
 import com.demo.security.filter.JwtAuthenticationTokenFilter;
 import com.demo.security.filter.RestfulAccessDeniedHandler;
 import com.demo.security.filter.RestAuthenticationEntryPoint;
@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -41,27 +40,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
 
     @Autowired
-    private UserDao userDao;
+    private UserService userService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry = http.authorizeRequests();
         ignoreList.stream()
-                  .forEach(x->{
-                      registry.antMatchers(x)
-                              .permitAll();
-                  });
+                .forEach(x->{
+                    registry.antMatchers(x)
+                            .permitAll();
+                });
 
-        registry.antMatchers(HttpMethod.GET)
-                .permitAll();
-//        http.authorizeRequests()
-//                .antMatchers("/admin/**").hasRole("admin")
-//                .antMatchers("/user/**").hasRole("user")
-//                .anyRequest().authenticated()
-//                .and()
-        registry.anyRequest()
-                .authenticated()
-                // 关闭跨站请求防护及不使用session
+        registry.antMatchers(HttpMethod.GET).permitAll();
+
+        http.authorizeRequests()
+                .antMatchers("/**").permitAll()
                 .and()
                 .csrf()
                 .disable()
@@ -75,15 +68,32 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 自定义权限拦截器JWT过滤器
                 .and()
                 .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
+
+//        registry.anyRequest()
+//                .authenticated()
+//                // 关闭跨站请求防护及不使用session
+//                .and()
+//                .csrf()
+//                .disable()
+//                .sessionManagement()
+//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                // 自定义权限拒绝处理类
+//                .and()
+//                .exceptionHandling()
+//                .accessDeniedHandler(restfulAccessDeniedHandler)
+////                .authenticationEntryPoint(restAuthenticationEntryPoint)
+//                // 自定义权限拦截器JWT过滤器
+//                .and()
+//                .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception{
-        auth.inMemoryAuthentication().withUser("admin").password("123456").roles("admin").authorities("showOrder","addOrder","updateOrder","deleteOrder");
-        // 添加userAdd账号
-        auth.inMemoryAuthentication().withUser("userAdd").password("123456").authorities("showOrder","addOrder");
-        // 如果想实现动态账号与数据库关联 在该地方改为查询数据库
-    }
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception{
+//        auth.inMemoryAuthentication().withUser("admin").password("123456").roles("admin");
+//        // 添加userAdd账号
+//        auth.inMemoryAuthentication().withUser("userAdd").password("123456").authorities("showOrder","addOrder");
+//        // 如果想实现动态账号与数据库关联 在该地方改为查询数据库
+//    }
 //    @Override
 //    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 //        auth.inMemoryAuthentication()
@@ -107,7 +117,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new UserDetailsService() {
             @Override
             public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                User umsAdminList = userDao.findByUserId(username);
+                User umsAdminList = userService.findByUserId(username);
                 if (umsAdminList != null) {
                     return new AdminUserDetails(umsAdminList);
                 }

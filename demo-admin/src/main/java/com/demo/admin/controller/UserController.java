@@ -1,9 +1,9 @@
 package com.demo.admin.controller;
 
 import com.demo.admin.bo.AdminLoginRequest;
+import com.demo.admin.entity.User;
 import com.demo.admin.service.UserService;
 import com.demo.common.controller.ControllerPath;
-import com.demo.security.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;

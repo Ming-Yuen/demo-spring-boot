@@ -1,8 +1,8 @@
 package com.demo.admin.service.impl;
 
+import com.demo.admin.dao.UserDao;
+import com.demo.admin.entity.User;
 import com.demo.admin.service.UserService;
-import com.demo.security.dao.UserDao;
-import com.demo.security.entity.User;
 import com.demo.security.token.JwtManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,10 +34,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String login(String username, String password) {
-        User user = userDao.findByUserId(adminId);
+        User user = userDao.findByUsername(adminId);
         accountValid(password, user);
 
-        return jwt.generateToken(user.getUserId(), user.getPassword());
+        return jwt.generateToken(user.getUsername(), user.getPassword());
     }
 
     public void accountValid(String password, User user){
@@ -55,13 +55,14 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public User adminRegistration(){
-        User admin = userDao.findByUserId(adminId);
+        User admin = userDao.findByUsername(adminId);
         if(admin == null){
             admin = new User();
             admin.setEmail(adminDefaultEmailAddress);
             admin.setPassword(passwordEncoder.encode(adminDefaultPassword));
             admin.setGender("M");
-            admin.setUserId(adminId);
+            admin.setUsername(adminId);
+            admin.setRole("");
             admin.setCreator(adminId);
             admin.setModifier(adminId);
             admin.setCreation_time(new Timestamp(System.currentTimeMillis()));
@@ -73,8 +74,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void update(User request) {
-        User user = userDao.findByUserId(adminId);
+        User user = userDao.findByUsername(adminId);
         accountValid(request.getPassword(), user);
         userDao.save(user);
+    }
+    @Override
+    public User findByUserId(String userId){
+        return userDao.findByUsername(userId);
     }
 }

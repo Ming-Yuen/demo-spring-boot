@@ -1,31 +1,35 @@
-package com.demo.security.entity;
+package com.demo.admin.entity;
 
 import com.demo.common.entity.BaseEntity;
 import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Index;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
 
 @Data
 @Entity
-@Table(name = "users")
+@Table(name = "user",
+        indexes = {
+            @Index( name = "idx_username", columnList = "username")
+        }
+)
 public class User extends BaseEntity {
-    @NotBlank
     @Column(nullable = false)
-    private String userId;
-
+    private String username;
     @Column(nullable = true)
     private String firstName;
-
     @Column(nullable = true)
     private String lastName;
-    @NotBlank
     @Column(nullable = false)
     private String password;
-    @NotBlank
-    private String email;
-    @NotBlank
+    @Column(nullable = false)
     private String gender;
+    @Column(nullable = true)
+    private String email;
+    @Column(nullable = true)
+    private String phone;
+    @Column(nullable = false)
+    private String role;
 }

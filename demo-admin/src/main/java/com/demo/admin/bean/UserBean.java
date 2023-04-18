@@ -1,7 +1,6 @@
 package com.demo.admin.bean;
 
 import com.demo.admin.service.UserService;
-import com.demo.security.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
