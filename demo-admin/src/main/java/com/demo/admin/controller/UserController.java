@@ -29,4 +29,8 @@ public class UserController {
     public void update(@Valid @RequestBody User user){
         userService.update(user);
     }
+    @PostMapping(path = ControllerPath.adjustment, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void adjustment(@Valid @RequestBody User user){
+
+    }
 }
