@@ -1,0 +1,1 @@
+ssh -i ming.yuen.pem ubuntu@ec2-3-112-56-63.ap-northeast-1.compute.amazonaws.com
