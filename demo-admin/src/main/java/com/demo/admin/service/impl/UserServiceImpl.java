@@ -57,17 +57,32 @@ public class UserServiceImpl implements UserService {
     public User adminRegistration(){
         User admin = userDao.findByUsername(adminId);
         if(admin == null){
-            admin = new User();
-            admin.setEmail(adminDefaultEmailAddress);
-            admin.setPassword(passwordEncoder.encode(adminDefaultPassword));
-            admin.setGender("M");
-            admin.setUsername(adminId);
-            admin.setRole("");
-            admin.setCreator(adminId);
-            admin.setModifier(adminId);
-            admin.setCreation_time(new Timestamp(System.currentTimeMillis()));
-            admin.setModification_time(new Timestamp(System.currentTimeMillis()));
-            userDao.save(admin);
+            {
+                admin = new User();
+                admin.setEmail(adminDefaultEmailAddress);
+                admin.setPassword(passwordEncoder.encode(adminDefaultPassword));
+                admin.setGender("M");
+                admin.setUsername(adminId);
+                admin.setRole("admin");
+                admin.setCreator(adminId);
+                admin.setModifier(adminId);
+                admin.setCreation_time(new Timestamp(System.currentTimeMillis()));
+                admin.setModification_time(new Timestamp(System.currentTimeMillis()));
+                userDao.save(admin);
+            }
+            {
+                admin = new User();
+                admin.setEmail(adminDefaultEmailAddress);
+                admin.setPassword(passwordEncoder.encode("ming"));
+                admin.setGender("M");
+                admin.setUsername("ming");
+                admin.setRole("user");
+                admin.setCreator(adminId);
+                admin.setModifier(adminId);
+                admin.setCreation_time(new Timestamp(System.currentTimeMillis()));
+                admin.setModification_time(new Timestamp(System.currentTimeMillis()));
+                userDao.save(admin);
+            }
         }
         return admin;
     }
