@@ -1,4 +1,4 @@
-package com.demo.admin.bean;
+package com.demo.security.bean;
 
 import com.demo.security.filter.JwtAuthenticationTokenFilter;
 import org.springframework.context.annotation.Bean;

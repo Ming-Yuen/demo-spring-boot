@@ -8,11 +8,11 @@ import javax.validation.constraints.NotBlank;
 @Service
 public interface UserService {
 
-    String login(@NotBlank String userName, @NotBlank String password);
-
     User adminRegistration();
+
+    void register(User user);
 
     void update(User user);
 
-    User findByUserId(String userId);
+    User findByUsername(String userId);
 }

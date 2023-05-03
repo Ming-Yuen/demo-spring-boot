@@ -1,4 +1,4 @@
-package com.demo.admin.bo;
+package com.demo.security.bo;
 
 import lombok.Data;
 

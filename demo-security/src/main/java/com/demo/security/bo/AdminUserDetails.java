@@ -1,6 +1,6 @@
-package com.demo.admin.bo;
+package com.demo.security.bo;
 
-import com.demo.admin.entity.User;
+import com.demo.security.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
