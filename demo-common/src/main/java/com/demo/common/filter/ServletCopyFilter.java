@@ -17,6 +17,4 @@ public class ServletCopyFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         chain.doFilter(new ServletRequestCache((HttpServletRequest)request), new ServletResponseCache((HttpServletResponse)response));
     }
-
-
 }

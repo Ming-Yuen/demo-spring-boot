@@ -10,13 +10,13 @@ import javax.persistence.Table;
 
 @Data
 @Entity
-@Table(name = "user",
+@Table(name = "users",
         indexes = {
             @Index( name = "idx_username", columnList = "username")
         }
 )
 public class User extends BaseEntity {
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private String username;
     @Column(nullable = true)
     private String firstName;

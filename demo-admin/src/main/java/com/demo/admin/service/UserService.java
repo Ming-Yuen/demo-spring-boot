@@ -1,18 +1,17 @@
 package com.demo.admin.service;
 
+import com.demo.admin.dto.UserRegisterRequest;
 import com.demo.admin.entity.User;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Service
 public interface UserService {
 
     User adminRegistration();
 
-    void register(User user);
-
-    void update(User user);
+    List<User> update(List<UserRegisterRequest> user);
 
     User findByUsername(String userId);
 }

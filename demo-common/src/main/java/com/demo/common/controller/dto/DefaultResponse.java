@@ -1,4 +1,4 @@
-package com.demo.common.controller.bo;
+package com.demo.common.controller.dto;
 
 import lombok.Data;
 import org.springframework.context.annotation.Scope;
@@ -10,6 +10,6 @@ import org.springframework.stereotype.Component;
 public class DefaultResponse {
 
     private boolean isError;
-    private String errorCode;
+    private Integer errorCode = 0;
     private String errorMessage;
 }

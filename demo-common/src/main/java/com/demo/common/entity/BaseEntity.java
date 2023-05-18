@@ -3,6 +3,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -23,7 +24,10 @@ public class BaseEntity implements Serializable{
 
     @Column(nullable = false)
     private Timestamp modification_time = new Timestamp(System.currentTimeMillis());
-
+    @Column(nullable = false)
+    private Timestamp tx_creation_time;
+    @Column(nullable = false)
+    private Timestamp tx_modification_time;
     @NotBlank
     @Column(nullable = false)
     private String modifier;
