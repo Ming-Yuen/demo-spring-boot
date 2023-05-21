@@ -1,6 +1,5 @@
-package com.demo.admin.entity;
+package com.demo.common.entity;
 
-import com.demo.common.entity.BaseEntity;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -12,12 +11,12 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "userRole",
         indexes = {
-                @Index( name = "idx_role", columnList = "role")
+                @Index( name = "idx_role", columnList = "user_role")
         }
 )
 public class UserRole extends BaseEntity {
     @Column(nullable = false)
-    private String role;
+    private String userRole;
 
     @Column(nullable = false)
     private String name;

@@ -1,7 +1,6 @@
-package com.demo.admin.dao;
+package com.demo.common.dao;
 
-import com.demo.admin.entity.User;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.demo.common.entity.User;
 import org.springframework.data.repository.CrudRepository;
 
 public interface UserDao extends CrudRepository<User, Long> {

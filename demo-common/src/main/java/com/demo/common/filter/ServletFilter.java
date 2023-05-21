@@ -22,13 +22,19 @@ public class ServletFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String path = request.getRequestURL() + (StringUtils.isNotBlank(request.getQueryString()) ? "?" + request.getQueryString() : "");
         log.info("IP : {}, port : {}, method : {}, url : {}", getRemortIP(request), request.getRemotePort(), request.getMethod().toLowerCase(), path);
-        if ("POST".equalsIgnoreCase(request.getMethod())) {
-            log.info("body : {}", request.getReader().lines().collect(Collectors.joining()));
+
+        String body = request.getReader().lines().collect(Collectors.joining());
+        if (StringUtils.isNotBlank(body)) {
+            log.info("body : {}", body);
         }
         filterChain.doFilter(request, response);
 
-
-        log.info("response : {}", new String(((ServletResponseCache)response).toByteArray()));
+        String responseBody = new String(((ServletResponseCache)response).toByteArray());
+        if(StringUtils.isNotBlank(responseBody)) {
+            log.info("response : {}", responseBody);
+        }else{
+            log.info("No response content");
+        }
     }
 
     public String getRemortIP(HttpServletRequest request) {

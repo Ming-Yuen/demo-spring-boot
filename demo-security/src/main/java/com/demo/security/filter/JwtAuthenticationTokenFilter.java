@@ -1,6 +1,8 @@
 package com.demo.security.filter;
 
+import com.demo.security.bo.AdminUserDetails;
 import com.demo.security.token.JwtManager;
+import com.demo.security.util.UserContextHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,15 +35,17 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             String username = jwt.getUserNameFromToken(authToken);
             log.info("checking username:{}", username);
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+                AdminUserDetails userDetails = (AdminUserDetails) this.userDetailsService.loadUserByUsername(username);
                 if (jwt.validateToken(authToken, userDetails)) {
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     log.info("authenticated user:{}", username);
+                    UserContextHolder.setUser(userDetails.getAdmin());
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             }
         }
         chain.doFilter(request, response);
+        UserContextHolder.clear();
     }
 }

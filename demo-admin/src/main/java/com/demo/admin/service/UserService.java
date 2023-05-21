@@ -1,17 +1,20 @@
 package com.demo.admin.service;
 
 import com.demo.admin.dto.UserRegisterRequest;
-import com.demo.admin.entity.User;
+import com.demo.common.entity.User;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 
-@Service
-public interface UserService {
 
-    User adminRegistration();
+public interface UserService {
 
     List<User> update(List<UserRegisterRequest> user);
 
     User findByUsername(String userId);
+
+    @Cacheable()
+    Collection<String> getUserRoles(Integer role_Level);
 }

@@ -1,6 +1,6 @@
-package com.demo.admin.initializer;
+package com.demo.security.initializer;
 
-import com.demo.admin.service.UserService;
+import com.demo.security.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class UserInitializer implements CommandLineRunner {
 
     @Autowired
-    private UserService adminService;
+    private LoginService adminService;
     @Override
     public void run(String... args) throws Exception {
         adminService.adminRegistration();
