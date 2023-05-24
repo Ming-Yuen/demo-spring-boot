@@ -23,9 +23,8 @@ public class MenuController {
 
     @Autowired
     private MenuService menuService;
-    @PostMapping(path = ControllerPath.structure + ControllerPath.enquiry, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public MenuStructureResponse enquiry(@Valid @RequestBody String user){
-        menuService.getStructure();
-        return new MenuStructureResponse();
+    @PostMapping(path = ControllerPath.structure + ControllerPath.enquiry)//, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public MenuStructureResponse enquiry(){
+        return menuService.getStructure();
     }
 }

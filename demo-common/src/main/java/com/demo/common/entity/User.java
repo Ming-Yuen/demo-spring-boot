@@ -27,5 +27,5 @@ public class User extends BaseEntity {
     @Column(nullable = true)
     private String phone;
     @Column(nullable = false)
-    private String userRole;
+    private Long roleId;
 }

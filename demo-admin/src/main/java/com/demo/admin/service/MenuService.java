@@ -1,9 +1,11 @@
 package com.demo.admin.service;
 
-import com.demo.common.controller.dto.DefaultResponse;
-import org.springframework.stereotype.Service;
+import com.demo.admin.dto.MenuStructureResponse;
+import org.springframework.transaction.annotation.Transactional;
 
 
 public interface MenuService{
-    void getStructure();
+    MenuStructureResponse getStructure();
+    @Transactional
+    void adminAssignStructure();
 }

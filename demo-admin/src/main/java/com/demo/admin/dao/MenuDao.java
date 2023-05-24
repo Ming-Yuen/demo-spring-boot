@@ -8,5 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.Collection;
 
 public interface MenuDao extends CrudRepository<MenuStructure, Long> {
-    MenuStructure findByRoleIn(Collection<String> properties);
+    Collection<MenuStructure> findByRoleIdIn(Collection<Long> properties);
+
+    MenuStructure findByName(String setting);
 }

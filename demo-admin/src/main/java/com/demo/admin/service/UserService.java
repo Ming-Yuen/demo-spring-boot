@@ -16,5 +16,5 @@ public interface UserService {
     User findByUsername(String userId);
 
     @Cacheable()
-    Collection<String> getUserRoles(Integer role_Level);
+    Collection<Long> getManageRoles(Long id);
 }

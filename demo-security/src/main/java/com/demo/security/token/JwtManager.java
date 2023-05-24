@@ -38,32 +38,30 @@ public class JwtManager {
     }
 
     public String getUserNameFromToken(String token) {
-        String username;
-        try {
-            Claims claims = getClaimsFromToken(token);
-            username = claims.getSubject();
-        } catch (Exception e) {
-            username = null;
-        }
-        return username;
+        Claims claims = getClaimsFromToken(token);
+        return claims.getSubject();
     }
 
     private Claims getClaimsFromToken(String token) {
-        Claims claims = null;
-        try {
-            claims = Jwts.parser()
+        return Jwts.parser()
                     .setSigningKey(secret)
                     .parseClaimsJws(token)
                     .getBody();
-        } catch (Exception e) {
-            log.info("JWT格式验证失败:{}", token);
-        }
-        return claims;
     }
 
     public boolean validateToken(String token, UserDetails userDetails) {
         String username = getUserNameFromToken(token);
-        return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
+        boolean userValidate = username.equals(userDetails.getUsername());
+        if(!userValidate){
+            log.trace("Incorrect username");
+            return false;
+        }
+        boolean expired = isTokenExpired(token);
+        if(expired){
+            log.trace("Token expired");
+            return false;
+        }
+        return true;
     }
 
     private boolean isTokenExpired(String token) {

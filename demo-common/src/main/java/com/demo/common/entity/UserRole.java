@@ -9,15 +9,9 @@ import javax.persistence.Table;
 
 @Data
 @Entity
-@Table(name = "userRole",
-        indexes = {
-                @Index( name = "idx_role", columnList = "user_role")
-        }
+@Table(name = "userRole"
 )
 public class UserRole extends BaseEntity {
-    @Column(nullable = false)
-    private String userRole;
-
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)

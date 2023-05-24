@@ -36,12 +36,7 @@ public class UserServiceImpl implements UserService {
             user.setGender(UserDto.getGender());
             user.setEmail(UserDto.getEmail());
             user.setPhone(UserDto.getPhone());
-            user.setUserRole(UserDto.getRole());
-            user.setCreator(UserDto.getCreator());
-            user.setModifier(UserDto.getModifier());
-            user.setModification_time(new Timestamp(System.currentTimeMillis()));
-            user.setTx_creation_time(new Timestamp(UserDto.getTx_creation_time().getTime()));
-            user.setTx_modification_time(new Timestamp(UserDto.getTx_modification_time().getTime()));
+            user.setRoleId(UserDto.getRoleId());
             return user;
         }).collect(Collectors.toList());
         userDao.saveAll(userRecords);
@@ -53,7 +48,8 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     @Cacheable()
-    public Collection<String> getUserRoles(Integer role_Level){
-        return userRoleDao.findByLessThanRoleLevel(role_Level).stream().map(x->x.getUserRole()).collect(Collectors.toList());
+    public Collection<Long> getManageRoles(Long id){
+        Integer role_Level = userRoleDao.findByUid(id).getRoleLevel();
+        return userRoleDao.findByRoleLevelGreaterThanEqual(role_Level).stream().map(x->x.getUid()).collect(Collectors.toList());
     }
 }

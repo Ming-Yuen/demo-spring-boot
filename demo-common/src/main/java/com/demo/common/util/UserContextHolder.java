@@ -1,11 +1,10 @@
-package com.demo.security.util;
+package com.demo.common.util;
 
 import com.demo.common.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class UserContextHolder {
     private static final ThreadLocal<User> contextHolder = new ThreadLocal<>();
-
     public static void setUser(User user) {
         contextHolder.set(user);
     }

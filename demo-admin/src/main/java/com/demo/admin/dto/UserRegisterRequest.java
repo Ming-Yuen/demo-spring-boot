@@ -17,5 +17,5 @@ public class UserRegisterRequest extends BaseDto {
     private String email;
     private String phone;
     @NotBlank
-    private String role;
+    private Long roleId;
 }
