@@ -18,10 +18,10 @@ import java.util.Map;
 public class LoginController {
     @Autowired
     private LoginService login;
-    @PostMapping(path = ControllerPath.jwt, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = ControllerPath.token, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, String> login(@Valid @RequestBody AdminLoginRequest admin){
         Map<String, String> token = new HashMap<>();
-        token.put("token", login.login(admin.getUserName(), admin.getPassword()));
+        token.put("token", login.login(admin.getUsername(), admin.getPassword()));
         return token;
     }
 }

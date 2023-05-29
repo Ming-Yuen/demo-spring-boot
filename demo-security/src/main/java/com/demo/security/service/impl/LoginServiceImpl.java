@@ -39,9 +39,9 @@ public class LoginServiceImpl implements LoginService {
             admin.setGender("M");
             admin.setUsername("SuperAdmin");
             admin.setRoleId(1L);
-            UserContextHolder.setUser(admin);
             userDao.save(admin);
         }
+        UserContextHolder.setUser(admin);
         admin = userDao.findByUsername(adminId);
         if(admin == null){
             admin = new User();
@@ -50,7 +50,6 @@ public class LoginServiceImpl implements LoginService {
             admin.setGender("M");
             admin.setUsername(adminId);
             admin.setRoleId(2L);
-            UserContextHolder.setUser(admin);
             userDao.save(admin);
         }
         admin = userDao.findByUsername("user");
@@ -61,7 +60,6 @@ public class LoginServiceImpl implements LoginService {
             admin.setGender("M");
             admin.setUsername("user");
             admin.setRoleId(3L);
-            UserContextHolder.setUser(admin);
             userDao.save(admin);
         }
         UserRole userRole = userRoleDao.findByUid(1L);
@@ -91,7 +89,7 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public String login(String username, String password) {
         User user = userDao.findByUsername(username);
-        if(!passwordMatch(password, user)){
+        if(user == null || !passwordMatch(password, user)){
             throw new IllegalArgumentException("Incorrect password");
         }
 
