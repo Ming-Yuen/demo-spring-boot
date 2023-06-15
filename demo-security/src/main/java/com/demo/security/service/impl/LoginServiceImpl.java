@@ -39,9 +39,9 @@ public class LoginServiceImpl implements LoginService {
             admin.setGender("M");
             admin.setUsername("SuperAdmin");
             admin.setRoleId(1L);
+            UserContextHolder.setUser(admin);
             userDao.save(admin);
         }
-        UserContextHolder.setUser(admin);
         admin = userDao.findByUsername(adminId);
         if(admin == null){
             admin = new User();

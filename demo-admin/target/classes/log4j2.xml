@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- status表示log4j2本身的日志信息打印级别，和下面的level，不是一个概念 -->
 <!--TRACE < DEBUG < INFO < WARN < ERROR < FATAL < OFF-->
-<Configuration status="TRACE" monitorInterval="30">
+<Configuration status="WARN" monitorInterval="30">
     <Properties>
         <Property name="LOG_PATTERN"> %d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${hostName} -&#45;&#45; [%15.15t] %-40.40c{1.} : %m%n%ex</Property>
-        <Property name="LOG_FILE_PATH">C:\Users\ming.yuen\Documents\logs</Property>
+<!--        <Property name="LOG_FILE_PATH">C:\\Users\\ming.yuen\\Documents\\logs\\</Property>-->
+        <Property name="LOG_FILE_PATH">logs\\</Property>
     </Properties>
     <Appenders>
         <Console name="ConsoleAppender" target="SYSTEM_OUT" follow="true">
             <PatternLayout pattern="${LOG_PATTERN}"/>
         </Console>
 
-        <RollingFile name="FileAppender" fileName="${LOG_FILE_PATH}/pos.log" filePattern="${LOG_FILE_PATH}/pos-%d{yyyy-MM-dd}-%i.log">
+        <RollingFile name="FileAppender" fileName="${LOG_FILE_PATH}/pos-${date:yyyy-MM-dd}-%i.log" filePattern="${LOG_FILE_PATH}/pos-%d{yyyy-MM-dd}-%i.log">
             <PatternLayout>
                 <Pattern>${LOG_PATTERN}</Pattern>
             </PatternLayout>
@@ -47,7 +48,7 @@
         <!-- All < Trace < Debug < Info < Warn < Error < Fatal < OFF. -->
         　　　　 <!-- 程序会打印高于或等于所设置级别的日志，设置的日志等级越高，打印出来的日志就越少。-->
         <!-- 此level设置的日志级别，是过滤项目中输出的日志信息，和ThresholdFilter的level有所区别 -->
-        <Root level="INFO">
+        <Root level="info">
             <AppenderRef ref="ConsoleAppender" />
             <AppenderRef ref="FileAppender"/>
         </Root>

@@ -1,8 +1,10 @@
 package com.demo.common.listener;
 
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import lombok.Getter;
@@ -14,7 +16,8 @@ import lombok.extern.slf4j.Slf4j;
 @Setter
 @Getter
 @ConfigurationProperties(prefix = "spring.datasource")
-public class RefreshListener implements ApplicationListener<ContextRefreshedEvent> {
+@Order(-1)
+public class RefreshListener implements CommandLineRunner {
 
     private String url;
 
@@ -25,7 +28,7 @@ public class RefreshListener implements ApplicationListener<ContextRefreshedEven
     private String driverClassName;
 
     @Override
-    public void onApplicationEvent(ContextRefreshedEvent event) {
+    public void run(String... args) throws Exception {
         log.info("catalina.base : {}", System.getProperty("catalina.base"));
         log.info("Database url : {}, username : {}", url, username);
     }
