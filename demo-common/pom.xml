@@ -18,6 +18,7 @@
     </properties>
 
     <dependencies>
+<!--        for swagger-->
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-boot-starter</artifactId>

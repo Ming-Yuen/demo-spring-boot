@@ -47,47 +47,4 @@ public class MenuServiceImpl implements MenuService {
         }
         return menuTreeResponse;
     }
-
-    @Override
-    public void adminAssignStructure() {
-        MenuStructure menu = menuDao.findByName("Setting");
-        if(menu == null) {
-            menu = new MenuStructure();
-            menu.setParent(null);
-            menu.setIcon("");
-            menu.setName("Setting");
-            menu.setRoleId(3L);
-            menuDao.save(menu);
-        }
-        MenuStructure parent = menu;
-        if(menuDao.findByName("Account") == null) {
-            menu = new MenuStructure();
-            menu.setParent(parent.getUid());
-            menu.setIcon("");
-            menu.setName("Account");
-            menu.setRoleId(3L);
-            menuDao.save(menu);
-        }
-
-
-
-        menu = menuDao.findByName("Report");
-        if(menu == null) {
-            menu = new MenuStructure();
-            menu.setParent(null);
-            menu.setIcon("");
-            menu.setName("Report");
-            menu.setRoleId(3L);
-            menuDao.save(menu);
-        }
-        parent = menu;
-        if(menuDao.findByName("Report") == null) {
-            menu = new MenuStructure();
-            menu.setParent(parent.getUid());
-            menu.setIcon("");
-            menu.setName("Order report");
-            menu.setRoleId(3L);
-            menuDao.save(menu);
-        }
-    }
 }

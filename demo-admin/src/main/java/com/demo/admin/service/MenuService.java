@@ -6,6 +6,4 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface MenuService{
     MenuStructureResponse getStructure();
-    @Transactional
-    void adminAssignStructure();
 }

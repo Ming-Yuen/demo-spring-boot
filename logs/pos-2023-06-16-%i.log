@@ -1,0 +1,4 @@
+2023-06-16 11:45:19.577  INFO TTPOS_PC20 --- [extShutdownHook] o.s.s.c.ThreadPoolTaskExecutor           : Shutting down ExecutorService 'applicationTaskExecutor'
+2023-06-16 11:45:19.628  INFO TTPOS_PC20 --- [extShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-06-16 11:45:19.648  INFO TTPOS_PC20 --- [extShutdownHook] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown initiated...
+2023-06-16 11:45:19.664  INFO TTPOS_PC20 --- [extShutdownHook] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown completed.
