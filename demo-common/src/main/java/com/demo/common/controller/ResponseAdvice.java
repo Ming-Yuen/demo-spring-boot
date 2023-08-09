@@ -17,6 +17,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.StringJoiner;
 
@@ -41,9 +43,9 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
     @ExceptionHandler(Throwable.class)
     public Object throwable(Throwable t) {
         log.error(t.getMessage(), t);
-        defaultResponse.setError(true);
-        defaultResponse.setErrorMessage(t.getMessage());
-        defaultResponse.setErrorCode(100);
+        defaultResponse.setSuccess(false);
+        defaultResponse.setErrorMessage(Arrays.asList(t.getMessage()));
+        defaultResponse.setErrorNum(1);
         return defaultResponse;
     }
 
@@ -51,15 +53,14 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Object throwable(MethodArgumentNotValidException e) {
         log.error(e.getMessage(), e);
-        defaultResponse.setError(true);
+        defaultResponse.setSuccess(false);
 
         List<FieldError> errors = e.getBindingResult().getFieldErrors();
-        StringJoiner message = new StringJoiner("; ");
+        List<String> message = new ArrayList<String>();
         errors.forEach(error->
                 message.add(error.getField() + ":" + error.getDefaultMessage())
         );
-        defaultResponse.setErrorMessage(message.toString());
-        defaultResponse.setErrorCode(100);
+        defaultResponse.setErrorMessage(message);
         return defaultResponse;
     }
 }

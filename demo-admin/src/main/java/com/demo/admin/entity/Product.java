@@ -4,7 +4,7 @@ import com.demo.common.entity.BaseEntity;
 import lombok.Data;
 
 import javax.persistence.Entity;
-import java.sql.Date;
+import java.util.Date;
 
 @Entity
 @Data

@@ -11,4 +11,5 @@ public class ControllerPath {
     public static final String menu = "/menu";
     public static final String structure = "/structure";
     public static final String enquiry = "/enquiry";
+    public static final String product = "/product";
 }

@@ -5,14 +5,14 @@
     <Properties>
         <Property name="LOG_PATTERN"> %d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${hostName} -&#45;&#45; [%15.15t] %-40.40c{1.} : %m%n%ex</Property>
 <!--        <Property name="LOG_FILE_PATH">C:\\Users\\ming.yuen\\Documents\\logs\\</Property>-->
-        <Property name="LOG_FILE_PATH">logs\\</Property>
+        <Property name="LOG_FILE_PATH">${sys:user.home}</Property>
     </Properties>
     <Appenders>
         <Console name="ConsoleAppender" target="SYSTEM_OUT" follow="true">
             <PatternLayout pattern="${LOG_PATTERN}"/>
         </Console>
 
-        <RollingFile name="FileAppender" fileName="${LOG_FILE_PATH}/pos-${date:yyyy-MM-dd}-%i.log" filePattern="${LOG_FILE_PATH}/pos-%d{yyyy-MM-dd}-%i.log">
+        <RollingFile name="FileAppender" fileName="${LOG_FILE_PATH}/demoSpringBoot/${date:yyyy-MM-dd}.log" filePattern="${LOG_FILE_PATH}/demoSpringBoot/%d{yyyy-MM-dd}-%i.log">
             <PatternLayout>
                 <Pattern>${LOG_PATTERN}</Pattern>
             </PatternLayout>
