@@ -26,7 +26,6 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <mapstruct.version>2.4.32</mapstruct.version>
     </properties>
 
     <dependencies>
@@ -88,17 +87,6 @@
 <!--        <dependency>-->
 <!--            <groupId>org.springframework.boot</groupId>-->
 <!--            <artifactId>spring-boot-starter-data-redis</artifactId>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>io.swagger.codegen.v3</groupId>-->
-<!--            <artifactId>swagger-codegen-maven-plugin</artifactId>-->
-<!--            <version>3.0.43</version>-->
-<!--        </dependency>-->
-
-<!--        <dependency>-->
-<!--            <groupId>io.swagger</groupId>-->
-<!--            <artifactId>swagger-codegen-cli</artifactId>-->
-<!--            <version>${mapstruct.version}</version>-->
 <!--        </dependency>-->
 
         <dependency>
