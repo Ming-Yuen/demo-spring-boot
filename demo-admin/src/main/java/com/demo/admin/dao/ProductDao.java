@@ -9,7 +9,6 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.Date;
-import java.util.List;
 
 public interface ProductDao extends CrudRepository<Product, Long> {
 
