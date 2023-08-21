@@ -25,8 +25,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import java.util.List;
 
-@EnableWebSecurity
 @Configuration
+@EnableWebSecurity
 @Order(3)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 

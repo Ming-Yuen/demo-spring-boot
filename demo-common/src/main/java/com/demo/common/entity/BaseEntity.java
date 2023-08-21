@@ -17,11 +17,11 @@ public class BaseEntity implements Serializable{
     private String creator;
     @Column(nullable = false, updatable = false)
     private OffsetDateTime creation_time;
-    @Column(nullable = false)
-    private OffsetDateTime modification_time;
     @NotBlank
     @Column(nullable = false)
     private String modifier;
+    @Column(nullable = false)
+    private OffsetDateTime modification_time;
 
     @PrePersist
     protected void onCreate() {

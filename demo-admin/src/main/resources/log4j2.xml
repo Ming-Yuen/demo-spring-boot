@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- status表示log4j2本身的日志信息打印级别，和下面的level，不是一个概念 -->
 <!--TRACE < DEBUG < INFO < WARN < ERROR < FATAL < OFF-->
-<Configuration status="WARN" monitorInterval="30">
+<Configuration status="INFO" monitorInterval="30">
     <Properties>
-        <Property name="LOG_PATTERN"> %d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${hostName} -&#45;&#45; [%15.15t] %-40.40c{1.} : %m%n%ex</Property>
+        <Property name="LOG_PATTERN"> %d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${hostName} --- [%15.15t] %-40.40c{1.} : %m%n%ex</Property>
 <!--        <Property name="LOG_FILE_PATH">C:\\Users\\ming.yuen\\Documents\\logs\\</Property>-->
         <Property name="LOG_FILE_PATH">${sys:user.home}</Property>
     </Properties>
