@@ -12,7 +12,7 @@
         <module>demo-common</module>
         <module>demo-security</module>
         <module>demo-admin</module>
-        <module>demo-schedule</module>
+        <module>demo-reports</module>
     </modules>
 
     <parent>
