@@ -11,10 +11,9 @@ import java.util.List;
 
 public interface UserService {
 
-    List<User> update(List<UserRegisterRequest> user);
-
+    void update(List<UserRegisterRequest> user);
+    String login(String username, String password);
     User findByUsername(String userId);
-
     @Cacheable()
     Collection<Long> getManageRoles(Long id);
 }
