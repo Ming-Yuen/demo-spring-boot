@@ -6,7 +6,6 @@ import com.demo.admin.dto.UserRegisterResponse;
 import com.demo.admin.service.UserService;
 import com.demo.common.controller.ControllerPath;
 import com.demo.common.controller.dto.DefaultResponse;
-import com.demo.common.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +23,7 @@ public class UserController {
     private UserService userService;
     @PostMapping(path = ControllerPath.update, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public DefaultResponse update(@Valid @RequestBody List<UserRegisterRequest> user){
-        userService.update(user);
+        userService.register(user);
         return new UserRegisterResponse(user.stream().map(x->x.getUsername()).collect(Collectors.toList()));
     }
     @PostMapping(path = ControllerPath.token, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)

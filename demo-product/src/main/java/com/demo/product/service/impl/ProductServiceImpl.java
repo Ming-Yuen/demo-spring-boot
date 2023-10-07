@@ -24,7 +24,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> enquiry(ProductEnquiryRequest request) {
         Pageable pageable = PageRequest.of(request.getPageNumber(), request.getPageSize());
-//        return productDao.findByActiveDateBefore(new Date(), pageable).toList();
         return productDao.findByActiveDateLessThen(LocalDate.now(), pageable).toList();
     }
 

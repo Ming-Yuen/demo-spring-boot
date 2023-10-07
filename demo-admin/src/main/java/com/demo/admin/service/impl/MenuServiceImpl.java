@@ -2,10 +2,10 @@ package com.demo.admin.service.impl;
 
 import com.demo.admin.dao.MenuDao;
 import com.demo.admin.dto.MenuStructureResponse;
-import com.demo.admin.entity.MenuStructure;
+import com.demo.admin.entity.enums.RoleLevelEnum;
 import com.demo.admin.service.MenuService;
 import com.demo.admin.service.UserService;
-import com.demo.common.util.UserContextHolder;
+import com.demo.admin.util.UserContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,12 +22,12 @@ public class MenuServiceImpl implements MenuService {
     private UserService userService;
 
     public MenuStructureResponse getStructure(){
-        Long roleId = UserContextHolder.getUser().getRoleId();
+        RoleLevelEnum role_level = UserContextHolder.getUser().getRoleLevel();
 
         Map<Long, MenuStructureResponse.MenuTree> menuTreeMap = new HashMap<>();
         MenuStructureResponse menuTreeResponse = new MenuStructureResponse();
 
-        Collection<Long> manageRoleId = userService.getManageRoles(roleId);
+        Collection<Long> manageRoleId = userService.getManageRoles(role_level);
         menuDao.findByRoleIdIn(manageRoleId)
                 .forEach(x->{
                     MenuStructureResponse.MenuTree menuTree = null;
@@ -37,7 +37,7 @@ public class MenuServiceImpl implements MenuService {
                     }else {
                         menuTree.getChild().add(new MenuStructureResponse.MenuTree(x));
                     }
-                    menuTreeMap.put(x.getUid(), menuTree);
+                    menuTreeMap.put(x.getId(), menuTree);
                 });
         List<MenuStructureResponse.MenuTree> menu = menuTreeResponse.getMenu();
         for (int i = 0; i < menu.size(); i++) {

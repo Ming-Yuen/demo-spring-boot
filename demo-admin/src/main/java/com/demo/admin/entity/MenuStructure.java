@@ -1,6 +1,5 @@
 package com.demo.admin.entity;
 
-import com.demo.common.entity.BaseEntity;
 import lombok.Data;
 
 import javax.persistence.*;

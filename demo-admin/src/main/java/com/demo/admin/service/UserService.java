@@ -1,9 +1,10 @@
 package com.demo.admin.service;
 
 import com.demo.admin.dto.UserRegisterRequest;
-import com.demo.common.entity.User;
+import com.demo.admin.entity.UserInfo;
+import com.demo.admin.entity.UserPending;
+import com.demo.admin.entity.enums.RoleLevelEnum;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
@@ -11,9 +12,14 @@ import java.util.List;
 
 public interface UserService {
 
-    void update(List<UserRegisterRequest> user);
+    void register(List<UserRegisterRequest> user);
     String login(String username, String password);
-    User findByUsername(String userId);
+
+    void saveUserPending(List<? extends UserPending> users);
+
+    void confirmUserPending(List<? extends UserPending> users);
+
+    UserInfo findByUserName(String userId);
     @Cacheable()
-    Collection<Long> getManageRoles(Long id);
+    Collection<Long> getManageRoles(RoleLevelEnum role_level);
 }
