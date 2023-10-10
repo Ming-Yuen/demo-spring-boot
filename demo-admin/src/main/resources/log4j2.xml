@@ -3,6 +3,7 @@
 <!--TRACE < DEBUG < INFO < WARN < ERROR < FATAL < OFF-->
 <Configuration status="INFO" monitorInterval="30">
     <Properties>
+        <Property name="user.home">${sys:user.home}</Property>
         <Property name="LOG_PATTERN"> %d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${hostName} --- [%15.15t] %-40.40c{1.} : %m%n%ex</Property>
         <Property name="LOG_FILE_PATH">${sys:user.home}\Documents\logs\demoSpringBoot</Property>
     </Properties>
