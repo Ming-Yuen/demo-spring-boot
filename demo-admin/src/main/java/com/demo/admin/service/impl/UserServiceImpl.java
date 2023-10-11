@@ -53,7 +53,6 @@ public class UserServiceImpl implements UserService {
 //                        return user;
 //                    })
                 .collect(Collectors.toList());
-        usersPendingDao.ins
         usersPendingDao.saveAll(users);
     }
 

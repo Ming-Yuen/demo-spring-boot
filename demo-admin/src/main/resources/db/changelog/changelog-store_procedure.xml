@@ -4,6 +4,6 @@
 
     <changeSet id="changelog-store_procedure" author="MING.YUEN">
         <sqlFile dbms="mariadb" path="20230908_mysql_create_store_procedure_confirmPendingUser.sql" encoding="UTF-8" endDelimiter="/" relativeToChangelogFile="true" splitStatements="true"/>
-<!--        <sqlFile dbms="mssql"   path="20230908_mssql_create_store_procedure_confirmPendingUser.sql" encoding="UTF-8" endDelimiter="/" relativeToChangelogFile="true" splitStatements="true"/>-->
+        <sqlFile dbms="mssql"   path="20230908_mssql_create_store_procedure_confirmPendingUser.sql" encoding="UTF-8" endDelimiter="/" relativeToChangelogFile="true" splitStatements="true"/>
     </changeSet>
 </databaseChangeLog>
