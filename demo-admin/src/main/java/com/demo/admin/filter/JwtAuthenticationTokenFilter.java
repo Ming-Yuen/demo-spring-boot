@@ -23,13 +23,12 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     private UserDetailsService userDetailsService;
     @Autowired
     private JwtManager jwt;
-
-    private String tokenHead = "Bearer ";
+    private final static String tokenHead = "Bearer ";
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         String authHeader = request.getHeader("Authorization");
-        if (authHeader != null && authHeader.startsWith(this.tokenHead)) {
-            String authToken = authHeader.substring(this.tokenHead.length());// The part after "Bearer "
+        if (authHeader != null && authHeader.startsWith(tokenHead)) {
+            String authToken = authHeader.substring(tokenHead.length());// The part after "Bearer "
             try{
                 String username = jwt.getUserNameFromToken(authToken);
                 log.info("checking username:{}", username);

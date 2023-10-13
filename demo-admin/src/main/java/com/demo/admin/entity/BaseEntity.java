@@ -20,24 +20,24 @@ public class BaseEntity implements Serializable{
     @Column(nullable = false, updatable = false)
     private String creator;
     @Column(nullable = false, updatable = false)
-    private OffsetDateTime creation_time;
+    private OffsetDateTime creationTime;
     @NotBlank
     @Column(nullable = false)
     private String modifier;
     @Column(nullable = false)
-    private OffsetDateTime modification_time;
+    private OffsetDateTime modificationTime;
     @PrePersist
     protected void onCreate() {
         txVersion = 1;
-        creation_time = OffsetDateTime.now();
-        modification_time = OffsetDateTime.now();
+        creationTime = OffsetDateTime.now();
+        modificationTime = OffsetDateTime.now();
         creator = StringUtils.defaultIfBlank(creator, UserContextHolder.getUser() == null ? null : UserContextHolder.getUser().getUserName());
         modifier = StringUtils.defaultIfBlank(modifier, UserContextHolder.getUser() == null ? null : UserContextHolder.getUser().getUserName());
     }
 
     @PreUpdate
     protected void onUpdate() {
-        modification_time = OffsetDateTime.now();
+        modificationTime = OffsetDateTime.now();
         modifier = StringUtils.defaultIfBlank(modifier, UserContextHolder.getUser() == null ? null : UserContextHolder.getUser().getUserName());
     }
 }

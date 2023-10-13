@@ -32,6 +32,7 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.validation.BindException;
 
+import java.io.File;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -42,7 +43,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
 @Configuration
-//@EnableBatchProcessing
+@EnableBatchProcessing
 public class UserBatchImport {
     @Autowired
     public JobBuilderFactory jobBuilderFactory;
@@ -56,7 +57,7 @@ public class UserBatchImport {
     public ItemReader<UserPending> reader() {
         FlatFileItemReader<UserPending> reader = new FlatFileItemReader<>();
 //        reader.setResource(new ClassPathResource("C:\\Users\\Administrator\\Documents\\logs\\data.csv"));
-        reader.setResource(new FileSystemResource("C:\\Users\\Administrator\\Documents\\logs\\data.csv"));
+        reader.setResource(new FileSystemResource(String.join(File.separator, System.getProperty("user.home"), "Documents", "Testing", "user_data.csv")));
         reader.setLineMapper(new DefaultLineMapper<UserPending>() {{
             setLineTokenizer(new DelimitedLineTokenizer() {{
                 setNames("username", "firstName", "lastName", "password", "email", "gender", "modifyTime");
@@ -97,6 +98,7 @@ public class UserBatchImport {
                 .incrementer(new RunIdIncrementer())
                 .listener(new JobCompletionNotificationListener())
                 .start(insertToPending)
+                .next(mergeStep())
 //                .next(mergeStep())
                 .build();
     }
@@ -105,7 +107,8 @@ public class UserBatchImport {
     public Step mergeStep() {
         return stepBuilderFactory.get("mergeStep")
                 .tasklet((contribution, chunkContext) -> {
-                    usersPendingDao.confirmPendingUser();
+//                    usersPendingDao.confirmPendingUser();
+                    userService.confirmPendingUserInfo();
                     return RepeatStatus.FINISHED;
                 })
                 .build();
@@ -113,14 +116,14 @@ public class UserBatchImport {
 
 
     public static class UserItemProcessor implements ItemProcessor<UserPending, UserPending> {
-        AtomicInteger count = new AtomicInteger(0);
+        final AtomicInteger count = new AtomicInteger(0);
         final ConcurrentHashMap<String, UserPending> map = new ConcurrentHashMap<>();
         @Override
         public UserPending process(UserPending userPending) throws Exception {
-            if(count.get() % 10000 == 0){
-                log.info("read {} row", count);
+            final int process_count = count.addAndGet(1);
+            if(process_count % 10000 == 0){
+                log.info("read {} row", process_count);
             }
-            count.addAndGet(1);
 
             UserPending old_userPending = map.get(userPending.getUserName());
             if(old_userPending == null){
@@ -132,12 +135,12 @@ public class UserBatchImport {
                     }
                 }
             }
-            if(!old_userPending.getModification_time().isBefore(userPending.getModification_time())){
+            if(!old_userPending.getModificationTime().isBefore(userPending.getModificationTime())){
                 return null;
             }
             old_userPending = map.get(userPending.getUserName());
             synchronized (old_userPending){
-                if(old_userPending.getModification_time().isBefore(userPending.getModification_time())){
+                if(old_userPending.getModificationTime().isBefore(userPending.getModificationTime())){
                     userPending.setTxVersion(old_userPending.getTxVersion() + 1);
                     map.put(userPending.getUserName(), userPending);
                     return userPending;
@@ -150,9 +153,9 @@ public class UserBatchImport {
             userPending.setStatus(StatusEnum.PENDING);
             userPending.setTxVersion(1);
             userPending.setCreator("admin");
-            userPending.setCreation_time(OffsetDateTime.now());
+            userPending.setCreationTime(OffsetDateTime.now());
             userPending.setModifier("admin");
-            userPending.setModification_time(OffsetDateTime.now());
+            userPending.setModificationTime(OffsetDateTime.now());
         }
     }
 
@@ -170,7 +173,7 @@ public class UserBatchImport {
             userPending.setGender(fieldSet.readString("gender"));
 
             String modifyTime = fieldSet.readString("modifyTime");
-            userPending.setModification_time(DateUtil.convertOffsetDatetime("yyyy-MM-dd HH:mm:ss", modifyTime));
+            userPending.setModificationTime(DateUtil.convertOffsetDatetime("yyyy-MM-dd HH:mm:ss.SSS", modifyTime));
 
             return userPending;
         }

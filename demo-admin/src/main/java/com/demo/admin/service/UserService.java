@@ -17,6 +17,8 @@ public interface UserService {
 
     void saveUserPending(List<? extends UserPending> users);
 
+    void confirmPendingUserInfo();
+
     void confirmUserPending(List<? extends UserPending> users);
 
     UserInfo findByUserName(String userId);

@@ -2,15 +2,17 @@ package com.demo.admin.service.impl;
 
 import com.demo.admin.dao.UsersPendingDao;
 import com.demo.admin.dto.UserRegisterRequest;
-import com.demo.admin.entity.UserInfo;
-import com.demo.admin.entity.UserPending;
+import com.demo.admin.entity.*;
 import com.demo.admin.entity.enums.RoleLevelEnum;
+import com.demo.admin.entity.enums.StatusEnum;
 import com.demo.admin.mapper.UsersPendingMapper;
 import com.demo.admin.service.UserService;
 import com.demo.admin.dao.UserInfoDao;
 import com.demo.admin.dao.UserRoleDao;
 import com.demo.admin.util.JwtManager;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,6 +27,8 @@ import static com.demo.common.util.LambdaUtil.distinctByKey;
 @Slf4j
 @Service
 public class UserServiceImpl implements UserService {
+    @Autowired
+    private JPAQueryFactory queryFactory;
     @Autowired
     private UserInfoDao userDao;
     @Autowired
@@ -55,7 +59,28 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
         usersPendingDao.saveAll(users);
     }
+    @Override
+    public void confirmPendingUserInfo() {
+        QUserPending userInfoPending = QUserPending.userPending;
+        QUserInfo qUserInfo = QUserInfo.userInfo;
 
+        queryFactory.insert(qUserInfo)
+                    .columns( qUserInfo.userName, qUserInfo.firstName, qUserInfo.lastName, qUserInfo.pwd, qUserInfo.gender, qUserInfo.email, qUserInfo.phone, qUserInfo.roleLevel,
+                              qUserInfo.txVersion, qUserInfo.creator, qUserInfo.creationTime, qUserInfo.modifier, qUserInfo.modificationTime)
+//                .select( userInfoPending.userName, userInfoPending.firstName, userInfoPending.lastName,
+//                             userInfoPending.pwd, userInfoPending.gender, userInfoPending.email, userInfoPending.phone,
+//                             userInfoPending.roleLevel, userInfoPending.txVersion, userInfoPending.creator,
+//                             userInfoPending.creationTime, userInfoPending.modifier, userInfoPending.modificationTime);
+                .select(queryFactory.select(userInfoPending.userName, userInfoPending.firstName, userInfoPending.lastName,
+                             userInfoPending.pwd, userInfoPending.gender, userInfoPending.email, userInfoPending.phone,
+                             userInfoPending.roleLevel, userInfoPending.txVersion, userInfoPending.creator,
+                             userInfoPending.creationTime, userInfoPending.modifier, userInfoPending.modificationTime)
+                .from(QUserInfo.userInfo)
+                .leftJoin(QUserInfo.userInfo)
+                .on(qUserInfo.userName.eq(QUserInfo.userInfo.userName))
+                .where(QUserInfo.userInfo.isNull().and(userInfoPending.status.eq(StatusEnum.PENDING)))
+                .limit(1000));
+    }
     @Override
     public void confirmUserPending(List<? extends UserPending> users){
 
@@ -67,7 +92,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Cacheable()
     public Collection<Long> getManageRoles(RoleLevelEnum role_level){
-        return userRoleDao.findByRoleLevelGreaterThanEqual(role_level).stream().map(x->x.getId()).collect(Collectors.toList());
+        return userRoleDao.findByRoleLevelGreaterThanEqual(role_level).stream().map(BaseEntity::getId).collect(Collectors.toList());
     }
     @Override
     public String login(String username, String password) {

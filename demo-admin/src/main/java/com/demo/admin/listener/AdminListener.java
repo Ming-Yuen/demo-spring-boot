@@ -34,9 +34,9 @@ public class AdminListener implements CommandLineRunner {
             userPending.setPwd("admin");
             userPending.setRoleLevel(RoleLevelEnum.admin);
             userPending.setCreator(userPending.getUserName());
-            userPending.setCreation_time(OffsetDateTime.now());
+            userPending.setCreationTime(OffsetDateTime.now());
             userPending.setModifier(userPending.getUserName());
-            userPending.setModification_time(OffsetDateTime.now());
+            userPending.setModificationTime(OffsetDateTime.now());
 
             user = usersPendingMapper.userPendingConvertUserInfo(userPending);
             UserContextHolder.setUser(user);
