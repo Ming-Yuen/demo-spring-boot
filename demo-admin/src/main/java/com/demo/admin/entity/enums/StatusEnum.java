@@ -4,7 +4,7 @@ public enum StatusEnum {
     PENDING(0),
     ERROR(-1),
     SUCCESS(1);
-    int status;
+    final int status;
     StatusEnum(int status){
        this.status = status;
     }

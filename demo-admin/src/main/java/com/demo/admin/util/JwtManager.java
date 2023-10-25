@@ -21,20 +21,17 @@ public class JwtManager {
     private Long expiration;
 
     public String generateToken(String username, String password) {
-        HashMap map = new HashMap();
+        HashMap<String, Object> map = new HashMap<String, Object>();
         map.put("sub", username);
         map.put("created", new Date());
 
         return Jwts.builder()
                 .setId(username)
                 .setClaims(map)
-                .setExpiration(generateExpirationDate())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000))
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
-    }
-
-    private Date generateExpirationDate() {
-        return new Date(System.currentTimeMillis() + expiration * 1000);
     }
 
     public String getUserNameFromToken(String token) {

@@ -2,13 +2,14 @@ package com.demo.admin.entity;
 
 import com.demo.admin.entity.enums.RoleLevelEnum;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.util.Date;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-@Table(name = "userInfo")
 //@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class UserInfo extends BaseEntity {
     @Column(nullable = false, updatable = false)

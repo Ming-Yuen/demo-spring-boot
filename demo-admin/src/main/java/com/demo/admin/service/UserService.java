@@ -17,11 +17,13 @@ public interface UserService {
 
     void saveUserPending(List<? extends UserPending> users);
 
-    void confirmPendingUserInfo();
+    void confirmPendingUserInfo(String uuid);
 
     void confirmUserPending(List<? extends UserPending> users);
 
     UserInfo findByUserName(String userId);
     @Cacheable()
     Collection<Long> getManageRoles(RoleLevelEnum role_level);
+
+    String passwordEncode(String password);
 }

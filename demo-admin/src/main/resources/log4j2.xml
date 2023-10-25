@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- status表示log4j2本身的日志信息打印级别，和下面的level，不是一个概念 -->
 <!--TRACE < DEBUG < INFO < WARN < ERROR < FATAL < OFF-->
-<Configuration status="INFO" monitorInterval="30">
+<Configuration status="info" monitorInterval="30">
     <Properties>
         <Property name="user.home">${sys:user.home}</Property>
         <Property name="LOG_PATTERN"> %d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${hostName} --- [%15.15t] %-40.40c{1.} : %m%n%ex</Property>

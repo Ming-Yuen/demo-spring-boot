@@ -1,5 +1,6 @@
 package com.demo.common.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -7,49 +8,50 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.oas.annotations.EnableOpenApi;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
+import java.util.ArrayList;
+
 @Configuration
 @EnableOpenApi
-public class Swagger implements WebMvcConfigurer {
+public class Swagger {
+    /**
+     * 用于读取配置文件 application.properties 中 swagger 属性是否开启
+     */
+    @Value("${swagger.enabled}")
+    private boolean swaggerEnabled;
 
     @Bean
-    public Docket docket(){
+    public Docket docket() {
         return new Docket(DocumentationType.OAS_30)
-                .apiInfo(apiInfo()).enable(true)
+                .apiInfo(apiInfo())
+                // 是否开启swagger
+                .enable(swaggerEnabled)
                 .select()
-                //apis： 添加swagger接口提取范围
-//                .apis(RequestHandlerSelectors.basePackage("com.api.controller"))
-//                .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
-//                .paths(PathSelectors.any())
-                .paths(PathSelectors.regex("/.*/error").negate())
-//                .paths(Predicates.not(PathSelectors.regex("/error.*")))
+                // 过滤条件，扫描指定路径下的文件
+                .apis(RequestHandlerSelectors.basePackage("com.example.demo.controller"))
+                // 指定路径处理，PathSelectors.any()代表不过滤任何路径
+                //.paths(PathSelectors.any())
                 .build();
     }
 
-    private ApiInfo apiInfo(){
-        return new ApiInfoBuilder()
-                .title("Demo project API")
-                .description("Spring boot demo project API list")
-                .contact(new Contact("Ming Yuen", "https://github.com/Ming-Yuen/demo-spring-boot", "toyuenkaming@gmail.com"))
-                .version("1.0")
-                .build();
-    }
-
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/swagger-ui/**")
-                .addResourceLocations("classpath:/META-INF/resources/webjars/springfox-swagger-ui/")
-                .resourceChain(false);
-    }
-
-    @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/swagger-ui/")
-                .setViewName("forward:/swagger-ui/index.html");
+    private ApiInfo apiInfo() {
+        /*作者信息*/
+        Contact contact = new Contact("高建伟", "https://blog.csdn.net/Gjw_java?type=blog", "jianweigao19@163.com");
+        return new ApiInfo(
+                "Spring Boot 集成 Swagger3 测试",
+                "Spring Boot 集成 Swagger3 测试接口文档",
+                "v1.0",
+                "https://blog.csdn.net/Gjw_java?type=blog",
+                contact,
+                "Apache 2.0",
+                "http://www.apache.org/licenses/LICENSE-2.0",
+                new ArrayList()
+        );
     }
 }

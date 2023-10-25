@@ -7,5 +7,5 @@ import org.springframework.data.repository.CrudRepository;
 public interface UsersPendingDao extends CrudRepository<UserPending, Long> {
     UserPending findByUserName(String username);
     @Procedure(name = "confirm_pending_user")
-    void confirmPendingUser();
+    void confirmPendingUser(String batchId);
 }

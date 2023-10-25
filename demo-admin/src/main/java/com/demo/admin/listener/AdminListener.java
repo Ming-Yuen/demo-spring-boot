@@ -3,6 +3,7 @@ package com.demo.admin.listener;
 import com.demo.admin.entity.UserInfo;
 import com.demo.admin.entity.UserPending;
 import com.demo.admin.entity.enums.RoleLevelEnum;
+import com.demo.admin.entity.enums.StatusEnum;
 import com.demo.admin.mapper.UsersPendingMapper;
 import com.demo.admin.service.UserService;
 import com.demo.admin.util.UserContextHolder;
@@ -16,6 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.time.OffsetDateTime;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.UUID;
 
 @Slf4j
 @Component
@@ -30,9 +33,11 @@ public class AdminListener implements CommandLineRunner {
         UserInfo user = userService.findByUserName("admin");
         if(user == null){
             UserPending userPending = new UserPending();
+            userPending.setBatchId(UUID.randomUUID().toString());
             userPending.setUserName("admin");
-            userPending.setPwd("admin");
+            userPending.setPwd(userService.passwordEncode("admin"));
             userPending.setRoleLevel(RoleLevelEnum.admin);
+            userPending.setStatus(StatusEnum.PENDING);
             userPending.setCreator(userPending.getUserName());
             userPending.setCreationTime(OffsetDateTime.now());
             userPending.setModifier(userPending.getUserName());
@@ -41,7 +46,8 @@ public class AdminListener implements CommandLineRunner {
             user = usersPendingMapper.userPendingConvertUserInfo(userPending);
             UserContextHolder.setUser(user);
 
-            userService.saveUserPending(Arrays.asList(userPending));
+            userService.saveUserPending(Collections.singletonList(userPending));
+            userService.confirmPendingUserInfo(userPending.getBatchId());
         }else{
             UserContextHolder.setUser(user);
         }

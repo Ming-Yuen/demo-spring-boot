@@ -38,12 +38,13 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
-@Configuration
-@EnableBatchProcessing
+//@Configuration
+//@EnableBatchProcessing
 public class UserBatchImport {
     @Autowired
     public JobBuilderFactory jobBuilderFactory;
@@ -53,6 +54,7 @@ public class UserBatchImport {
     public UserService userService;
     @Autowired
     public UsersPendingDao usersPendingDao;
+    private final String batchId = UUID.randomUUID().toString();
     @Bean
     public ItemReader<UserPending> reader() {
         FlatFileItemReader<UserPending> reader = new FlatFileItemReader<>();
@@ -98,7 +100,8 @@ public class UserBatchImport {
                 .incrementer(new RunIdIncrementer())
                 .listener(new JobCompletionNotificationListener())
                 .start(insertToPending)
-                .next(mergeStep())
+                .start(mergeStep())
+//                .next(mergeStep())
 //                .next(mergeStep())
                 .build();
     }
@@ -107,8 +110,7 @@ public class UserBatchImport {
     public Step mergeStep() {
         return stepBuilderFactory.get("mergeStep")
                 .tasklet((contribution, chunkContext) -> {
-//                    usersPendingDao.confirmPendingUser();
-                    userService.confirmPendingUserInfo();
+                    userService.confirmPendingUserInfo(batchId);
                     return RepeatStatus.FINISHED;
                 })
                 .build();
@@ -125,16 +127,23 @@ public class UserBatchImport {
                 log.info("read {} row", process_count);
             }
 
-            UserPending old_userPending = map.get(userPending.getUserName());
-            if(old_userPending == null){
-                synchronized (map){
-                    if((old_userPending = map.get(userPending.getUserName())) == null){
-                        setUserPendingRecord(userPending);
-                        map.put(userPending.getUserName(), userPending);
-                        return userPending;
-                    }
+            UserPending old_userPending = map.computeIfAbsent(userPending.getUserName(), record -> userPending);
+            synchronized (old_userPending){
+                if((old_userPending = map.get(userPending.getUserName())) == null){
+                    map.put(userPending.getUserName(), userPending);
+                    return userPending;
                 }
             }
+//            UserPending old_userPending = map.computeIfAbsent(userPending.getUserName(), record -> userPending);
+//            if(old_userPending == null){
+//                synchronized (map){
+//                    if((old_userPending = map.get(userPending.getUserName())) == null){
+//                        setUserPendingRecord(userPending);
+//                        map.put(userPending.getUserName(), userPending);
+//                        return userPending;
+//                    }
+//                }
+//            }
             if(!old_userPending.getModificationTime().isBefore(userPending.getModificationTime())){
                 return null;
             }
@@ -148,15 +157,6 @@ public class UserBatchImport {
             }
             return null;
         }
-
-        private void setUserPendingRecord(UserPending userPending){
-            userPending.setStatus(StatusEnum.PENDING);
-            userPending.setTxVersion(1);
-            userPending.setCreator("admin");
-            userPending.setCreationTime(OffsetDateTime.now());
-            userPending.setModifier("admin");
-            userPending.setModificationTime(OffsetDateTime.now());
-        }
     }
 
     public class UserFieldSetMapper implements FieldSetMapper<UserPending> {
@@ -165,16 +165,19 @@ public class UserBatchImport {
         @Override
         public UserPending mapFieldSet(FieldSet fieldSet) throws BindException {
             UserPending userPending = new UserPending();
+            userPending.setBatchId(batchId);
             userPending.setUserName(fieldSet.readString("username"));
             userPending.setFirstName(fieldSet.readString("firstName"));
             userPending.setLastName(fieldSet.readString("lastName"));
             userPending.setPwd(fieldSet.readString("password"));
             userPending.setEmail(fieldSet.readString("email"));
             userPending.setGender(fieldSet.readString("gender"));
-
-            String modifyTime = fieldSet.readString("modifyTime");
-            userPending.setModificationTime(DateUtil.convertOffsetDatetime("yyyy-MM-dd HH:mm:ss.SSS", modifyTime));
-
+            userPending.setStatus(StatusEnum.PENDING);
+            userPending.setCreator("admin");
+            userPending.setCreationTime(OffsetDateTime.now());
+            userPending.setModifier("admin");
+            userPending.setModificationTime(DateUtil.convertOffsetDatetime("yyyy-MM-dd HH:mm:ss.SSS", fieldSet.readString("modifyTime")));
+            userPending.setTxVersion(1);
             return userPending;
         }
     }
