@@ -1,26 +1,36 @@
-package com.demo.admin.task.testing;
+package com.demo.admin.schedule;
 
+import com.demo.common.exception.ValidationException;
 import com.github.javafaker.Faker;
-import org.junit.jupiter.api.Test;
+import org.quartz.Job;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class UserBatchImportTest {
-    private final String docPath = String.join(File.separator, System.getProperty("user.home"), "Documents", "Testing");;
-    @Test
-    public void generateDataFile() throws Throwable{
-        File csvFile = new File(docPath, "user_data.csv");
+public class CsvToUserSchedule implements Job {
+    @Override
+    public void execute(JobExecutionContext context) throws JobExecutionException {
+        File file = new File(String.join(File.separator, System.getProperty("user.home"), "Documents", "Testing"),"user_data.csv");
+        try {
+            generateDataFile(file);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public void generateDataFile(File file) throws ValidationException, IOException {
         Faker faker = new Faker(new Locale("en"));
         String lineSeparator = System.lineSeparator();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-        if(!csvFile.getParentFile().exists() && !csvFile.getParentFile().mkdirs()){
-            throw new Exception("create directory fail " + csvFile.getParentFile().getPath());
+        if(!file.getParentFile().exists() && !file.getParentFile().mkdirs()){
+            throw new ValidationException("create directory fail " + file.getParentFile().getPath());
         }
-        try (FileWriter writer = new FileWriter(csvFile)) {
+        try (FileWriter writer = new FileWriter(file)) {
             // Write header
             writer.append("username,firstName,lastName,password,email,gender,modifyTime");
             writer.append(lineSeparator);

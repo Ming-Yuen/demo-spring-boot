@@ -1,6 +1,6 @@
-package com.demo.admin.entity;
+package com.demo.common.entity;
 
-import com.demo.admin.entity.enums.RoleLevelEnum;
+import com.demo.common.entity.enums.RoleLevelEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

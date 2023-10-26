@@ -1,4 +1,4 @@
-package com.demo.admin.entity.enums;
+package com.demo.common.entity.enums;
 
 public enum RoleLevelEnum {
 

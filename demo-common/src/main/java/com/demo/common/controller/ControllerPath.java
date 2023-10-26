@@ -9,4 +9,5 @@ public class ControllerPath {
     public static final String structure = "/structure";
     public static final String enquiry = "/enquiry";
     public static final String product = "/product";
+    public static final String schedule = "/schedule";
 }

@@ -1,6 +1,6 @@
 package com.demo.product.entity;
 
-import com.demo.admin.entity.BaseEntity;
+import com.demo.common.entity.BaseEntity;
 import lombok.Data;
 
 import javax.persistence.Entity;

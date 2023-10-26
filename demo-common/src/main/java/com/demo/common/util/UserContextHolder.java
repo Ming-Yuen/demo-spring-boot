@@ -1,7 +1,6 @@
-package com.demo.admin.util;
+package com.demo.common.util;
 
-import com.demo.admin.entity.UserInfo;
-import com.demo.admin.entity.UserInfo;
+import com.demo.common.entity.UserInfo;
 
 public class UserContextHolder {
     private static final ThreadLocal<UserInfo> contextHolder = new ThreadLocal<>();

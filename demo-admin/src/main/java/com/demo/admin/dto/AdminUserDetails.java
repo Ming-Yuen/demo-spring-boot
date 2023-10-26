@@ -1,7 +1,6 @@
 package com.demo.admin.dto;
 
-import com.demo.admin.entity.UserInfo;
-import com.demo.admin.entity.UserInfo;
+import com.demo.common.entity.UserInfo;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

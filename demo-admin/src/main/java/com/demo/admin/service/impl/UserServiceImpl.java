@@ -3,12 +3,14 @@ package com.demo.admin.service.impl;
 import com.demo.admin.dao.UsersPendingDao;
 import com.demo.admin.dto.UserRegisterRequest;
 import com.demo.admin.entity.*;
-import com.demo.admin.entity.enums.RoleLevelEnum;
+import com.demo.common.entity.enums.RoleLevelEnum;
 import com.demo.admin.mapper.UsersPendingMapper;
 import com.demo.admin.service.UserService;
 import com.demo.admin.dao.UserInfoDao;
 import com.demo.admin.dao.UserRoleDao;
 import com.demo.admin.util.JwtManager;
+import com.demo.common.entity.BaseEntity;
+import com.demo.common.entity.UserInfo;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;

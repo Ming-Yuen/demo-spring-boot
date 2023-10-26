@@ -1,6 +1,6 @@
 package com.demo.admin.dao;
 
-import com.demo.admin.entity.UserInfo;
+import com.demo.common.entity.UserInfo;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.CrudRepository;
 

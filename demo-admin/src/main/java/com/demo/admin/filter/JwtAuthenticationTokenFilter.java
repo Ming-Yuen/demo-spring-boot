@@ -2,12 +2,11 @@ package com.demo.admin.filter;
 
 import com.demo.admin.dao.UserInfoDao;
 import com.demo.admin.dto.AdminUserDetails;
-import com.demo.admin.entity.UserInfo;
-import com.demo.admin.util.UserContextHolder;
+import com.demo.common.entity.UserInfo;
+import com.demo.common.util.UserContextHolder;
 import com.demo.admin.util.JwtManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;

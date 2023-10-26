@@ -1,9 +1,9 @@
 package com.demo.admin.service;
 
 import com.demo.admin.dto.UserRegisterRequest;
-import com.demo.admin.entity.UserInfo;
+import com.demo.common.entity.UserInfo;
 import com.demo.admin.entity.UserPending;
-import com.demo.admin.entity.enums.RoleLevelEnum;
+import com.demo.common.entity.enums.RoleLevelEnum;
 import org.springframework.cache.annotation.Cacheable;
 
 import java.util.Collection;

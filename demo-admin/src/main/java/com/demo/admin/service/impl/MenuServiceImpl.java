@@ -2,10 +2,10 @@ package com.demo.admin.service.impl;
 
 import com.demo.admin.dao.MenuDao;
 import com.demo.admin.dto.MenuStructureResponse;
-import com.demo.admin.entity.enums.RoleLevelEnum;
+import com.demo.common.entity.enums.RoleLevelEnum;
 import com.demo.admin.service.MenuService;
 import com.demo.admin.service.UserService;
-import com.demo.admin.util.UserContextHolder;
+import com.demo.common.util.UserContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

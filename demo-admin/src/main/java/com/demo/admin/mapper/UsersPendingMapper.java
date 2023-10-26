@@ -1,7 +1,7 @@
 package com.demo.admin.mapper;
 
 import com.demo.admin.dto.UserRegisterRequest;
-import com.demo.admin.entity.UserInfo;
+import com.demo.common.entity.UserInfo;
 import com.demo.admin.entity.UserPending;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;

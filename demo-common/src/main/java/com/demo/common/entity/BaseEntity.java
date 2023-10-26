@@ -1,6 +1,6 @@
-package com.demo.admin.entity;
+package com.demo.common.entity;
 
-import com.demo.admin.util.UserContextHolder;
+import com.demo.common.util.UserContextHolder;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
