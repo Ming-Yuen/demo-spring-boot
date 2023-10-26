@@ -6,13 +6,17 @@ import com.demo.common.service.ScheduleService;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 
-public class ScheduleListener {
+public class ScheduleListener implements CommandLineRunner {
     @Autowired
     private ScheduleService scheduleService;
-    public void config() throws ValidationException, SchedulerException {
+    @Override
+    public void run(String... args) throws ValidationException, SchedulerException {
         Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
+        boolean enable = false;
         for(Schedule schedule : scheduleService.getAllSchedule()){
+            enable = true;
             Class<?> jobClass = null;
             try {
                 jobClass = Class.forName(schedule.getJobClass());
@@ -27,6 +31,8 @@ public class ScheduleListener {
             Trigger trigger1 = TriggerBuilder.newTrigger().withIdentity(String.valueOf(schedule.getId()), "group1").withSchedule(CronScheduleBuilder.cronSchedule(schedule.getCron())).build();
             scheduler.scheduleJob(jobDetail, trigger1);
         }
-        scheduler.start();
+        if(enable) {
+            scheduler.start();
+        }
     }
 }

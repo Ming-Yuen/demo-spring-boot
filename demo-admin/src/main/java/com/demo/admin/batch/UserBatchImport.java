@@ -1,4 +1,4 @@
-package com.demo.admin.task;
+package com.demo.admin.batch;
 
 import com.demo.admin.dao.UsersPendingDao;
 import com.demo.admin.entity.UserPending;
@@ -8,7 +8,6 @@ import com.demo.admin.listener.JobCompletionNotificationListener;
 import com.demo.common.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
-import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
@@ -18,7 +17,6 @@ import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.file.FlatFileItemReader;
-import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.mapping.FieldSetMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
@@ -33,9 +31,6 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.validation.BindException;
 
 import java.io.File;
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
@@ -43,8 +38,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
-//@Configuration
-//@EnableBatchProcessing
+@Configuration
+@EnableBatchProcessing
 public class UserBatchImport {
     @Autowired
     public JobBuilderFactory jobBuilderFactory;
