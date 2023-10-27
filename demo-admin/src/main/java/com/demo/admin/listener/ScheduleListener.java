@@ -27,8 +27,14 @@ public class ScheduleListener implements CommandLineRunner {
                 throw new ValidationException("Job id " + schedule.getId() + " job class is not Quartz Job sub interface class");
             }
             @SuppressWarnings("unchecked")
-            JobDetail jobDetail = JobBuilder.newJob((Class<? extends Job>) jobClass).withIdentity(String.valueOf(schedule.getId()), "group1").build();
-            Trigger trigger1 = TriggerBuilder.newTrigger().withIdentity(String.valueOf(schedule.getId()), "group1").withSchedule(CronScheduleBuilder.cronSchedule(schedule.getCron())).build();
+            JobDetail jobDetail = JobBuilder.newJob((Class<? extends Job>) jobClass)
+                    .withIdentity(String.valueOf(schedule.getId()), "group1")
+                    .setJobData(new JobDataMap(schedule.getConfig()))
+                    .build();
+            Trigger trigger1 = TriggerBuilder.newTrigger()
+                    .withIdentity(String.valueOf(schedule.getId()), "group1")
+                    .withSchedule(CronScheduleBuilder.cronSchedule(schedule.getCron()))
+                    .build();
             scheduler.scheduleJob(jobDetail, trigger1);
         }
         if(enable) {

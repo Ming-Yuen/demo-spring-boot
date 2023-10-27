@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.Entity;
+import java.util.Map;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -13,4 +14,5 @@ public class Schedule extends BaseEntity{
     private String jobClass;
     private String cron;
     private Integer enable;
+    private Map<String, Object> config;
 }

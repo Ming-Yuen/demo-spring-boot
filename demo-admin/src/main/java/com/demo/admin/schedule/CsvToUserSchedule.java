@@ -1,13 +1,18 @@
 package com.demo.admin.schedule;
 
+import com.demo.admin.batch.UserBatchImport;
 import com.demo.common.batch.BatchJob;
 import com.demo.common.exception.ValidationException;
 import com.github.javafaker.Faker;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.springframework.batch.core.JobExecution;
+import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.configuration.JobLocator;
 import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -17,6 +22,12 @@ import java.util.Date;
 import java.util.Locale;
 
 public class CsvToUserSchedule extends BatchJob implements Job {
+    @Autowired
+    private Job importUserJob;
+    @Autowired
+    private JobLauncher jobLauncher;
+    @Autowired
+    private UserBatchImport userBatchImport;
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         File file = new File(String.join(File.separator, System.getProperty("user.home"), "Documents", "Testing"),"user_data.csv");
@@ -25,17 +36,15 @@ public class CsvToUserSchedule extends BatchJob implements Job {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-//        BatchConfiguration batchConfiguration = new BatchConfiguration();
-//
-//        try {
-//            JobParameters jobParameters = new JobParametersBuilder()
-//                    .addLong("time", System.currentTimeMillis())
-//                    .toJobParameters();
-//            jobLauncher.run(batchConfiguration.myJob(), jobParameters);
-//        } catch (Exception e) {
-//            // 处理作业执行异常
-//            e.printStackTrace();
-//        }
+
+        try {
+            JobParameters jobParameters= new JobParametersBuilder().addLong("time", System.currentTimeMillis())
+                    .toJobParameters();
+//            JobExecution result =jobLauncher.run(importUserJob, jobParameters);
+        } catch (Exception e) {
+            // 处理作业执行异常
+            e.printStackTrace();
+        }
     }
     public void generateDataFile(File file) throws ValidationException, IOException {
         Faker faker = new Faker(new Locale("en"));
