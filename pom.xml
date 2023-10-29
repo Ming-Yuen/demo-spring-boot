@@ -49,6 +49,33 @@
                     </execution>
                 </executions>
             </plugin>
+
+<!--            <plugin>-->
+<!--                <groupId>org.liquibase</groupId>-->
+<!--                <artifactId>liquibase-maven-plugin</artifactId>-->
+<!--                <version>4.5.0</version>-->
+<!--                <configuration>-->
+<!--                    <propertyFile>src/main/resources/liquibase.properties</propertyFile>-->
+<!--                    <changeLogFile>src/main/resources/db/changelog/db.changelog-entities.xml</changeLogFile>-->
+<!--                    <diffChangeLogFile>src/main/resources/db/changelog/db.changelog-entities-diff.xml</diffChangeLogFile>-->
+<!--                    <diffExcludeObjects>SCHEMA:TABLE_NAME</diffExcludeObjects>-->
+<!--                </configuration>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <phase>process-classes</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>update</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--                <dependencies>-->
+<!--                    <dependency>-->
+<!--                        <groupId>org.liquibase.ext</groupId>-->
+<!--                        <artifactId>liquibase-hibernate5</artifactId>-->
+<!--                        <version>4.1.1</version>-->
+<!--                    </dependency>-->
+<!--                </dependencies>-->
+<!--            </plugin>-->
         </plugins>
     </build>
 
@@ -176,5 +203,9 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-quartz</artifactId>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.liquibase.ext</groupId>-->
+<!--            <artifactId>liquibase-hibernate5</artifactId>-->
+<!--        </dependency>-->
     </dependencies>
 </project>

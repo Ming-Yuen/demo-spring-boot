@@ -4,6 +4,7 @@ import com.demo.admin.batch.UserBatchImport;
 import com.demo.common.batch.BatchJob;
 import com.demo.common.exception.ValidationException;
 import com.github.javafaker.Faker;
+import lombok.extern.slf4j.Slf4j;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -20,30 +21,29 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-
+@Slf4j
 public class CsvToUserSchedule extends BatchJob implements Job {
     @Autowired
-    private Job importUserJob;
+    private org.springframework.batch.core.Job importUserJob;
     @Autowired
     private JobLauncher jobLauncher;
     @Autowired
     private UserBatchImport userBatchImport;
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        File file = new File(String.join(File.separator, System.getProperty("user.home"), "Documents", "Testing"),"user_data.csv");
-        try {
-            generateDataFile(file);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+//        File file = new File(String.join(File.separator, System.getProperty("user.home"), "Documents", "Testing"),"user_data.csv");
+//        try {
+//            generateDataFile(file);
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
 
         try {
             JobParameters jobParameters= new JobParametersBuilder().addLong("time", System.currentTimeMillis())
                     .toJobParameters();
-//            JobExecution result =jobLauncher.run(importUserJob, jobParameters);
+            JobExecution result =jobLauncher.run(importUserJob, jobParameters);
         } catch (Exception e) {
-            // 处理作业执行异常
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         }
     }
     public void generateDataFile(File file) throws ValidationException, IOException {

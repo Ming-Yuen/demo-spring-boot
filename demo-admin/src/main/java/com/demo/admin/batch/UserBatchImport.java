@@ -1,7 +1,7 @@
 package com.demo.admin.batch;
 
 import com.demo.admin.dao.UsersPendingDao;
-import com.demo.admin.entity.UserPending;
+import com.demo.admin.entity.UserInfoPending;
 import com.demo.admin.entity.enums.StatusEnum;
 import com.demo.admin.service.UserService;
 import com.demo.admin.listener.JobCompletionNotificationListener;
@@ -51,11 +51,11 @@ public class UserBatchImport {
     public UsersPendingDao usersPendingDao;
     private final String batchId = UUID.randomUUID().toString();
     @Bean
-    public ItemReader<UserPending> reader() {
-        FlatFileItemReader<UserPending> reader = new FlatFileItemReader<>();
+    public ItemReader<UserInfoPending> reader() {
+        FlatFileItemReader<UserInfoPending> reader = new FlatFileItemReader<>();
 //        reader.setResource(new ClassPathResource("C:\\Users\\Administrator\\Documents\\logs\\data.csv"));
         reader.setResource(new FileSystemResource(String.join(File.separator, System.getProperty("user.home"), "Documents", "Testing", "user_data.csv")));
-        reader.setLineMapper(new DefaultLineMapper<UserPending>() {{
+        reader.setLineMapper(new DefaultLineMapper<UserInfoPending>() {{
             setLineTokenizer(new DelimitedLineTokenizer() {{
                 setNames("username", "firstName", "lastName", "password", "email", "gender", "modifyTime");
             }});
@@ -74,14 +74,14 @@ public class UserBatchImport {
     }
 
     @Bean
-    public ItemWriter<UserPending> writer() {
+    public ItemWriter<UserInfoPending> writer() {
         return user->userService.saveUserPending(user);
     }
 
     @Bean
-    public Step insertToPending(ItemReader<UserPending> reader, ItemWriter<UserPending> writer, UserItemProcessor processor) {
+    public Step insertToPending(ItemReader<UserInfoPending> reader, ItemWriter<UserInfoPending> writer, UserItemProcessor processor) {
         return stepBuilderFactory.get("step1")
-                .<UserPending, UserPending>chunk(10000)
+                .<UserInfoPending, UserInfoPending>chunk(10000)
                 .reader(reader)
                 .processor(processor)
                 .writer(writer)
@@ -112,17 +112,17 @@ public class UserBatchImport {
     }
 
 
-    public static class UserItemProcessor implements ItemProcessor<UserPending, UserPending> {
+    public static class UserItemProcessor implements ItemProcessor<UserInfoPending, UserInfoPending> {
         final AtomicInteger count = new AtomicInteger(0);
-        final ConcurrentHashMap<String, UserPending> map = new ConcurrentHashMap<>();
+        final ConcurrentHashMap<String, UserInfoPending> map = new ConcurrentHashMap<>();
         @Override
-        public UserPending process(UserPending userPending) throws Exception {
+        public UserInfoPending process(UserInfoPending userPending) throws Exception {
             final int process_count = count.addAndGet(1);
             if(process_count % 10000 == 0){
                 log.info("read {} row", process_count);
             }
 
-            UserPending old_userPending = map.computeIfAbsent(userPending.getUserName(), record -> userPending);
+            UserInfoPending old_userPending = map.computeIfAbsent(userPending.getUserName(), record -> userPending);
             synchronized (old_userPending){
                 if((old_userPending = map.get(userPending.getUserName())) == null){
                     map.put(userPending.getUserName(), userPending);
@@ -139,13 +139,13 @@ public class UserBatchImport {
 //                    }
 //                }
 //            }
-            if(!old_userPending.getModificationTime().isBefore(userPending.getModificationTime())){
+            if(!old_userPending.getUpdatedAt().isBefore(userPending.getUpdatedAt())){
                 return null;
             }
             old_userPending = map.get(userPending.getUserName());
             synchronized (old_userPending){
-                if(old_userPending.getModificationTime().isBefore(userPending.getModificationTime())){
-                    userPending.setTxVersion(old_userPending.getTxVersion() + 1);
+                if(old_userPending.getUpdatedAt().isBefore(userPending.getUpdatedAt())){
+                    userPending.setVersion(old_userPending.getVersion() + 1);
                     map.put(userPending.getUserName(), userPending);
                     return userPending;
                 }
@@ -154,12 +154,12 @@ public class UserBatchImport {
         }
     }
 
-    public class UserFieldSetMapper implements FieldSetMapper<UserPending> {
+    public class UserFieldSetMapper implements FieldSetMapper<UserInfoPending> {
         DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
 
         @Override
-        public UserPending mapFieldSet(FieldSet fieldSet) throws BindException {
-            UserPending userPending = new UserPending();
+        public UserInfoPending mapFieldSet(FieldSet fieldSet) throws BindException {
+            UserInfoPending userPending = new UserInfoPending();
             userPending.setBatchId(batchId);
             userPending.setUserName(fieldSet.readString("username"));
             userPending.setFirstName(fieldSet.readString("firstName"));
@@ -168,11 +168,11 @@ public class UserBatchImport {
             userPending.setEmail(fieldSet.readString("email"));
             userPending.setGender(fieldSet.readString("gender"));
             userPending.setStatus(StatusEnum.PENDING);
-            userPending.setCreator("admin");
-            userPending.setCreationTime(OffsetDateTime.now());
-            userPending.setModifier("admin");
-            userPending.setModificationTime(DateUtil.convertOffsetDatetime("yyyy-MM-dd HH:mm:ss.SSS", fieldSet.readString("modifyTime")));
-            userPending.setTxVersion(1);
+            userPending.setCreatedBy("admin");
+            userPending.setCreatedAt(OffsetDateTime.now());
+            userPending.setUpdatedBy("admin");
+            userPending.setUpdatedAt(DateUtil.convertOffsetDatetime("yyyy-MM-dd HH:mm:ss.SSS", fieldSet.readString("modifyTime")));
+            userPending.setVersion(1);
             return userPending;
         }
     }

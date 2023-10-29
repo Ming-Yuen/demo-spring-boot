@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface ScheduleDao extends CrudRepository<Schedule, Long> {
     List<Schedule> findByEnable(int i);
+
+    Schedule findByName(String scheduleName);
 }

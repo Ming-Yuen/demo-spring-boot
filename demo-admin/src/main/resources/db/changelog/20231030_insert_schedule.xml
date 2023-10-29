@@ -1,0 +1,20 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
+
+    <changeSet id="20231030022703" author="admin">
+        <insert tableName="schedule">
+            <column name="created_at"   valueDate="2023-10-30T02:27:03.873+08:00"/>
+            <column name="created_by"   value="admin"/>
+            <column name="updated_at"   valueDate="2023-10-30T02:27:03.873+08:00"/>
+            <column name="update_by"    value="admin"/>
+            <column name="version"      valueNumeric="1"/>
+            <column name="cron"         value="*/5 * * * * ? *"/>
+            <column name="description"  value="Read csv file import data to user_info"/>
+            <column name="enable"       valueNumeric="1"/>
+            <column name="job_class"    value="com.demo.admin.schedule.CsvToUserSchedule"/>
+            <column name="name"         value="Import_User_info_from_csv_file"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

@@ -25,7 +25,9 @@ import java.io.IOException;
 @Slf4j
 @Component
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
-    private UserDetailsService userDetailsService = new UserDetailsService() {
+    @Autowired
+    private UserInfoDao userDao;
+    private final UserDetailsService userDetailsService = new UserDetailsService() {
         @Override
         public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
             UserInfo umsAdminList = userDao.findByUserName(username);
@@ -35,8 +37,6 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             throw new UsernameNotFoundException("用户名或密码错误");
         }
     };
-    @Autowired
-    private UserInfoDao userDao;
     @Autowired
     private JwtManager jwt;
     private final static String tokenHead = "Bearer ";

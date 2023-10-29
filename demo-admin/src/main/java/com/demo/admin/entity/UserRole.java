@@ -8,7 +8,10 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@Table(name = "userRole"
+@Table(name = "userRole",
+        uniqueConstraints  = {
+                @UniqueConstraint(name = "uk_userRole", columnNames = "name")
+        }
 )
 public class UserRole extends BaseEntity {
     @Column(nullable = false)

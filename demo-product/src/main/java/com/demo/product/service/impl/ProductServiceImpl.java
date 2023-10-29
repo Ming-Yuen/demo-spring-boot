@@ -33,7 +33,7 @@ public class ProductServiceImpl implements ProductService {
         for(int i = 0; i < 10000; i++){
             Product product = new Product();
             product.setRegion("HK");
-            product.setActiveDate(new Date());
+            product.setActiveDate(LocalDate.now());
             product.setName("name");
             product.setSku(UUID.randomUUID().toString());
             productList.add(product);

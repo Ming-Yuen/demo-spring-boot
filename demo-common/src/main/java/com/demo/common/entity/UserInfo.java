@@ -11,20 +11,19 @@ import java.util.Date;
 @Data
 @Entity
 //@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Table(uniqueConstraints  = {
+                @UniqueConstraint(name = "uk_username", columnNames = {"username","updated_at"})
+        }
+)
 public class UserInfo extends BaseEntity {
     @Column(nullable = false, updatable = false)
     private String userName;
-    @Column(nullable = true)
     private String firstName;
-    @Column(nullable = true)
     private String lastName;
     @Column(nullable = false)
     private String pwd;
-    @Column(nullable = false)
     private String gender;
-    @Column(nullable = true)
     private String email;
-    @Column(nullable = true)
     private String phone;
     private Date resignDate;
     @Enumerated(EnumType.ORDINAL)

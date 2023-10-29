@@ -2,13 +2,13 @@ package com.demo.admin.mapper;
 
 import com.demo.admin.dto.UserRegisterRequest;
 import com.demo.common.entity.UserInfo;
-import com.demo.admin.entity.UserPending;
+import com.demo.admin.entity.UserInfoPending;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
 public interface UsersPendingMapper {
     UsersPendingMapper INSTANCE = Mappers.getMapper(UsersPendingMapper.class);
-    UserPending userRegisterRequestToUser(UserRegisterRequest userDto);
-    UserInfo userPendingConvertUserInfo(UserPending userDto);
+    UserInfoPending userRegisterRequestToUser(UserRegisterRequest userDto);
+    UserInfo convertToUserInfo(UserInfoPending userDto);
 }

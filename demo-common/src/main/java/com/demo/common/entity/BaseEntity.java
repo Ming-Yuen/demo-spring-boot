@@ -15,29 +15,29 @@ public class BaseEntity implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, updatable = false)
-    private Integer txVersion;
-    @Column(nullable = false, updatable = false)
-    private String creator;
-    @Column(nullable = false, updatable = false)
-    private OffsetDateTime creationTime;
+    @Column(name = "version", nullable = false, updatable = false)
+    private Integer version;
+    @Column(name = "created_by", nullable = false, updatable = false)
+    private String createdBy;
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private OffsetDateTime createdAt;
     @NotBlank
-    @Column(nullable = false)
-    private String modifier;
-    @Column(nullable = false)
-    private OffsetDateTime modificationTime;
+    @Column(name = "update_by", nullable = false)
+    private String updatedBy;
+    @Column(name = "updated_at", nullable = false)
+    private OffsetDateTime updatedAt;
     @PrePersist
     protected void onCreate() {
-        txVersion = 1;
-        creationTime = OffsetDateTime.now();
-        modificationTime = OffsetDateTime.now();
-        creator = StringUtils.defaultIfBlank(creator, UserContextHolder.getUser() == null ? null : UserContextHolder.getUser().getUserName());
-        modifier = StringUtils.defaultIfBlank(modifier, UserContextHolder.getUser() == null ? null : UserContextHolder.getUser().getUserName());
+        version = 1;
+        createdAt = OffsetDateTime.now();
+        updatedAt = OffsetDateTime.now();
+        createdBy = StringUtils.defaultIfBlank(createdBy, UserContextHolder.getUser() == null ? null : UserContextHolder.getUser().getUserName());
+        updatedBy = StringUtils.defaultIfBlank(updatedBy, UserContextHolder.getUser() == null ? null : UserContextHolder.getUser().getUserName());
     }
 
     @PreUpdate
     protected void onUpdate() {
-        modificationTime = OffsetDateTime.now();
-        modifier = StringUtils.defaultIfBlank(modifier, UserContextHolder.getUser() == null ? null : UserContextHolder.getUser().getUserName());
+        updatedAt = OffsetDateTime.now();
+        updatedBy = StringUtils.defaultIfBlank(updatedBy, UserContextHolder.getUser() == null ? null : UserContextHolder.getUser().getUserName());
     }
 }

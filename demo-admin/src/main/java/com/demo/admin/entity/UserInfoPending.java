@@ -11,26 +11,24 @@ import javax.persistence.*;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-@Table(name = "user_info_pending")
-public class UserPending extends BaseEntity {
-    @Column(nullable = false, updatable = false)
+@Table(uniqueConstraints  = {
+                @UniqueConstraint(name = "uk_userInfoPending", columnNames = {"batch_id", "user_name","updated_at"})
+        }
+)
+public class UserInfoPending extends BaseEntity {
+    @Column(name = "batch_id", nullable = false, updatable = false)
     private String batchId;
-    @Column(nullable = false, updatable = false)
+    @Column(name = "user_name", nullable = false, updatable = false)
     private String userName;
-    @Column(nullable = true)
     private String firstName;
-    @Column(nullable = true)
     private String lastName;
     @Column(nullable = false)
     private String pwd;
-    @Column(nullable = false)
     private String gender;
-    @Column(nullable = true)
     private String email;
-    @Column(nullable = true)
     private String phone;
     @Enumerated(EnumType.ORDINAL)
-    @Column(name = "status")
+    @Column(name = "status", nullable = false)
     private StatusEnum status;
     @Enumerated(EnumType.ORDINAL)
     @Column(nullable = false)

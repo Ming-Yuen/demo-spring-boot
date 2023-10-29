@@ -9,4 +9,6 @@ public interface ScheduleService {
     void update(ScheduleUpdateRequest scheduleUpdateRequest);
 
     List<Schedule> getAllSchedule();
+
+    Schedule findByName(String scheduleName);
 }

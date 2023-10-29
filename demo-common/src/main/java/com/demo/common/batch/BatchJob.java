@@ -5,6 +5,9 @@ import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.configuration.JobLocator;
 import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.batch.core.launch.support.SimpleJobLauncher;
+import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.quartz.JobDetailFactoryBean;
 
 public class BatchJob {
     private String jobName;
