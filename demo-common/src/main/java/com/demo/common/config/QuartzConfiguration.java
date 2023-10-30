@@ -70,10 +70,4 @@ public class QuartzConfiguration {
         }
         log.info("Total {} schedule start", scheduler.getCurrentlyExecutingJobs().size());
     }
-//    @Bean
-//    public JobLauncher jobLauncher() {
-//        SimpleJobLauncher jobLauncher = new SimpleJobLauncher();
-////        jobLauncher.setJobRepository(jobRepository);
-//        return jobLauncher;
-//    }
 }

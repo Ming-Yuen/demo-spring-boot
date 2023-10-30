@@ -11,6 +11,7 @@ import com.demo.admin.mapper.UsersPendingMapper;
 import com.demo.admin.service.UserService;
 import com.demo.common.service.ScheduleService;
 import com.demo.common.util.UserContextHolder;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
@@ -19,8 +20,9 @@ import org.springframework.stereotype.Component;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.UUID;
-
+@Slf4j
 @Component
+@Order(1)
 public class DataListener implements CommandLineRunner {
     @Autowired
     private UserService userService;
@@ -51,15 +53,16 @@ public class DataListener implements CommandLineRunner {
         }else{
             UserContextHolder.setUser(user);
         }
-//        Schedule schedule = scheduleService.findByName("Import_User_info_from_csv_file");
-//        if(schedule == null) {
-//            ScheduleUpdateRequest request = new ScheduleUpdateRequest();
-//            request.setName("Import_User_info_from_csv_file");
-//            request.setDescription("Read csv file import data to user_info");
-//            request.setJobClass(CsvToUserSchedule.class.getName());
-//            request.setCron("*/5 * * * * ? *");
-//            request.setEnable(1);
-//            scheduleService.update(request);
-//        }
+        Schedule schedule = scheduleService.findByName("Import_User_info_from_csv_file");
+        if(schedule == null) {
+            ScheduleUpdateRequest request = new ScheduleUpdateRequest();
+            request.setName("Import_User_info_from_csv_file");
+            request.setDescription("Read csv file import data to user_info");
+            request.setJobClass(CsvToUserSchedule.class.getName());
+            request.setCron("*/5 * * * * ? *");
+            request.setEnable(1);
+            scheduleService.update(request);
+        }
+        log.info("data init success");
     }
 }
