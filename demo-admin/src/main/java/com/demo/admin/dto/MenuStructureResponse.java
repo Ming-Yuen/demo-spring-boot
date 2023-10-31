@@ -1,11 +1,9 @@
 package com.demo.admin.dto;
 
 import com.demo.admin.entity.MenuStructure;
-import com.demo.common.controller.dto.DefaultResponse;
-import lombok.AllArgsConstructor;
+import com.demo.common.dto.DefaultResponse;
 import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 

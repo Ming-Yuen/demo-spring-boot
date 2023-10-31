@@ -1,6 +1,5 @@
 package com.demo.common.controller;
 
-import com.demo.common.controller.dto.DefaultResponse;
 import com.demo.common.dto.ScheduleUpdateRequest;
 import com.demo.common.service.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;

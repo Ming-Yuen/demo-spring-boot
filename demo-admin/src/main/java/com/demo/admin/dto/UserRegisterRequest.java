@@ -1,6 +1,6 @@
 package com.demo.admin.dto;
 
-import com.demo.common.controller.dto.BaseDto;
+import com.demo.common.dto.BaseDto;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;

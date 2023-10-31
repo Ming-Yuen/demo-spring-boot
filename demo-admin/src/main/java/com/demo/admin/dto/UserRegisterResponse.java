@@ -1,6 +1,6 @@
 package com.demo.admin.dto;
 
-import com.demo.common.controller.dto.DefaultResponse;
+import com.demo.common.dto.DefaultResponse;
 import lombok.Data;
 
 import java.util.List;

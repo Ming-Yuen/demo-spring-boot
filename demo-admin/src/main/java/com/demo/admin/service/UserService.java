@@ -1,5 +1,6 @@
 package com.demo.admin.service;
 
+import com.demo.admin.dto.UserQueryRequest;
 import com.demo.admin.dto.UserRegisterRequest;
 import com.demo.common.entity.UserInfo;
 import com.demo.admin.entity.UserInfoPending;
@@ -26,4 +27,5 @@ public interface UserService {
     Collection<Long> getManageRoles(RoleLevelEnum role_level);
 
     String passwordEncode(String password);
+    List<UserInfo> query(UserQueryRequest request);
 }

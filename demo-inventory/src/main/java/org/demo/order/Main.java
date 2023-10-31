@@ -1,4 +1,4 @@
-package org.demo.backend;
+package org.demo.order;
 
 public class Main {
     public static void main(String[] args) {

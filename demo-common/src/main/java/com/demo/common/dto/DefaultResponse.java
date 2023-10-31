@@ -1,4 +1,4 @@
-package com.demo.common.controller.dto;
+package com.demo.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;

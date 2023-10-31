@@ -1,6 +1,7 @@
 package com.demo.admin.service.impl;
 
 import com.demo.admin.dao.UsersPendingDao;
+import com.demo.admin.dto.UserQueryRequest;
 import com.demo.admin.dto.UserRegisterRequest;
 import com.demo.admin.entity.*;
 import com.demo.admin.entity.enums.StatusEnum;
@@ -129,5 +130,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public String passwordEncode(String password){
         return passwordEncoder.encode(password);
+    }
+    @Override
+    public List<UserInfo> query(UserQueryRequest request) {
+        return userDao.findByUserNameIn(request.getUserNameList());
     }
 }

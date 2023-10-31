@@ -3,6 +3,8 @@ package com.demo.common.entity;
 import com.demo.common.entity.enums.RoleLevelEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -10,7 +12,7 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-//@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Table(uniqueConstraints  = {
                 @UniqueConstraint(name = "uk_username", columnNames = {"username","updated_at"})
         }
