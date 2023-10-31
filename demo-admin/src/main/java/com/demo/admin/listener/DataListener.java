@@ -60,7 +60,7 @@ public class DataListener implements CommandLineRunner {
             request.setDescription("Read csv file import data to user_info");
             request.setJobClass(CsvToUserSchedule.class.getName());
             request.setCron("*/5 * * * * ? *");
-            request.setEnable(1);
+            request.setEnable(0);
             scheduleService.update(request);
         }
         log.info("data init success");

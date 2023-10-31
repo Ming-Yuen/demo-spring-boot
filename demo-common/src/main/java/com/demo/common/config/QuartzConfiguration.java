@@ -1,5 +1,6 @@
 package com.demo.common.config;
 
+import com.demo.common.bean.AutowiredSpringBeanJobFactory;
 import com.demo.common.entity.Schedule;
 import com.demo.common.exception.ValidationException;
 import com.demo.common.service.ScheduleService;
@@ -9,11 +10,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
-import org.springframework.batch.core.launch.JobLauncher;
-import org.springframework.batch.core.launch.support.SimpleJobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -23,6 +21,8 @@ import java.util.Map;
 public class QuartzConfiguration {
     @Autowired
     private ScheduleService scheduleService;
+    @Autowired
+    private AutowiredSpringBeanJobFactory autowiredSpringBeanJobFactory;
     @PostConstruct
     public void init() throws SchedulerException {
         Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
@@ -69,5 +69,13 @@ public class QuartzConfiguration {
             scheduler.start();
         }
         log.info("Total {} schedule start", scheduler.getCurrentlyExecutingJobs().size());
+    }
+    @Bean
+    public Scheduler scheduler() throws SchedulerException {
+        SchedulerFactory schedulerFactory = new StdSchedulerFactory();
+        Scheduler scheduler = schedulerFactory.getScheduler();
+        scheduler.setJobFactory(autowiredSpringBeanJobFactory);
+        scheduler.start();
+        return scheduler;
     }
 }

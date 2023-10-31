@@ -1,7 +1,6 @@
 package com.demo.admin.schedule;
 
 import com.demo.admin.batch.UserBatchImport;
-import com.demo.common.batch.BatchJob;
 import com.demo.common.exception.ValidationException;
 import com.github.javafaker.Faker;
 import lombok.extern.slf4j.Slf4j;
@@ -11,10 +10,8 @@ import org.quartz.JobExecutionException;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
-import org.springframework.batch.core.configuration.JobLocator;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.launch.JobLauncher;
-import org.springframework.batch.core.launch.support.SimpleJobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
@@ -27,7 +24,7 @@ import java.util.Locale;
 @Slf4j
 @Configuration
 @EnableBatchProcessing
-public class CsvToUserSchedule extends BatchJob implements Job {
+public class CsvToUserSchedule implements Job {
     @Autowired
     private org.springframework.batch.core.Job importUserJob;
     @Autowired
@@ -35,17 +32,18 @@ public class CsvToUserSchedule extends BatchJob implements Job {
     @Autowired
     private UserBatchImport userBatchImport;
     @Override
-    public void execute(JobExecutionContext context) throws JobExecutionException {
-//        File file = new File(String.join(File.separator, System.getProperty("user.home"), "Documents", "Testing"),"user_data.csv");
-//        try {
-//            generateDataFile(file);
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
+    public void execute(JobExecutionContext context) {
+        File file = new File(String.join(File.separator, System.getProperty("user.home"), "Documents", "Testing"),"user_data.csv");
+        try {
+            generateDataFile(file);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
         try {
             JobParameters jobParameters= new JobParametersBuilder().addLong("time", System.currentTimeMillis()).toJobParameters();
             JobExecution result = jobLauncher.run(importUserJob, jobParameters);
+            log.info("end of schedule");
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
