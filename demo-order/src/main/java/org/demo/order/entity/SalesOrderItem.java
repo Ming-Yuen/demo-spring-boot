@@ -1,4 +1,4 @@
-package org.demo.order.eneity;
+package org.demo.order.entity;
 
 import com.demo.common.entity.BaseEntity;
 import lombok.Data;
@@ -9,8 +9,10 @@ import java.math.BigDecimal;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
-public class SalesItem extends BaseEntity {
+public class SalesOrderItem extends BaseEntity {
+    private String orderId;
     private String sku;
     private BigDecimal amount;
     private int qty;
+    private BigDecimal unitPrice;
 }

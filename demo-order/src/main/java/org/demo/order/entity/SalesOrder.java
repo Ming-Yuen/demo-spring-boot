@@ -1,18 +1,21 @@
-package org.demo.order.dto;
+package org.demo.order.entity;
 
+import com.demo.common.entity.BaseEntity;
 import lombok.Data;
-import lombok.experimental.Delegate;
+import lombok.EqualsAndHashCode;
 import org.demo.order.entity.enums.PaymentEnum;
 import org.demo.order.entity.enums.SalesStatusEnum;
 
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
+@Entity
 @Data
-public class SalesRequest {
+public class SalesOrder extends BaseEntity {
     private String orderId;
     private OffsetDateTime txDatetime;
     private String storeCode;
@@ -32,13 +35,4 @@ public class SalesRequest {
     private String orderSource;
     private String orderType;
     private String remark;
-//    @Delegate
-    private List<SalesItem> salesItems;
-    @Data
-    public static class SalesItem{
-        private String sku;
-        private BigDecimal amount;
-        private int qty;
-
-    }
 }
