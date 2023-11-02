@@ -23,7 +23,6 @@ public interface UserService {
     void confirmUserPending(List<? extends UserInfoPending> users);
 
     UserInfo findByUserName(String userId);
-    @Cacheable()
     Collection<Long> getManageRoles(RoleLevelEnum role_level);
 
     String passwordEncode(String password);

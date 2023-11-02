@@ -106,12 +106,15 @@ public class UserServiceImpl implements UserService {
     public void confirmUserPending(List<? extends UserInfoPending> users){
 
     }
+
+//    @Cacheable(value = "userInfoCache", key = "#userName", condition="#userName!=null")
+    @Cacheable("userInfoCache.userName")
     @Override
     public UserInfo findByUserName(String username){
+        log.info("GOto");
         return userDao.findByUserName(username);
     }
     @Override
-    @Cacheable()
     public Collection<Long> getManageRoles(RoleLevelEnum role_level){
         return userRoleDao.findByRoleLevelGreaterThanEqual(role_level).stream().map(BaseEntity::getId).collect(Collectors.toList());
     }

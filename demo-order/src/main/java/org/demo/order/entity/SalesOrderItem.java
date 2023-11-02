@@ -15,4 +15,6 @@ public class SalesOrderItem extends BaseEntity {
     private BigDecimal amount;
     private int qty;
     private BigDecimal unitPrice;
+    private String discountMethod;
+    private BigDecimal discount;
 }

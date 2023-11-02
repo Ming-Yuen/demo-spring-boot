@@ -12,10 +12,8 @@ public class SecurityBean {
     public PasswordEncoder getPasswordEncoder(){
         return new BCryptPasswordEncoder();
     }
-
-//    @Bean
-//    public JwtAuthenticationTokenFilter getJwtAuthenticationTokenFilter(){
-//        return new JwtAuthenticationTokenFilter();
-//    }
-
+    @Bean
+    public JwtAuthenticationTokenFilter getJwtAuthenticationTokenFilter(){
+        return new JwtAuthenticationTokenFilter();
+    }
 }

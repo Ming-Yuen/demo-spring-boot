@@ -1,12 +1,12 @@
 package org.demo.order.service;
 
+import com.demo.common.dto.DeltaResponse;
 import org.demo.order.dto.SalesRequest;
-import org.demo.order.dto.SalesResponse;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 public interface SalesService {
     @Transactional
-    SalesResponse create(List<SalesRequest> request);
+    DeltaResponse create(List<SalesRequest> request);
 }

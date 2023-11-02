@@ -2,6 +2,7 @@ package com.demo.admin.filter;
 
 import com.demo.admin.dao.UserInfoDao;
 import com.demo.admin.dto.AdminUserDetails;
+import com.demo.admin.service.UserService;
 import com.demo.common.entity.UserInfo;
 import com.demo.common.util.UserContextHolder;
 import com.demo.admin.util.JwtManager;
@@ -10,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
@@ -26,17 +26,7 @@ import java.io.IOException;
 @Component
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     @Autowired
-    private UserInfoDao userDao;
-    private final UserDetailsService userDetailsService = new UserDetailsService() {
-        @Override
-        public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-            UserInfo umsAdminList = userDao.findByUserName(username);
-            if (umsAdminList != null) {
-                return new AdminUserDetails(umsAdminList);
-            }
-            throw new UsernameNotFoundException("用户名或密码错误");
-        }
-    };
+    private UserService userService;
     @Autowired
     private JwtManager jwt;
     private final static String tokenHead = "Bearer ";
@@ -49,35 +39,27 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                 String username = jwt.getUserNameFromToken(authToken);
                 log.info("checking username:{}", username);
                 if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                    AdminUserDetails userDetails = (AdminUserDetails) this.userDetailsService.loadUserByUsername(username);
+                    AdminUserDetails userDetails = (AdminUserDetails) loadUserByUsername(username);
                     if (jwt.validateToken(authToken, userDetails)) {
                         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                        log.info("authenticated user:{}", username);
                         UserContextHolder.setUser(userDetails.getAdmin());
                         SecurityContextHolder.getContext().setAuthentication(authentication);
                     }
                 }
             }catch (Exception e){
                 log.error("JWT token error : " + e.getMessage(), e);
+            }finally {
+                UserContextHolder.clear();
             }
         }
         chain.doFilter(request, response);
-        UserContextHolder.clear();
     }
-
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        //获取登录用户信息
-//        return new UserDetailsService() {
-//            @Override
-//            public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//                UserInfo umsAdminList = userDao.findByUserName(username);
-//                if (umsAdminList != null) {
-//                    return new AdminUserDetails(umsAdminList);
-//                }
-//                throw new UsernameNotFoundException("用户名或密码错误");
-//            }
-//        };
-//    }
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        UserInfo umsAdminList = userService.findByUserName(username);
+        if (umsAdminList != null) {
+            return new AdminUserDetails(umsAdminList);
+        }
+        throw new UsernameNotFoundException("User name or password incorrect");
+    }
 }
