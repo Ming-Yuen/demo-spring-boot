@@ -111,7 +111,6 @@ public class UserServiceImpl implements UserService {
     @Cacheable("userInfoCache.userName")
     @Override
     public UserInfo findByUserName(String username){
-        log.info("GOto");
         return userDao.findByUserName(username);
     }
     @Override

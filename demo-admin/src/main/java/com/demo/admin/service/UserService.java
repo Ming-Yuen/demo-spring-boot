@@ -5,11 +5,9 @@ import com.demo.admin.dto.UserRegisterRequest;
 import com.demo.common.entity.UserInfo;
 import com.demo.admin.entity.UserInfoPending;
 import com.demo.common.entity.enums.RoleLevelEnum;
-import org.springframework.cache.annotation.Cacheable;
 
 import java.util.Collection;
 import java.util.List;
-
 
 public interface UserService {
 

@@ -1,6 +1,5 @@
 package com.demo.admin.filter;
 
-import com.demo.admin.dao.UserInfoDao;
 import com.demo.admin.dto.AdminUserDetails;
 import com.demo.admin.service.UserService;
 import com.demo.common.entity.UserInfo;
