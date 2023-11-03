@@ -41,6 +41,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Slf4j
 @Configuration
 @EnableBatchProcessing
+@ConditionalOnProperty(name = "quartz.enabled", havingValue = "true", matchIfMissing = true)
 public class UserBatchImport {
     @Autowired
     public JobBuilderFactory jobBuilderFactory;

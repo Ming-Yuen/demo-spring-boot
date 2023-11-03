@@ -19,7 +19,7 @@
     <dependencies>
         <dependency>
             <groupId>org.demo.backend</groupId>
-            <artifactId>demo-admin</artifactId>
+            <artifactId>demo-common</artifactId>
             <version>1.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>

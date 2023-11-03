@@ -6,11 +6,9 @@ import com.github.javafaker.Faker;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
-import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -24,6 +22,7 @@ import java.util.Date;
 import java.util.Locale;
 @Slf4j
 @Configuration
+@ConditionalOnProperty(name = "quartz.enabled", havingValue = "true", matchIfMissing = true)
 public class CsvToUserSchedule implements Job {
     @Autowired
     private org.springframework.batch.core.Job importUserJob;

@@ -11,4 +11,6 @@ public interface ProductService {
 
 //    @Transactional
     void importDate() throws InterruptedException;
+
+    void save(List<Product> products);
 }
