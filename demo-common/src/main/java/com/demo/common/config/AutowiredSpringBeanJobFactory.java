@@ -1,4 +1,4 @@
-package com.demo.common.bean;
+package com.demo.common.config;
 
 import org.quartz.spi.TriggerFiredBundle;
 import org.springframework.beans.factory.annotation.Autowired;

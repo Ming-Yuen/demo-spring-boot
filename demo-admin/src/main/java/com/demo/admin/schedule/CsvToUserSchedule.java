@@ -13,6 +13,7 @@ import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 
 import java.io.File;
@@ -23,7 +24,6 @@ import java.util.Date;
 import java.util.Locale;
 @Slf4j
 @Configuration
-@EnableBatchProcessing
 public class CsvToUserSchedule implements Job {
     @Autowired
     private org.springframework.batch.core.Job importUserJob;
