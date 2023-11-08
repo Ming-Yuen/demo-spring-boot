@@ -4,8 +4,9 @@ import com.demo.admin.batch.UserBatchImport;
 import com.demo.common.exception.ValidationException;
 import com.github.javafaker.Faker;
 import lombok.extern.slf4j.Slf4j;
-import org.quartz.Job;
 import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
+import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
@@ -13,6 +14,7 @@ import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.quartz.QuartzJobBean;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -23,15 +25,15 @@ import java.util.Locale;
 @Slf4j
 @Configuration
 @ConditionalOnProperty(name = "quartz.enabled", havingValue = "true", matchIfMissing = true)
-public class CsvToUserSchedule implements Job {
+public class CsvToUserScheduler extends QuartzJobBean {
     @Autowired
-    private org.springframework.batch.core.Job importUserJob;
+    private Job importUserJob;
     @Autowired
     private JobLauncher jobLauncher;
     @Autowired
     private UserBatchImport userBatchImport;
     @Override
-    public void execute(JobExecutionContext context) {
+    protected void executeInternal(JobExecutionContext context) {
         File file = new File(String.join(File.separator, System.getProperty("user.home"), "Documents", "Testing"),"user_data.csv");
         try {
             generateDataFile(file);
@@ -47,6 +49,7 @@ public class CsvToUserSchedule implements Job {
             log.error(e.getMessage(), e);
         }
     }
+
     public void generateDataFile(File file) throws ValidationException, IOException {
         Faker faker = new Faker(new Locale("en"));
         String lineSeparator = System.lineSeparator();

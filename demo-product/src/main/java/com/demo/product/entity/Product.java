@@ -13,7 +13,7 @@ import java.util.Date;
 @Data
 @Table(name = "product",
         uniqueConstraints  = {
-                @UniqueConstraint(name = "uk_product1", columnNames = "region,sku")
+                @UniqueConstraint(name = "uk_product1", columnNames = {"region","sku"})
         }
 )
 public class Product extends BaseEntity {

@@ -1,16 +1,18 @@
 package com.demo.product.dto.manulife;
 
+import lombok.Data;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
-
+@Data
 public class MPFDailyResponse {
     private String classId;
     private String[] distOthers;
     private String[] distSecurities;
     private String[] distBanks;
     private Product[] products;
-    private CalendarYearReturn[] calendarYearReturns;
+    private CalendarYearReturn calendarYearReturns;
     private String divFrequencyName;
     private String divFrequencyId;
     private String regionName;
@@ -49,7 +51,21 @@ public class MPFDailyResponse {
     private String[] paymentTypes;
     private String[] ilpProduct;
     private String[] productsId;
-    private String nav;
+    private CumulativeReturn cumulativeReturns;
+    private Nav nav;
+    private String subManager;
+    private String fundUmbrellaName;
+    @Data
+    private static class CumulativeReturn{
+        private String asOfDate;
+        private Period[] periods;
+    }
+    @Data
+    private static class Period{
+        private String period;
+        private BigDecimal value;
+    }
+    @Data
     private static class Nav{
         private LocalDate asOfDate;
         private BigDecimal price;
@@ -73,10 +89,12 @@ public class MPFDailyResponse {
         private String shareClassId;
         private String purchasePrice;
     }
+    @Data
     private static class CalendarYearReturn{
         private String asOfDate;
-        private String[] periods;
+        private Period[] periods;
     }
+    @Data
     private static class Product{
         private String id;
         private String name;
