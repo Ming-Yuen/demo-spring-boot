@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @Data
 public class SalesOrderItem extends BaseEntity {
     private String orderId;
-    private String sku;
+    private String productId;
     private BigDecimal amount;
     private int qty;
     private BigDecimal unitPrice;

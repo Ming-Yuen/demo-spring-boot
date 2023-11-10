@@ -3,6 +3,8 @@ package org.demo.order.service.impl;
 import com.demo.common.dto.DeltaResponse;
 import com.demo.product.dao.ProductDao;
 import com.demo.product.entity.Product;
+import com.demo.product.entity.ProductPrice;
+import com.demo.product.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.demo.order.Dao.SalesDao;
 import org.demo.order.Dao.SalesItemDao;
@@ -28,7 +30,9 @@ public class SalesServiceImpl implements SalesService {
     @Autowired
     private SalesItemDao salesItemDao;
     @Autowired
-    private ProductDao productDao;
+    private ProductService productService;
+    @Autowired
+    private ProductPrice productPrice;
     @Override
     public DeltaResponse create(List<SalesRequest> request) {
         DeltaResponse response = new DeltaResponse();
@@ -40,13 +44,16 @@ public class SalesServiceImpl implements SalesService {
                     SalesOrder salesOrder = salesMapper.converToSales(order);
                     List<SalesOrderItem> salesOrderItems = salesMapper.convertToSalesItem(order.getSalesItems());
                     salesOrderItems.parallelStream().forEach(orderItem->{
-                        Product product = productDao.findBySku(orderItem.getSku());
+                        Product product = productService.existsByProductId(orderItem.getProductId());
                         if(product == null){
-                            throw new RuntimeException("Item not found, sku : " + orderItem.getSku());
+                            throw new RuntimeException("Item not found, sku : " + orderItem.getProductId());
                         }
                     });
                     salesDao.save(salesOrder);
                     salesItemDao.saveAll(salesOrderItems);
+
+                    //inventory update
+                    //bonus
                 }
             }catch (Exception e){
                 log.error("orderId : " + order.getOrderId(), e);

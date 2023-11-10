@@ -11,10 +11,10 @@ import java.time.LocalDate;
 import java.util.Date;
 
 public interface ProductDao extends CrudRepository<Product, Long> {
-
     Page<Product> findByActiveDateBefore(Date date, Pageable pageable);
     @Query(value = "SELECT * FROM product WHERE product.active_date > :date", nativeQuery = true)
     Page<Product> findByActiveDateLessThen(@Param("date") LocalDate date, Pageable pageable);
-
     Product findBySku(String sku);
+
+    Product existsByProductId(String productId);
 }

@@ -1,6 +1,6 @@
 package com.demo.admin.listener;
 
-import com.demo.admin.schedule.CsvToUserSchedule;
+import com.demo.admin.schedule.CsvToUserScheduler;
 import com.demo.common.dto.ScheduleUpdateRequest;
 import com.demo.common.entity.Schedule;
 import com.demo.common.entity.UserInfo;
@@ -58,7 +58,7 @@ public class DataListener implements CommandLineRunner {
             ScheduleUpdateRequest request = new ScheduleUpdateRequest();
             request.setName("Import_User_info_from_csv_file");
             request.setDescription("Read csv file import data to user_info");
-            request.setJobClass(CsvToUserSchedule.class.getName());
+            request.setJobClass(CsvToUserScheduler.class.getName());
             request.setCron("*/5 * * * * ? *");
             request.setEnable(0);
             scheduleService.update(request);

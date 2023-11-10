@@ -36,7 +36,7 @@ public class SalesRequest {
     private List<SalesItem> salesItems;
     @Data
     public static class SalesItem{
-        private String sku;
+        private String productId;
         private BigDecimal amount;
         private int qty;
 
