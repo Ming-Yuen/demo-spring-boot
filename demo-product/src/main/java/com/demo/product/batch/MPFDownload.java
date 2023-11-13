@@ -1,6 +1,8 @@
 package com.demo.product.batch;
 
 import com.demo.product.dto.manulife.MPFDailyResponse;
+import com.demo.product.entity.Product;
+import com.demo.product.entity.ProductPrice;
 import com.demo.product.mapper.ProductMapper;
 import com.demo.product.service.ProductService;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -19,6 +21,7 @@ import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -26,29 +29,28 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
-@Configuration
 @EnableBatchProcessing
-//@ConditionalOnProperty(name = "quartz.enabled", havingValue = "true", matchIfMissing = true)
+@Configuration
+@ConditionalOnProperty(name = "quartz.enabled", havingValue = "true", matchIfMissing = true)
 public class MPFDownload {
     private final String task = this.getClass().getName();
     @Autowired
-    public JobBuilderFactory jobBuilderFactory;
-
+    private JobBuilderFactory jobBuilderFactory;
     @Autowired
-    public StepBuilderFactory stepBuilderFactory;
+    private StepBuilderFactory stepBuilderFactory;
     @Autowired
     private ProductService productService;
     @Autowired
     private ProductMapper productMapper;
-    @Autowired
-    private JobParameters jobParameters;
 
     @Bean
     public Step downloadAndSaveStep() {
-        return stepBuilderFactory.get(task)
+        return stepBuilderFactory.get("downloadAndSaveJob")
                 .tasklet(new MPFDownloadTasklet())
                 .build();
     }
@@ -71,9 +73,41 @@ public class MPFDownload {
 
                 ObjectMapper objectMapper = new ObjectMapper();
                 objectMapper.registerModule(new JavaTimeModule());
-                List<MPFDailyResponse> entities = objectMapper.readValue(jsonResponse, new TypeReference<List<MPFDailyResponse>>(){});
+                objectMapper.readValue(jsonResponse, new TypeReference<List<MPFDailyResponse>>(){})
+                        .forEach(item->{
+                            if(!productService.existsByProductId(item.getFundId())){
+                                Product product = new Product();
+                                product.setProductId(item.getFundId());
+                                product.setRegion("HK");
+                                product.setName(item.getFundName());
+                                product.setCategory(item.getPlatformName());
+                                product.setCreatedBy("Schedule");
+                                product.setUpdatedBy("Schedule");
+                                productService.save(product);
+                            }
+
+                            if(item.getNav() != null){
+                                ProductPrice productPrice = productService.getLatestProductPrice(item.getNav().getAsOfDate(), item.getFundId(), "HK");
+                                if(productPrice == null){
+                                    ProductPrice price = getProductPrice(item);
+                                    productService.save(price);
+                                }
+                            }
+                        });
             }
             return RepeatStatus.FINISHED;
+        }
+
+        private ProductPrice getProductPrice(MPFDailyResponse item) {
+            ProductPrice price = new ProductPrice();
+            price.setRegion("HK");
+            price.setCurrencyUnit("HKD");
+            price.setProductId(item.getFundId());
+            price.setEffectiveDate(item.getNav().getAsOfDate());
+            price.setPrice(item.getNav().getPrice());
+            price.setCreatedBy("Schedule");
+            price.setUpdatedBy("Schedule");
+            return price;
         }
     }
 }

@@ -66,7 +66,7 @@ public class MPFDailyResponse {
         private BigDecimal value;
     }
     @Data
-    private static class Nav{
+    public static class Nav{
         private LocalDate asOfDate;
         private BigDecimal price;
         private String currency;

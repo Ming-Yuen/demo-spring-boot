@@ -10,9 +10,11 @@ import java.util.List;
 
 public interface ProductService {
     List<Product> enquiry(ProductEnquiryRequest request);
-    void save(List<Product> products);
+    void save(Product... products);
 
-    Product existsByProductId(String productId);
+    boolean existsByProductId(String productId);
 
     ProductPrice getLatestProductPrice(LocalDate txDate, String productId, String region);
+
+    void save(ProductPrice... price);
 }

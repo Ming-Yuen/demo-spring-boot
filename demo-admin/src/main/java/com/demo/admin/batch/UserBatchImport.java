@@ -5,6 +5,7 @@ import com.demo.admin.entity.UserInfoPending;
 import com.demo.admin.entity.enums.StatusEnum;
 import com.demo.admin.service.UserService;
 import com.demo.admin.listener.JobCompletionNotificationListener;
+import com.demo.common.entity.enums.RoleLevelEnum;
 import com.demo.common.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -43,6 +44,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @EnableBatchProcessing
 @ConditionalOnProperty(name = "quartz.enabled", havingValue = "true", matchIfMissing = true)
 public class UserBatchImport {
+    private final String task = this.getClass().getName();
     @Autowired
     public JobBuilderFactory jobBuilderFactory;
     @Autowired
@@ -93,13 +95,11 @@ public class UserBatchImport {
 
     @Bean
     public Job importUserJob(Step insertToPending) {
-        return jobBuilderFactory.get("importUserJob")
+        return jobBuilderFactory.get(task)
                 .incrementer(new RunIdIncrementer())
                 .listener(new JobCompletionNotificationListener())
                 .start(insertToPending)
-                .start(mergeStep())
-//                .next(mergeStep())
-//                .next(mergeStep())
+                .next(mergeStep())
                 .build();
     }
 
@@ -175,6 +175,7 @@ public class UserBatchImport {
             userPending.setUpdatedBy("admin");
             userPending.setUpdatedAt(DateUtil.convertOffsetDatetime("yyyy-MM-dd HH:mm:ss.SSS", fieldSet.readString("modifyTime")));
             userPending.setVersion(1);
+            userPending.setRoleLevel(RoleLevelEnum.user);
             return userPending;
         }
     }

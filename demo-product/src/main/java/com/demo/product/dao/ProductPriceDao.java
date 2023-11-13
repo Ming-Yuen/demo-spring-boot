@@ -7,5 +7,5 @@ import java.time.LocalDate;
 
 public interface ProductPriceDao extends CrudRepository<ProductPrice, Long> {
 
-    ProductPrice findFirstByEffectiveDateBeforeAndRegionOrderByEffectiveDate(LocalDate txDate, String productId, String region);
+    ProductPrice findFirstByEffectiveDateBeforeAndProductIdAndRegionOrderByEffectiveDate(LocalDate txDate, String productId, String region);
 }

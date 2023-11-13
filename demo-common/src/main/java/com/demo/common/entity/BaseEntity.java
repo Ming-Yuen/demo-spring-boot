@@ -1,6 +1,6 @@
 package com.demo.common.entity;
 
-import com.demo.common.util.UserContextHolder;
+import com.demo.common.util.ContextHolder;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
@@ -31,13 +31,13 @@ public class BaseEntity implements Serializable{
         version = 1;
         createdAt = OffsetDateTime.now();
         updatedAt = OffsetDateTime.now();
-        createdBy = StringUtils.defaultIfBlank(createdBy, UserContextHolder.getUser() == null ? null : UserContextHolder.getUser().getUserName());
-        updatedBy = StringUtils.defaultIfBlank(updatedBy, UserContextHolder.getUser() == null ? null : UserContextHolder.getUser().getUserName());
+        createdBy = StringUtils.defaultIfBlank(createdBy, ContextHolder.getUser() == null ? null : ContextHolder.getUser().getUserName());
+        updatedBy = StringUtils.defaultIfBlank(updatedBy, ContextHolder.getUser() == null ? null : ContextHolder.getUser().getUserName());
     }
 
     @PreUpdate
     protected void onUpdate() {
         updatedAt = OffsetDateTime.now();
-        updatedBy = StringUtils.defaultIfBlank(updatedBy, UserContextHolder.getUser() == null ? null : UserContextHolder.getUser().getUserName());
+        updatedBy = StringUtils.defaultIfBlank(updatedBy, ContextHolder.getUser() == null ? null : ContextHolder.getUser().getUserName());
     }
 }

@@ -23,6 +23,6 @@ public class Product extends BaseEntity {
     private String productId;
     @Column(nullable = false)
     private String name;
-    @Column(nullable = false)
+    private String category;
     private LocalDate activeDate;
 }

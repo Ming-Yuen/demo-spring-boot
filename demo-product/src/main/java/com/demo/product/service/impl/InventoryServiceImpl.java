@@ -1,8 +1,8 @@
-package org.demo.inventory.service.impl;
+package com.demo.product.service.impl;
 
-import org.demo.inventory.dto.InventoryAdjustmentRequest;
-import org.demo.inventory.dto.InventoryAdjustmentResponse;
-import org.demo.inventory.service.InventoryService;
+import com.demo.product.dto.InventoryAdjustmentRequest;
+import com.demo.product.dto.InventoryAdjustmentResponse;
+import com.demo.product.service.InventoryService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

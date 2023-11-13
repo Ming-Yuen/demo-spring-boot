@@ -1,9 +1,9 @@
-package org.demo.inventory.controller;
+package com.demo.product.controller;
 
 import com.demo.common.controller.ControllerPath;
-import org.demo.inventory.dto.InventoryAdjustmentRequest;
-import org.demo.inventory.dto.InventoryAdjustmentResponse;
-import org.demo.inventory.service.InventoryService;
+import com.demo.product.dto.InventoryAdjustmentRequest;
+import com.demo.product.dto.InventoryAdjustmentResponse;
+import com.demo.product.service.InventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;

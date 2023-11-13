@@ -1,9 +1,8 @@
 package org.demo.order.service.impl;
 
 import com.demo.common.dto.DeltaResponse;
-import com.demo.product.dao.ProductDao;
+import com.demo.common.util.ContextHolder;
 import com.demo.product.entity.Product;
-import com.demo.product.entity.ProductPrice;
 import com.demo.product.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.demo.order.Dao.SalesDao;
@@ -16,10 +15,9 @@ import org.demo.order.service.SalesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ConcurrentLinkedQueue;
 @Slf4j
 @Service
 public class SalesServiceImpl implements SalesService {
@@ -32,7 +30,7 @@ public class SalesServiceImpl implements SalesService {
     @Autowired
     private ProductService productService;
     @Autowired
-    private ProductPrice productPrice;
+    private HttpServletRequest servletRequest;
     @Override
     public DeltaResponse create(List<SalesRequest> request) {
         DeltaResponse response = new DeltaResponse();
@@ -44,13 +42,14 @@ public class SalesServiceImpl implements SalesService {
                     SalesOrder salesOrder = salesMapper.converToSales(order);
                     List<SalesOrderItem> salesOrderItems = salesMapper.convertToSalesItem(order.getSalesItems());
                     salesOrderItems.parallelStream().forEach(orderItem->{
-                        Product product = productService.existsByProductId(orderItem.getProductId());
-                        if(product == null){
+                        if(productService.existsByProductId(orderItem.getProductId())){
                             throw new RuntimeException("Item not found, sku : " + orderItem.getProductId());
                         }
+//                        productService.getLatestProductPrice(order.getTxDatetime().toLocalDate(), order.getRegion(), orderItem.getProductId())
                     });
                     salesDao.save(salesOrder);
                     salesItemDao.saveAll(salesOrderItems);
+
 
                     //inventory update
                     //bonus

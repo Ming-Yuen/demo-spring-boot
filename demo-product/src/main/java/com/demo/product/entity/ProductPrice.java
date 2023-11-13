@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @Entity
 @Data
 @Table(uniqueConstraints  = {
-                @UniqueConstraint(name = "uk_productPrice", columnNames = {"region","sku"})
+                @UniqueConstraint(name = "uk_productPrice", columnNames = {"region","productId"})
         }
 )
 public class ProductPrice extends BaseEntity {

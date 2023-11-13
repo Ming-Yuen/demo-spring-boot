@@ -23,8 +23,4 @@ public class ProductController {
     public List<Product> enquiry(@Valid @RequestBody ProductEnquiryRequest request){
         return productService.enquiry(request);
     }
-    @PostMapping(path = "importDate", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void importData() throws InterruptedException {
-        productService.importDate();
-    }
 }

@@ -1,4 +1,4 @@
-package org.demo.inventory.dto;
+package com.demo.product.dto;
 
 public class InventoryAdjustmentResponse {
 }

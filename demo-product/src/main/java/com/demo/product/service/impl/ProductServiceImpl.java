@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -29,17 +30,22 @@ public class ProductServiceImpl implements ProductService {
         return productDao.findByActiveDateLessThen(LocalDate.now(), pageable).toList();
     }
     @Override
-    public void save(List<Product> products){
-        productDao.saveAll(products);
+    public void save(Product... products){
+        productDao.saveAll(Arrays.asList(products));
     }
 
     @Override
-    public Product existsByProductId(String productId) {
+    public boolean existsByProductId(String productId) {
         return productDao.existsByProductId(productId);
     }
     @Cacheable("latestProductPrice")
     @Override
     public ProductPrice getLatestProductPrice(LocalDate txDate, String productId, String region){
-        return productPriceDao.findFirstByEffectiveDateBeforeAndRegionOrderByEffectiveDate(txDate, productId, region);
+        return productPriceDao.findFirstByEffectiveDateBeforeAndProductIdAndRegionOrderByEffectiveDate(txDate, productId, region);
+    }
+
+    @Override
+    public void save(ProductPrice... price) {
+        productPriceDao.saveAll(Arrays.asList(price));
     }
 }

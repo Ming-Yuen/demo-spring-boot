@@ -1,4 +1,4 @@
-package org.demo.inventory.entity;
+package com.demo.product.entity;
 
 import com.demo.common.entity.BaseEntity;
 

@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-@ComponentScan(basePackages = "com.demo")
+@ComponentScan(basePackages = {"com.demo","com.demo.common", "com.demo.product"})
 @SpringBootApplication
 @EnableWebMvc
 @EnableCaching

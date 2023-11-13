@@ -5,7 +5,7 @@ import com.demo.admin.dto.MenuStructureResponse;
 import com.demo.common.entity.enums.RoleLevelEnum;
 import com.demo.admin.service.MenuService;
 import com.demo.admin.service.UserService;
-import com.demo.common.util.UserContextHolder;
+import com.demo.common.util.ContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +22,7 @@ public class MenuServiceImpl implements MenuService {
     private UserService userService;
 
     public MenuStructureResponse getStructure(){
-        RoleLevelEnum role_level = UserContextHolder.getUser().getRoleLevel();
+        RoleLevelEnum role_level = ContextHolder.getUser().getRoleLevel();
 
         Map<Long, MenuStructureResponse.MenuTree> menuTreeMap = new HashMap<>();
         MenuStructureResponse menuTreeResponse = new MenuStructureResponse();
