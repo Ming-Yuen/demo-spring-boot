@@ -7,6 +7,7 @@ import com.demo.product.entity.Product;
 import com.demo.product.entity.ProductPrice;
 import com.demo.product.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
@@ -31,7 +32,9 @@ public class ProductServiceImpl implements ProductService {
     }
     @Override
     public void save(Product... products){
-        productDao.saveAll(Arrays.asList(products));
+        if(ArrayUtils.isNotEmpty(products)) {
+            productDao.saveAll(Arrays.asList(products));
+        }
     }
 
     @Override
@@ -46,6 +49,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void save(ProductPrice... price) {
-        productPriceDao.saveAll(Arrays.asList(price));
+        if(ArrayUtils.isNotEmpty(price)) {
+            productPriceDao.saveAll(Arrays.asList(price));
+        }
     }
 }

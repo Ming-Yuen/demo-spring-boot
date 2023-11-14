@@ -66,41 +66,24 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public void confirmPendingUserInfo(String batchId) {
-        usersPendingDao.confirmPendingUser(batchId);
-//        QUserInfoPending userInfoPending = QUserInfoPending.userInfoPending;
-//        QUserInfo qUserInfo = QUserInfo.userInfo;
-//
-//        queryFactory.insert(qUserInfo)
-//                    .columns( qUserInfo.userName, qUserInfo.firstName, qUserInfo.lastName, qUserInfo.pwd, qUserInfo.gender, qUserInfo.email, qUserInfo.phone, qUserInfo.roleLevel,
-//                              qUserInfo.version, qUserInfo.createdBy, qUserInfo.createdAt, qUserInfo.updatedBy, qUserInfo.updatedAt)
-//                    .select(
-//                            queryFactory.select(userInfoPending.userName, userInfoPending.firstName, userInfoPending.lastName,
-//                             userInfoPending.pwd, userInfoPending.gender, userInfoPending.email, userInfoPending.phone,
-//                             userInfoPending.roleLevel, userInfoPending.version, userInfoPending.createdBy,
-//                             userInfoPending.createdAt, userInfoPending.updatedBy, userInfoPending.updatedAt)
-//                    .from(userInfoPending)
-//                    .leftJoin(QUserInfo.userInfo).on(userInfoPending.userName.eq(qUserInfo.userName))
-//                    .where(qUserInfo.userName.isNull()
-//                            .and(userInfoPending.status.eq(StatusEnum.PENDING))
-//                            .and(userInfoPending.batchId.eq(batchId)))
-//                            .limit(1000)
-//                ).execute();
-//        queryFactory.update(userInfoPending)
-//                .join(qUserInfo).on(userInfoPending.userName.eq(qUserInfo.userName))
-//                .set(userInfoPending.status, 1)
-//                .set(userInfoPending.version, userInfoPending.version.add(1))
-//                .where(userInfoPending.status.eq(StatusEnum.PENDING)
-//                        .and(qUserInfo.updatedAt.goe(userInfoPending.updatedAt))
-//                        .and(userInfoPending.batchId.eq(batchId)))
-//                .execute();
-//
-//        queryFactory.update(qUserInfoPending)
-//                .set(qUserInfoPending.status, 1)
-//                .set(qUserInfoPending.version, qUserInfoPending.version.add(1))
-//                .where(qUserInfoPending.status.eq(0)
-//                        .and(qUserInfo.modificationTime.goe(qUserInfoPending.modificationTime))
-//                        .and(qUserInfoPending.batchId.eq(batchId)))
-//                .execute();
+//        usersPendingDao.confirmPendingUser(batchId);
+        QUserInfoPending userInfoPending = QUserInfoPending.userInfoPending;
+        QUserInfo qUserInfo = QUserInfo.userInfo;
+
+        queryFactory.insert(qUserInfo)
+                    .columns( qUserInfo.userName, qUserInfo.firstName, qUserInfo.lastName, qUserInfo.pwd, qUserInfo.gender, qUserInfo.email, qUserInfo.phone, qUserInfo.roleLevel,
+                              qUserInfo.version, qUserInfo.createdBy, qUserInfo.createdAt, qUserInfo.updatedBy, qUserInfo.updatedAt)
+                    .select( queryFactory.select(userInfoPending.userName, userInfoPending.firstName, userInfoPending.lastName,
+                             userInfoPending.pwd, userInfoPending.gender, userInfoPending.email, userInfoPending.phone,
+                             userInfoPending.roleLevel, userInfoPending.version, userInfoPending.createdBy,
+                             userInfoPending.createdAt, userInfoPending.updatedBy, userInfoPending.updatedAt).limit(1000)
+                    .from(userInfoPending)
+                    .leftJoin(QUserInfo.userInfo).on(userInfoPending.userName.eq(qUserInfo.userName))
+                    .where(qUserInfo.userName.isNull()
+                            .and(userInfoPending.status.eq(StatusEnum.PENDING))
+                            .and(userInfoPending.batchId.eq(batchId)))
+                            .limit(1000)
+                ).execute();
     }
     @Override
     public void confirmUserPending(List<? extends UserInfoPending> users){

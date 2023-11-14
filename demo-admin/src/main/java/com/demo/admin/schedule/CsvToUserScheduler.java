@@ -34,10 +34,12 @@ public class CsvToUserScheduler extends QuartzJobBean {
     @Override
     protected void executeInternal(JobExecutionContext context) {
         File file = new File(String.join(File.separator, System.getProperty("user.home"), "Documents", "Testing"),"user_data.csv");
-        try {
-            generateDataFile(file);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        if(!file.exists()) {
+            try {
+                generateDataFile(file);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
 
         try {

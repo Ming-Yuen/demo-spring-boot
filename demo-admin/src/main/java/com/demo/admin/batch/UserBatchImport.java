@@ -42,7 +42,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Slf4j
 @Configuration
 @EnableBatchProcessing
-@ConditionalOnProperty(name = "quartz.enabled", havingValue = "true", matchIfMissing = true)
+//@ConditionalOnProperty(name = "quartz.enabled", havingValue = "true", matchIfMissing = true)
 public class UserBatchImport {
     private final String task = this.getClass().getName();
     @Autowired
@@ -123,28 +123,18 @@ public class UserBatchImport {
             if(process_count % 10000 == 0){
                 log.info("read {} row", process_count);
             }
-
-            UserInfoPending old_userPending = map.computeIfAbsent(userPending.getUserName(), record -> userPending);
-            synchronized (old_userPending){
-                if((old_userPending = map.get(userPending.getUserName())) == null){
-                    map.put(userPending.getUserName(), userPending);
-                    return userPending;
+            UserInfoPending old_userPending = map.get(userPending.getUserName());
+            if(old_userPending == null){
+                synchronized (map){
+                    if((old_userPending = map.get(userPending.getUserName())) == null){
+                        map.put(userPending.getUserName(), userPending);
+                        return userPending;
+                    }
                 }
             }
-//            UserPending old_userPending = map.computeIfAbsent(userPending.getUserName(), record -> userPending);
-//            if(old_userPending == null){
-//                synchronized (map){
-//                    if((old_userPending = map.get(userPending.getUserName())) == null){
-//                        setUserPendingRecord(userPending);
-//                        map.put(userPending.getUserName(), userPending);
-//                        return userPending;
-//                    }
-//                }
-//            }
             if(!old_userPending.getUpdatedAt().isBefore(userPending.getUpdatedAt())){
                 return null;
             }
-            old_userPending = map.get(userPending.getUserName());
             synchronized (old_userPending){
                 if(old_userPending.getUpdatedAt().isBefore(userPending.getUpdatedAt())){
                     userPending.setVersion(old_userPending.getVersion() + 1);

@@ -31,12 +31,13 @@ import org.springframework.web.client.RestTemplate;
 
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @Slf4j
 @EnableBatchProcessing
 @Configuration
-@ConditionalOnProperty(name = "quartz.enabled", havingValue = "true", matchIfMissing = true)
+//@ConditionalOnProperty(name = "quartz.enabled", havingValue = "true", matchIfMissing = true)
 public class MPFDownload {
     private final String task = this.getClass().getName();
     @Autowired
@@ -73,6 +74,8 @@ public class MPFDownload {
 
                 ObjectMapper objectMapper = new ObjectMapper();
                 objectMapper.registerModule(new JavaTimeModule());
+                ConcurrentHashMap<String, Product> productMap = new ConcurrentHashMap<>();
+                ConcurrentHashMap<String, ProductPrice> productPriceMap = new ConcurrentHashMap<>();
                 objectMapper.readValue(jsonResponse, new TypeReference<List<MPFDailyResponse>>(){})
                         .forEach(item->{
                             if(!productService.existsByProductId(item.getFundId())){
@@ -83,17 +86,19 @@ public class MPFDownload {
                                 product.setCategory(item.getPlatformName());
                                 product.setCreatedBy("Schedule");
                                 product.setUpdatedBy("Schedule");
-                                productService.save(product);
+                                productMap.put(item.getFundId(), product);
                             }
 
                             if(item.getNav() != null){
                                 ProductPrice productPrice = productService.getLatestProductPrice(item.getNav().getAsOfDate(), item.getFundId(), "HK");
                                 if(productPrice == null){
                                     ProductPrice price = getProductPrice(item);
-                                    productService.save(price);
+                                    productPriceMap.put(String.join(".", String.valueOf(item.getNav().getAsOfDate()), item.getFundId()), price);
                                 }
                             }
                         });
+                productService.save(productMap.values().toArray(new Product[]{}));
+                productService.save(productPriceMap.values().toArray(new ProductPrice[]{}));
             }
             return RepeatStatus.FINISHED;
         }

@@ -13,7 +13,6 @@
         <module>demo-admin</module>
         <module>demo-product</module>
         <module>demo-order</module>
-        <module>demo-inventory</module>
     </modules>
 
     <parent>
