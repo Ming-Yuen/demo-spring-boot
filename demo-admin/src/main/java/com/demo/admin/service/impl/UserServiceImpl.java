@@ -13,6 +13,8 @@ import com.demo.common.entity.BaseEntity;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.extern.slf4j.Slf4j;
 
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,6 +39,10 @@ public class UserServiceImpl implements UserService {
     private JwtManager jwt;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private RedissonClient redissonClient;
+    private static final String LOCK_KEY = "singleton_lock";
+    private static final String SINGLETON_KEY = "singleton_instance";
     @Override
     public void register(List<UserRegisterRequest> request){
         UserInfo[] users = request.parallelStream().map(dto->{
@@ -46,7 +52,17 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public void saveUser(UserInfo... userInfo) {
+        RLock lock = redissonClient.getLock(LOCK_KEY);
+        lock.lock();
+        try {
+            if (!redissonClient.getBucket(SINGLETON_KEY).isExists()) {
 
+                redissonClient.getBucket(SINGLETON_KEY).set("singleton");
+            }
+            redissonClient.getBucket(SINGLETON_KEY).get();
+        } finally {
+            lock.unlock();
+        }
     }
 
 //    @Cacheable(value = "userInfoCache", key = "#userName", condition="#userName!=null")
