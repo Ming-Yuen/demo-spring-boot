@@ -1,13 +1,12 @@
 package com.demo.admin.batch;
 
-import com.demo.admin.dao.UsersPendingDao;
-import com.demo.admin.entity.UserInfoPending;
-import com.demo.admin.entity.enums.StatusEnum;
 import com.demo.admin.service.UserService;
 import com.demo.admin.listener.JobCompletionNotificationListener;
+import com.demo.common.entity.UserInfo;
 import com.demo.common.entity.enums.RoleLevelEnum;
 import com.demo.common.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.User;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -22,7 +21,6 @@ import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.mapping.FieldSetMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.batch.item.file.transform.FieldSet;
-import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -35,14 +33,14 @@ import org.springframework.validation.BindException;
 import java.io.File;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
 @Configuration
 @EnableBatchProcessing
-//@ConditionalOnProperty(name = "quartz.enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(name = "quartz.enabled", havingValue = "true", matchIfMissing = true)
 public class UserBatchImport {
     private final String task = this.getClass().getName();
     @Autowired
@@ -51,15 +49,12 @@ public class UserBatchImport {
     public StepBuilderFactory stepBuilderFactory;
     @Autowired
     public UserService userService;
-    @Autowired
-    public UsersPendingDao usersPendingDao;
-    private final String batchId = UUID.randomUUID().toString();
     @Bean
-    public ItemReader<UserInfoPending> reader() {
-        FlatFileItemReader<UserInfoPending> reader = new FlatFileItemReader<>();
+    public ItemReader<UserInfo> reader() {
+        FlatFileItemReader<UserInfo> reader = new FlatFileItemReader<>();
 //        reader.setResource(new ClassPathResource("C:\\Users\\Administrator\\Documents\\logs\\data.csv"));
         reader.setResource(new FileSystemResource(String.join(File.separator, System.getProperty("user.home"), "Documents", "Testing", "user_data.csv")));
-        reader.setLineMapper(new DefaultLineMapper<UserInfoPending>() {{
+        reader.setLineMapper(new DefaultLineMapper<UserInfo>() {{
             setLineTokenizer(new DelimitedLineTokenizer() {{
                 setNames("username", "firstName", "lastName", "password", "email", "gender", "modifyTime");
             }});
@@ -76,16 +71,15 @@ public class UserBatchImport {
     public UserItemProcessor processor() {
         return new UserItemProcessor();
     }
-
     @Bean
-    public ItemWriter<UserInfoPending> writer() {
-        return user->userService.saveUserPending(user);
+    public ItemWriter<UserInfo> writer() {
+        return users->userService.saveUser(users.toArray(new UserInfo[]{}));
     }
 
     @Bean
-    public Step insertToPending(ItemReader<UserInfoPending> reader, ItemWriter<UserInfoPending> writer, UserItemProcessor processor) {
+    public Step insertToPending(ItemReader<UserInfo> reader, ItemWriter<UserInfo> writer, UserItemProcessor processor) {
         return stepBuilderFactory.get("step1")
-                .<UserInfoPending, UserInfoPending>chunk(10000)
+                .<UserInfo, UserInfo>chunk(10000)
                 .reader(reader)
                 .processor(processor)
                 .writer(writer)
@@ -99,67 +93,53 @@ public class UserBatchImport {
                 .incrementer(new RunIdIncrementer())
                 .listener(new JobCompletionNotificationListener())
                 .start(insertToPending)
-                .next(mergeStep())
                 .build();
     }
 
-    @Bean
-    public Step mergeStep() {
-        return stepBuilderFactory.get("mergeStep")
-                .tasklet((contribution, chunkContext) -> {
-                    userService.confirmPendingUserInfo(batchId);
-                    return RepeatStatus.FINISHED;
-                })
-                .build();
-    }
-
-
-    public static class UserItemProcessor implements ItemProcessor<UserInfoPending, UserInfoPending> {
+    public static class UserItemProcessor implements ItemProcessor<UserInfo, UserInfo> {
         final AtomicInteger count = new AtomicInteger(0);
-        final ConcurrentHashMap<String, UserInfoPending> map = new ConcurrentHashMap<>();
+        final ConcurrentHashMap<String, UserInfo> map = new ConcurrentHashMap<>();
         @Override
-        public UserInfoPending process(UserInfoPending userPending) throws Exception {
+        public UserInfo process(UserInfo user) throws Exception {
             final int process_count = count.addAndGet(1);
             if(process_count % 10000 == 0){
                 log.info("read {} row", process_count);
             }
-            UserInfoPending old_userPending = map.get(userPending.getUserName());
-            if(old_userPending == null){
-                synchronized (map){
-                    if((old_userPending = map.get(userPending.getUserName())) == null){
-                        map.put(userPending.getUserName(), userPending);
-                        return userPending;
-                    }
-                }
-            }
-            if(!old_userPending.getUpdatedAt().isBefore(userPending.getUpdatedAt())){
-                return null;
-            }
-            synchronized (old_userPending){
-                if(old_userPending.getUpdatedAt().isBefore(userPending.getUpdatedAt())){
-                    userPending.setVersion(old_userPending.getVersion() + 1);
-                    map.put(userPending.getUserName(), userPending);
-                    return userPending;
-                }
-            }
-            return null;
+            return user;
+//            UserInfo old_userPending = map.get(user.getUserName());
+//            if(old_userPending == null){
+//                synchronized (map){
+//                    if((old_userPending = map.get(user.getUserName())) == null){
+//                        map.put(user.getUserName(), user);
+//                        return user;
+//                    }
+//                }
+//            }
+//            if(user.getUpdatedAt().compareTo(old_userPending.getUpdatedAt()) > 0){
+//                synchronized (old_userPending){
+//                    if(user.getUpdatedAt().compareTo(old_userPending.getUpdatedAt()) > 0){
+//                        user.setId(old_userPending.getId());
+//                        user.setVersion(old_userPending.getVersion() + 1);
+//                        map.put(user.getUserName(), user);
+//                        return user;
+//                    }
+//                }
+//            }
+//            return null;
         }
     }
 
-    public class UserFieldSetMapper implements FieldSetMapper<UserInfoPending> {
+    public class UserFieldSetMapper implements FieldSetMapper<UserInfo> {
         DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
-
         @Override
-        public UserInfoPending mapFieldSet(FieldSet fieldSet) throws BindException {
-            UserInfoPending userPending = new UserInfoPending();
-            userPending.setBatchId(batchId);
+        public UserInfo mapFieldSet(FieldSet fieldSet) throws BindException {
+            UserInfo userPending = new UserInfo();
             userPending.setUserName(fieldSet.readString("username"));
             userPending.setFirstName(fieldSet.readString("firstName"));
             userPending.setLastName(fieldSet.readString("lastName"));
             userPending.setPwd(fieldSet.readString("password"));
             userPending.setEmail(fieldSet.readString("email"));
             userPending.setGender(fieldSet.readString("gender"));
-            userPending.setStatus(StatusEnum.PENDING);
             userPending.setCreatedBy("admin");
             userPending.setCreatedAt(OffsetDateTime.now());
             userPending.setUpdatedBy("admin");

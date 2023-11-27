@@ -1,14 +1,10 @@
 package com.demo.admin.service.impl;
 
-import com.demo.admin.dao.UsersPendingDao;
+import com.demo.admin.UserMapper;
 import com.demo.admin.dto.UserQueryRequest;
 import com.demo.admin.dto.UserRegisterRequest;
-import com.demo.admin.entity.*;
-import com.demo.admin.entity.enums.StatusEnum;
-import com.demo.common.entity.QUserInfo;
 import com.demo.common.entity.UserInfo;
 import com.demo.common.entity.enums.RoleLevelEnum;
-import com.demo.admin.mapper.UsersPendingMapper;
 import com.demo.admin.service.UserService;
 import com.demo.admin.dao.UserInfoDao;
 import com.demo.admin.dao.UserRoleDao;
@@ -26,8 +22,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.demo.common.util.LambdaUtil.distinctByKey;
-
 @Slf4j
 @Service
 public class UserServiceImpl implements UserService {
@@ -36,9 +30,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserInfoDao userDao;
     @Autowired
-    private UsersPendingDao usersPendingDao;
-    @Autowired
-    private UsersPendingMapper userMapper;
+    private UserMapper userMapper;
     @Autowired
     private UserRoleDao userRoleDao;
     @Autowired
@@ -47,46 +39,13 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
     @Override
     public void register(List<UserRegisterRequest> request){
-        List<UserInfoPending> users = request.parallelStream().map(dto->{
+        UserInfo[] users = request.parallelStream().map(dto->{
             return userMapper.userRegisterRequestToUser(dto);
-        }).collect(Collectors.toList());
-        saveUserPending(users);
+        }).toArray(UserInfo[] :: new);
+        saveUser(users);
     }
     @Override
-    public void saveUserPending(List<? extends UserInfoPending> users){
-        users = users.parallelStream()
-                .filter(distinctByKey(UserInfoPending::getUserName))
-//                .map(user->{
-//                        user.setPassword(passwordEncoder.encode(user.getPassword()));
-//                        return user;
-//                    })
-                .collect(Collectors.toList());
-        usersPendingDao.saveAll(users);
-//        queryFactory.select(qUserInfo.userName).from(qUserInfo).where(qUserInfo.userName.in(x->UserPending::getUserName))
-    }
-    @Override
-    public void confirmPendingUserInfo(String batchId) {
-//        usersPendingDao.confirmPendingUser(batchId);
-        QUserInfoPending userInfoPending = QUserInfoPending.userInfoPending;
-        QUserInfo qUserInfo = QUserInfo.userInfo;
-
-        queryFactory.insert(qUserInfo)
-                    .columns( qUserInfo.userName, qUserInfo.firstName, qUserInfo.lastName, qUserInfo.pwd, qUserInfo.gender, qUserInfo.email, qUserInfo.phone, qUserInfo.roleLevel,
-                              qUserInfo.version, qUserInfo.createdBy, qUserInfo.createdAt, qUserInfo.updatedBy, qUserInfo.updatedAt)
-                    .select( queryFactory.select(userInfoPending.userName, userInfoPending.firstName, userInfoPending.lastName,
-                             userInfoPending.pwd, userInfoPending.gender, userInfoPending.email, userInfoPending.phone,
-                             userInfoPending.roleLevel, userInfoPending.version, userInfoPending.createdBy,
-                             userInfoPending.createdAt, userInfoPending.updatedBy, userInfoPending.updatedAt).limit(1000)
-                    .from(userInfoPending)
-                    .leftJoin(QUserInfo.userInfo).on(userInfoPending.userName.eq(qUserInfo.userName))
-                    .where(qUserInfo.userName.isNull()
-                            .and(userInfoPending.status.eq(StatusEnum.PENDING))
-                            .and(userInfoPending.batchId.eq(batchId)))
-                            .limit(1000)
-                ).execute();
-    }
-    @Override
-    public void confirmUserPending(List<? extends UserInfoPending> users){
+    public void saveUser(UserInfo... userInfo) {
 
     }
 

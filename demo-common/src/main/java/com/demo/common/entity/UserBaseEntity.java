@@ -12,12 +12,11 @@ import java.util.UUID;
 
 @Data
 @MappedSuperclass
-public class BaseEntity implements Serializable{
-    @Id
+public class UserBaseEntity implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "version", nullable = false, updatable = false)
-    private Integer version;
+    @Column(name = "version", nullable = false)
+    private Integer tx_version;
     @Column(name = "created_by", nullable = false, updatable = false)
     private String createdBy;
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -29,7 +28,7 @@ public class BaseEntity implements Serializable{
     private OffsetDateTime updatedAt;
     @PrePersist
     protected void onCreate() {
-        version = 1;
+        tx_version = 1;
         createdAt = OffsetDateTime.now();
         updatedAt = OffsetDateTime.now();
         createdBy = StringUtils.defaultIfBlank(createdBy, ContextHolder.getUser() == null ? null : ContextHolder.getUser().getUserName());
