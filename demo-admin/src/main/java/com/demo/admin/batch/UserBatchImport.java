@@ -6,7 +6,6 @@ import com.demo.common.entity.UserInfo;
 import com.demo.common.entity.enums.RoleLevelEnum;
 import com.demo.common.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.User;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -28,13 +27,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-import org.springframework.validation.BindException;
 
 import java.io.File;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
@@ -83,7 +78,7 @@ public class UserBatchImport {
                 .reader(reader)
                 .processor(processor)
                 .writer(writer)
-                .taskExecutor(taskExecutor())
+//                .taskExecutor(taskExecutor())
                 .build();
     }
 
@@ -98,7 +93,6 @@ public class UserBatchImport {
 
     public static class UserItemProcessor implements ItemProcessor<UserInfo, UserInfo> {
         final AtomicInteger count = new AtomicInteger(0);
-        final ConcurrentHashMap<String, UserInfo> map = new ConcurrentHashMap<>();
         @Override
         public UserInfo process(UserInfo user) throws Exception {
             final int process_count = count.addAndGet(1);
@@ -130,23 +124,21 @@ public class UserBatchImport {
     }
 
     public class UserFieldSetMapper implements FieldSetMapper<UserInfo> {
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
         @Override
-        public UserInfo mapFieldSet(FieldSet fieldSet) throws BindException {
-            UserInfo userPending = new UserInfo();
-            userPending.setUserName(fieldSet.readString("username"));
-            userPending.setFirstName(fieldSet.readString("firstName"));
-            userPending.setLastName(fieldSet.readString("lastName"));
-            userPending.setPwd(fieldSet.readString("password"));
-            userPending.setEmail(fieldSet.readString("email"));
-            userPending.setGender(fieldSet.readString("gender"));
-            userPending.setCreatedBy("admin");
-            userPending.setCreatedAt(OffsetDateTime.now());
-            userPending.setUpdatedBy("admin");
-            userPending.setUpdatedAt(DateUtil.convertOffsetDatetime("yyyy-MM-dd HH:mm:ss.SSS", fieldSet.readString("modifyTime")));
-            userPending.setVersion(1);
-            userPending.setRoleLevel(RoleLevelEnum.user);
-            return userPending;
+        public UserInfo mapFieldSet(FieldSet fieldSet) {
+            UserInfo userInfo = new UserInfo();
+            userInfo.setUserName(fieldSet.readString("username"));
+            userInfo.setFirstName(fieldSet.readString("firstName"));
+            userInfo.setLastName(fieldSet.readString("lastName"));
+            userInfo.setPwd(fieldSet.readString("password"));
+            userInfo.setEmail(fieldSet.readString("email"));
+            userInfo.setGender(fieldSet.readString("gender"));
+            userInfo.setCreatedBy("admin");
+            userInfo.setCreatedAt(OffsetDateTime.now());
+            userInfo.setUpdatedBy("admin");
+            userInfo.setUpdatedAt(DateUtil.convertOffsetDatetime("yyyy-MM-dd HH:mm:ss.SSS", fieldSet.readString("modifyTime")));
+            userInfo.setRoleLevel(RoleLevelEnum.user);
+            return userInfo;
         }
     }
 
