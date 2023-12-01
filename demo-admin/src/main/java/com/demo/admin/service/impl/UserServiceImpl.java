@@ -19,6 +19,7 @@ import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -45,6 +46,8 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private RedissonClient redissonClient;
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
     @Override
     public void register(List<UserRegisterRequest> request){
         UserInfo[] users = request.parallelStream().map(dto->{

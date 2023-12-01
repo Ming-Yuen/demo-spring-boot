@@ -43,6 +43,6 @@ public class RedisConfig {
         template.setHashValueSerializer(jacksonSerial);
         template.afterPropertiesSet();
 
-        return template; // 注入失败，故直接用属性来获取
+        return template;
     }
 }
