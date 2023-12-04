@@ -1,6 +1,6 @@
 package com.demo.common.service.impl;
 
-import com.demo.common.ScheduleMapper;
+import com.demo.common.mapper.ScheduleMapper;
 import com.demo.common.dao.ScheduleDao;
 import com.demo.common.dto.ScheduleUpdateRequest;
 import com.demo.common.entity.Schedule;

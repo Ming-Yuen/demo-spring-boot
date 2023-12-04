@@ -1,4 +1,4 @@
-package com.demo.common;
+package com.demo.common.mapper;
 
 import com.demo.common.dto.ScheduleUpdateRequest;
 import com.demo.common.entity.Schedule;
