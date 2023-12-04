@@ -4,6 +4,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
+/**
+ * swagger url: http://localhost:8081/swagger-ui/index.html
+ */
 @Configuration
 public class SwaggerConfig implements WebMvcConfigurer {
 

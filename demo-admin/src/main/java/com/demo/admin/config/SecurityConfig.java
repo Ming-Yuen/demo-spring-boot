@@ -30,8 +30,6 @@ import java.util.List;
 public class SecurityConfig {
     @Value("${jwt.ignore}")
     private List<String> ignoreList;
-    @Value("${swagger.enabled}")
-    private boolean swaggerEnabled;
     @Autowired
     private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
     @Autowired
@@ -43,9 +41,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry = http.authorizeRequests();
-        if(swaggerEnabled) {
-            registry.antMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/webjars/swagger-ui/**").permitAll();
-        }
+        registry.antMatchers(HttpMethod.GET).permitAll();
         for(String path : ignoreList){
             registry.antMatchers(path).permitAll();
         }
