@@ -3,12 +3,12 @@ package com.demo.common.entity;
 import com.demo.common.util.ContextHolder;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.annotation.Version;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
-import java.util.UUID;
 
 @Data
 @MappedSuperclass
@@ -16,6 +16,7 @@ public class BaseEntity implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Version
     @Column(name = "version", nullable = false, updatable = false)
     private Integer version;
     @Column(name = "created_by", nullable = false, updatable = false)

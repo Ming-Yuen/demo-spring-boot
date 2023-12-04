@@ -21,7 +21,7 @@ public class DataListener implements CommandLineRunner {
     @Autowired
     private ScheduleService scheduleService;
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         UserInfo user = userService.findByUserName("admin");
         if(user == null){
             user = new UserInfo();

@@ -5,5 +5,5 @@ import lombok.Data;
 import java.util.List;
 @Data
 public class UserQueryRequest {
-    private List<String> userNameList;
+    private String[] userNameList;
 }

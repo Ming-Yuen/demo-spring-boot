@@ -10,5 +10,5 @@ import java.util.List;
 
 public interface UserInfoDao extends CrudRepository<UserInfo, String>, QuerydslPredicateExecutor<UserInfo>, HibernateRepository<UserInfo> {
     UserInfo findByUserName(String username);
-    List<UserInfo> findByUserNameIn(List<String> userNameList);
+    List<UserInfo> findByUserNameIn(String... userNameList);
 }

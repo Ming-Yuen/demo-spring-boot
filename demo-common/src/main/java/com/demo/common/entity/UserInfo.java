@@ -3,23 +3,19 @@ package com.demo.common.entity;
 import com.demo.common.entity.enums.RoleLevelEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.springframework.cache.annotation.Cacheable;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Table(uniqueConstraints  = {
                 @UniqueConstraint(name = "uk_username", columnNames = {"username"})
         }
 )
-@Cacheable(cacheNames = "userInfo", key = "#userInfo.username")
-public class UserInfo extends BaseEntity {
+public class UserInfo extends BaseEntity implements Serializable {
     @Column(nullable = false, updatable = false)
     private String userName;
     private String firstName;
