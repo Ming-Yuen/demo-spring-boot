@@ -16,6 +16,7 @@ public class SalesRequest {
     private String orderId;
     private OffsetDateTime txDatetime;
     private String storeCode;
+    private String region;
     private String customerName;
     private String salesPerson;
     private BigDecimal totalAmount;

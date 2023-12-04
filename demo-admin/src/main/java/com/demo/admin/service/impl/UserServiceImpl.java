@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -53,6 +54,7 @@ public class UserServiceImpl implements UserService {
         saveUser(users);
     }
 //    public static ConcurrentHashMap<String, Long> map = new ConcurrentHashMap();
+    @Transactional
     @Override
     public void saveUser(UserInfo... userInfoRecords) {
         userInfoRecords = Arrays.stream(userInfoRecords).parallel().filter(LambdaUtil.distinctByKey(UserInfo::getUserName)).toArray(UserInfo[]::new);
