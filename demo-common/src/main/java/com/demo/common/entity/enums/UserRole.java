@@ -1,12 +1,12 @@
 package com.demo.common.entity.enums;
 
-public enum RoleLevelEnum {
+public enum UserRole {
 
     admin(900),
     user(100);
 
     int level;
-    RoleLevelEnum(int level){
+    UserRole(int level){
         this.level = level;
     }
 }

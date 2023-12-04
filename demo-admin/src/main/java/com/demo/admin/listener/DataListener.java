@@ -1,7 +1,7 @@
 package com.demo.admin.listener;
 
 import com.demo.common.entity.UserInfo;
-import com.demo.common.entity.enums.RoleLevelEnum;
+import com.demo.common.entity.enums.UserRole;
 import com.demo.admin.service.UserService;
 import com.demo.common.service.ScheduleService;
 import com.demo.common.util.ContextHolder;
@@ -27,7 +27,7 @@ public class DataListener implements CommandLineRunner {
             user = new UserInfo();
             user.setUserName("admin");
             user.setPwd(userService.passwordEncode("admin"));
-            user.setRoleLevel(RoleLevelEnum.admin);
+            user.setRole(UserRole.admin);
             user.setCreatedBy(user.getUserName());
             user.setCreatedAt(OffsetDateTime.now());
             user.setUpdatedBy(user.getUserName());

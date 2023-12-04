@@ -1,6 +1,6 @@
 package com.demo.common.entity;
 
-import com.demo.common.entity.enums.RoleLevelEnum;
+import com.demo.common.entity.enums.UserRole;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -26,7 +26,7 @@ public class UserInfo extends BaseEntity implements Serializable {
     private String email;
     private String phone;
     private Date resignDate;
-    @Enumerated(EnumType.ORDINAL)
     @Column(nullable = false)
-    private RoleLevelEnum roleLevel;
+    @Enumerated(EnumType.ORDINAL)
+    private UserRole role;
 }

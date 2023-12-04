@@ -5,16 +5,14 @@ import com.demo.admin.dto.UserQueryRequest;
 import com.demo.admin.dto.UserRegisterRequest;
 import com.demo.common.constant.RedisConstant;
 import com.demo.common.entity.UserInfo;
-import com.demo.common.entity.enums.RoleLevelEnum;
 import com.demo.admin.service.UserService;
 import com.demo.admin.dao.UserInfoDao;
 import com.demo.admin.dao.UserRoleDao;
 import com.demo.admin.util.JwtManager;
 import com.demo.common.entity.BaseEntity;
-import com.demo.common.util.LambdaUtil;
+import com.demo.common.entity.enums.UserRole;
 import com.demo.common.util.RedisUtil;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import jodd.util.ArraysUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +23,6 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -101,8 +98,8 @@ public class UserServiceImpl implements UserService {
         return userInfoMap;
     }
     @Override
-    public Collection<Long> getManageRoles(RoleLevelEnum role_level){
-        return userRoleDao.findByRoleLevelGreaterThanEqual(role_level).stream().map(BaseEntity::getId).collect(Collectors.toList());
+    public Collection<Long> getManageRoles(UserRole userRole){
+        return userRoleDao.findByRoleLevelGreaterThanEqual(userRole).stream().map(BaseEntity::getId).collect(Collectors.toList());
     }
     @Value("${jwt.expiration}")
     private Long expiration;

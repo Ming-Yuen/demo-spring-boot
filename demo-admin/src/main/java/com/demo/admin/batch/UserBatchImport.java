@@ -3,7 +3,7 @@ package com.demo.admin.batch;
 import com.demo.admin.service.UserService;
 import com.demo.admin.listener.JobCompletionNotificationListener;
 import com.demo.common.entity.UserInfo;
-import com.demo.common.entity.enums.RoleLevelEnum;
+import com.demo.common.entity.enums.UserRole;
 import com.demo.common.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -137,7 +137,7 @@ public class UserBatchImport {
             userInfo.setCreatedAt(OffsetDateTime.now());
             userInfo.setUpdatedBy("admin");
             userInfo.setUpdatedAt(DateUtil.convertOffsetDatetime("yyyy-MM-dd HH:mm:ss.SSS", fieldSet.readString("modifyTime")));
-            userInfo.setRoleLevel(RoleLevelEnum.user);
+            userInfo.setRole(UserRole.user);
             return userInfo;
         }
     }
