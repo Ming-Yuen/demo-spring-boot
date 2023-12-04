@@ -1,13 +1,12 @@
 package com.demo.admin.dao;
 
-import com.demo.admin.entity.UserRole;
-import com.demo.common.entity.enums.RoleLevelEnum;
+import com.demo.common.entity.enums.UserRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Collection;
 
-public interface UserRoleDao extends JpaRepository<UserRole, Long> {
+public interface UserRoleDao extends JpaRepository<com.demo.admin.entity.UserRole, Long> {
 
-    Collection<UserRole> findByRoleLevelGreaterThanEqual(RoleLevelEnum role_Level);
+    Collection<com.demo.admin.entity.UserRole> findByRoleLevelGreaterThanEqual(UserRole role_Level);
 }
 

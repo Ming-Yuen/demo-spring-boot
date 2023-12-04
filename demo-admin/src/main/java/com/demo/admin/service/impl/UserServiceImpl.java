@@ -4,7 +4,7 @@ import com.demo.admin.UserMapper;
 import com.demo.admin.dto.UserQueryRequest;
 import com.demo.admin.dto.UserRegisterRequest;
 import com.demo.common.entity.UserInfo;
-import com.demo.common.entity.enums.RoleLevelEnum;
+import com.demo.common.entity.enums.UserRole;
 import com.demo.admin.service.UserService;
 import com.demo.admin.dao.UserInfoDao;
 import com.demo.admin.dao.UserRoleDao;
@@ -14,8 +14,6 @@ import com.demo.common.util.LambdaUtil;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.extern.slf4j.Slf4j;
 
-import org.apache.commons.lang3.ArrayUtils;
-import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -25,9 +23,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Lock;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -147,7 +142,7 @@ public class UserServiceImpl implements UserService {
         return userDao.findByUserName(username);
     }
     @Override
-    public Collection<Long> getManageRoles(RoleLevelEnum role_level){
+    public Collection<Long> getManageRoles(UserRole role_level){
         return userRoleDao.findByRoleLevelGreaterThanEqual(role_level).stream().map(BaseEntity::getId).collect(Collectors.toList());
     }
     @Override

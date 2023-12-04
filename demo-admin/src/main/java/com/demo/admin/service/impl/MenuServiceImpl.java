@@ -2,7 +2,7 @@ package com.demo.admin.service.impl;
 
 import com.demo.admin.dao.MenuDao;
 import com.demo.admin.dto.MenuStructureResponse;
-import com.demo.common.entity.enums.RoleLevelEnum;
+import com.demo.common.entity.enums.UserRole;
 import com.demo.admin.service.MenuService;
 import com.demo.admin.service.UserService;
 import com.demo.common.util.ContextHolder;
@@ -22,7 +22,7 @@ public class MenuServiceImpl implements MenuService {
     private UserService userService;
 
     public MenuStructureResponse getStructure(){
-        RoleLevelEnum role_level = ContextHolder.getUser().getRoleLevel();
+        UserRole role_level = ContextHolder.getUser().getRole();
 
         Map<Long, MenuStructureResponse.MenuTree> menuTreeMap = new HashMap<>();
         MenuStructureResponse menuTreeResponse = new MenuStructureResponse();

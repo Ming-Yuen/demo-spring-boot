@@ -1,6 +1,5 @@
 package com.demo.admin.entity;
 
-import com.demo.common.entity.enums.RoleLevelEnum;
 import com.demo.common.entity.BaseEntity;
 import lombok.Data;
 
@@ -18,5 +17,5 @@ public class UserRole extends BaseEntity {
     private String name;
     @Enumerated(EnumType.ORDINAL)
     @Column(nullable = false)
-    private RoleLevelEnum roleLevel;
+    private com.demo.common.entity.enums.UserRole roleLevel;
 }
