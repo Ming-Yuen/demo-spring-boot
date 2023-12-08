@@ -11,6 +11,7 @@ import com.demo.admin.dao.UserRoleDao;
 import com.demo.admin.util.JwtManager;
 import com.demo.common.entity.BaseEntity;
 import com.demo.common.entity.enums.UserRole;
+import com.demo.common.util.LambdaUtil;
 import com.demo.common.util.RedisUtil;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -41,31 +43,33 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private RedisUtil redisUtil;
+    @Value("${jdbc.parameter_size}")
+    private Integer batch_size;
     @Override
     public void register(List<UserRegisterRequest> request){
         saveUser(userMapper.userRegisterRequestToUser(request));
     }
+    @Transactional
     @Override
     public void saveUser(UserInfo... userInfoRecords) {
+        userInfoRecords = Arrays.stream(userInfoRecords).filter(LambdaUtil.distinctByKey(UserInfo::getUserName)).toArray(UserInfo[]::new);
         List<UserInfo> usersToInsert = new ArrayList<>();
         List<UserInfo> usersToUpdate = new ArrayList<>();
-        for(int index = 0; index < userInfoRecords.length; index+=100){
-            String[] usernames = Arrays.stream(userInfoRecords).map(UserInfo::getUserName).skip(index).limit(100).toArray(String[] :: new);
-            Map<String, UserInfo> userInfoMap= findByUserName(usernames);
-            for(String username : userInfoMap.keySet()) {
-                UserInfo userInfo = userInfoMap.get(username);
-                if (findByUserName(userInfo.getUserName()) == null) {
-                    usersToInsert.add(userInfo);
-                    redisUtil.set(userInfo.getUserName(), userInfo);
-                } else {
-                    usersToUpdate.add(userInfo);
-                }
+
+        Map<String, UserInfo> userInfoMap= findByUserName(Arrays.stream(userInfoRecords).map(UserInfo::getUserName).toArray(String[] :: new));
+        for(UserInfo userInfo : userInfoRecords) {
+            UserInfo old_userInfo = userInfoMap.get(userInfo.getUserName());
+            if (old_userInfo == null) {
+                usersToInsert.add(userInfo);
+            } else {
+                userInfo.setId(old_userInfo.getId());
+                usersToUpdate.add(userInfo);
             }
         }
-        userDao.persistAll(usersToInsert);
-        userDao.mergeAll(usersToUpdate);
+        userDao.peristAllAndFlush(usersToInsert);
+        userDao.mergeAllAndFlush(usersToUpdate);
 //        redisUtil.multiSet(usersToInsert, UserInfo::getUserName);
-        redisUtil.multiSet(usersToUpdate, UserInfo::getUserName);
+//        redisUtil.multiSet(usersToUpdate, UserInfo::getUserName);
     }
     @Override
     public UserInfo findByUserName(String username){
@@ -85,11 +89,10 @@ public class UserServiceImpl implements UserService {
             }
         }
         Map<String, UserInfo> userInfoTempMap = new HashMap<>();
-        for(String username : noCacheUser) {
-            UserInfo userInfo = userDao.findByUserName(username);
-            if(userInfo != null){
+        for(int index = 0; index < usernames.length; index+=batch_size){
+            userDao.findByUserNameIn(Arrays.stream(usernames).skip(index).limit(batch_size).toArray(String[]::new)).forEach(userInfo -> {
                 userInfoTempMap.put(userInfo.getUserName(), userInfo);
-            }
+            });
         }
         if(!userInfoTempMap.isEmpty()){
             redisUtil.multiSet(userInfoTempMap);

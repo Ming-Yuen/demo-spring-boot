@@ -11,7 +11,6 @@ import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
@@ -23,7 +22,6 @@ import java.util.Date;
 import java.util.Locale;
 @Slf4j
 @Configuration
-@ConditionalOnProperty(name = "quartz.enabled", havingValue = "true", matchIfMissing = true)
 public class CsvToUserScheduler extends QuartzJobBean {
     @Autowired
     private Job importUserJob;
@@ -43,6 +41,7 @@ public class CsvToUserScheduler extends QuartzJobBean {
         }
 
         try {
+            log.info("start of schedule");
             JobParameters jobParameters= new JobParametersBuilder().addLong("time", System.currentTimeMillis()).toJobParameters();
             JobExecution result = jobLauncher.run(importUserJob, jobParameters);
             log.info("end of schedule");
@@ -63,7 +62,7 @@ public class CsvToUserScheduler extends QuartzJobBean {
             writer.append("username,firstName,lastName,password,email,gender,modifyTime");
             writer.append(lineSeparator);
 
-            for (int i = 1; i <= 1000000; i++) {
+            for (int i = 1; i <= 100000000; i++) {
                 String username = faker.name().username();
                 String firstName = faker.name().firstName();
                 String lastName = faker.name().lastName();

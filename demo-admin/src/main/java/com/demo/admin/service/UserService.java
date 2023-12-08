@@ -20,6 +20,5 @@ public interface UserService {
 
     String passwordEncode(String password);
     List<UserInfo> query(UserQueryRequest request);
-    @Transactional
     void saveUser(UserInfo... userInfoRecords);
 }

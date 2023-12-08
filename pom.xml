@@ -11,8 +11,7 @@
     <modules>
         <module>demo-common</module>
         <module>demo-admin</module>
-        <module>demo-product</module>
-        <module>demo-order</module>
+        <module>demo-transaction</module>
         <module>demo-report</module>
     </modules>
 
@@ -224,9 +223,9 @@
 <!--            <artifactId>liquibase-hibernate5</artifactId>-->
 <!--        </dependency>-->
         <!--rabbitmq-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-amqp</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-amqp</artifactId>-->
+<!--        </dependency>-->
     </dependencies>
 </project>

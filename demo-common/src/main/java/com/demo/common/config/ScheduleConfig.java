@@ -11,13 +11,19 @@ import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 import java.util.Map;
 @Slf4j
 @Component
+@Order(2)
 public class ScheduleConfig {
     @Value("${quartz.enabled}")
     private boolean quartzEnable;
@@ -30,8 +36,10 @@ public class ScheduleConfig {
         if(quartzEnable) {
             Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
             ObjectMapper objectMapper = new ObjectMapper();
-            boolean scheduleIsEmpty = false;
-            for (Schedule schedule : scheduleService.getAllSchedule()) {
+            boolean scheduleIsEmpty = true;
+            List<Schedule> schedules = scheduleService.getAllSchedule();
+            log.info("Found a total of {} schedules", schedules.size());
+            for (Schedule schedule : schedules) {
                 try {
                     Class<?> jobClass = null;
                     try {
@@ -45,8 +53,7 @@ public class ScheduleConfig {
                     Map<String, String> scheduleConfig = null;
                     if (schedule.getConfig() != null) {
                         try {
-                            scheduleConfig = objectMapper.readValue(schedule.getConfig(), new TypeReference<Map<String, String>>() {
-                            });
+                            scheduleConfig = objectMapper.readValue(schedule.getConfig(), new TypeReference<Map<String, String>>() {});
                         } catch (JsonProcessingException e) {
                             throw new ValidationException("Job id " + schedule.getId() + " is not json value");
                         }
@@ -63,12 +70,12 @@ public class ScheduleConfig {
                             .withSchedule(CronScheduleBuilder.cronSchedule(schedule.getCron()))
                             .build();
                     scheduler.scheduleJob(jobDetail, trigger1);
-                    scheduleIsEmpty = true;
+                    scheduleIsEmpty = false;
                 } catch (Exception e) {
                     log.error(e.getMessage(), e);
                 }
             }
-            if (scheduleIsEmpty) {
+            if (!scheduleIsEmpty) {
                 scheduler.start();
             }
             log.info("Total {} schedule start", scheduler.getCurrentlyExecutingJobs().size());

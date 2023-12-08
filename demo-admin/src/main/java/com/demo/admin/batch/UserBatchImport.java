@@ -21,7 +21,6 @@ import org.springframework.batch.item.file.mapping.FieldSetMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.batch.item.file.transform.FieldSet;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
@@ -35,7 +34,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Slf4j
 @Configuration
 @EnableBatchProcessing
-@ConditionalOnProperty(name = "quartz.enabled", havingValue = "true", matchIfMissing = true)
 public class UserBatchImport {
     private final String task = this.getClass().getName();
     @Autowired
@@ -78,7 +76,7 @@ public class UserBatchImport {
                 .reader(reader)
                 .processor(processor)
                 .writer(writer)
-                .taskExecutor(taskExecutor())
+//                .taskExecutor(taskExecutor())
                 .build();
     }
 
