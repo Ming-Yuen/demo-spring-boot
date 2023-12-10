@@ -14,9 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -29,6 +29,7 @@ public class CsvToUserScheduler extends QuartzJobBean {
     private JobLauncher jobLauncher;
     @Autowired
     private UserBatchImport userBatchImport;
+
     @Override
     protected void executeInternal(JobExecutionContext context) {
         File file = new File(String.join(File.separator, System.getProperty("user.home"), "Documents", "Testing"),"user_data.csv");
@@ -57,12 +58,12 @@ public class CsvToUserScheduler extends QuartzJobBean {
         if(!file.getParentFile().exists() && !file.getParentFile().mkdirs()){
             throw new ValidationException("create directory fail " + file.getParentFile().getPath());
         }
-        try (FileWriter writer = new FileWriter(file)) {
+        try (OutputStreamWriter writer = new OutputStreamWriter(Files.newOutputStream(file.toPath()), StandardCharsets.UTF_8)) {
             // Write header
             writer.append("username,firstName,lastName,password,email,gender,modifyTime");
             writer.append(lineSeparator);
 
-            for (int i = 1; i <= 100000000; i++) {
+            for (int i = 1; i <= 1000000; i++) {
                 String username = faker.name().username();
                 String firstName = faker.name().firstName();
                 String lastName = faker.name().lastName();
