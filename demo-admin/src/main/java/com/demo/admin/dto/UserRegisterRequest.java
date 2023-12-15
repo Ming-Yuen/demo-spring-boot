@@ -1,6 +1,7 @@
 package com.demo.admin.dto;
 
 import com.demo.admin.enums.Gender;
+import com.demo.common.entity.enums.UserRole;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -17,5 +18,5 @@ public class UserRegisterRequest {
     private String email;
     private String phone;
     @NotBlank
-    private Long roleId;
+    private UserRole roleId;
 }
