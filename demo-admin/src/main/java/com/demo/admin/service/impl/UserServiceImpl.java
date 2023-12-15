@@ -11,6 +11,7 @@ import com.demo.admin.dao.UserRoleDao;
 import com.demo.admin.security.JwtManager;
 import com.demo.common.entity.BaseEntity;
 import com.demo.common.entity.enums.UserRole;
+import com.demo.common.util.Json;
 import com.demo.common.util.LambdaUtil;
 import com.demo.common.util.RedisUtil;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -46,8 +47,13 @@ public class UserServiceImpl implements UserService {
     private RedisUtil redisUtil;
     @Value("${jdbc.parameter_size}")
     private Integer batch_size;
+    @SneakyThrows
     @Override
     public void register(List<UserRegisterRequest> request){
+
+        log.info(Json.objectMapper.writeValueAsString(request));
+        UserInfo[] userInfos = userMapper.userRegisterRequestToUser(request);
+        log.info(Json.objectMapper.writeValueAsString(userInfos));
         saveUser(userMapper.userRegisterRequestToUser(request));
     }
     @SneakyThrows

@@ -14,7 +14,7 @@ public interface UserConverter {
     UserConverter INSTANCE = Mappers.getMapper(UserConverter.class);
 
 //    @ValueMapping(source = "roleId", target = "role")
-    @Mapping(target = "roleId", source = "role")
+    @Mapping(source = "roleId", target = "role")
     UserInfo[] userRegisterRequestToUser(List<UserRegisterRequest> dto);
 
     default UserRole map(int value) {
