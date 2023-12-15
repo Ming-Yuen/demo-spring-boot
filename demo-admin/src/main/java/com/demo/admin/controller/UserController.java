@@ -20,7 +20,7 @@ public class UserController {
     @PostMapping(path = ControllerPath.update, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public DefaultResponse update(@Valid @RequestBody List<UserRegisterRequest> request){
         userService.register(request);
-        return new UserRegisterResponse(request.stream().map(UserRegisterRequest::getUsername).collect(Collectors.toList()));
+        return new UserRegisterResponse(request.stream().map(UserRegisterRequest::getUserName).collect(Collectors.toList()));
     }
     @PostMapping(path = ControllerPath.token, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public TokenResponse login(@Valid @RequestBody TokenRequest request){

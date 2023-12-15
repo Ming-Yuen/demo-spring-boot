@@ -9,4 +9,13 @@ public enum UserRole {
     UserRole(int level){
         this.level = level;
     }
+
+    public static UserRole getRoleById(int value) {
+        for(UserRole userRole : UserRole.values()){
+            if(value == userRole.level){
+                return userRole;
+            }
+        }
+        throw new IllegalArgumentException("Invalid User role value: " + value);
+    }
 }

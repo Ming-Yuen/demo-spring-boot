@@ -1,8 +1,7 @@
 package com.demo.admin.dao;
 
 import com.demo.common.dao.HibernateRepository;
-import com.demo.common.entity.UserInfo;
-import org.springframework.cache.annotation.Cacheable;
+import com.demo.admin.entity.UserInfo;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.CrudRepository;
 

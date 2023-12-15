@@ -5,6 +5,7 @@ import org.hibernate.Session;
 import org.hibernate.engine.jdbc.spi.JdbcServices;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.internal.AbstractSharedSessionContract;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -54,7 +55,7 @@ public class HibernateRepositoryImpl<T>
         entityManager.flush();
         return entity;
     }
-
+    @Transactional
     public <S extends T> List<S> persistAll(
             Iterable<S> entities) {
         List<S> result = new ArrayList<>();
@@ -64,6 +65,7 @@ public class HibernateRepositoryImpl<T>
         return result;
     }
 
+    @Transactional
     public <S extends T> List<S> peristAllAndFlush(
             Iterable<S> entities) {
         return executeBatch(() -> {

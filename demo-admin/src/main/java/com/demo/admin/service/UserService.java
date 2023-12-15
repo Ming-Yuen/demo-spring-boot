@@ -2,9 +2,8 @@ package com.demo.admin.service;
 
 import com.demo.admin.dto.UserQueryRequest;
 import com.demo.admin.dto.UserRegisterRequest;
-import com.demo.common.entity.UserInfo;
+import com.demo.admin.entity.UserInfo;
 import com.demo.common.entity.enums.UserRole;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;

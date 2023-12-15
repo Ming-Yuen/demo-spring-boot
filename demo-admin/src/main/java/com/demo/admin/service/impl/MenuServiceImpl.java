@@ -5,8 +5,9 @@ import com.demo.admin.dto.MenuStructureResponse;
 import com.demo.common.entity.enums.UserRole;
 import com.demo.admin.service.MenuService;
 import com.demo.admin.service.UserService;
-import com.demo.common.util.ContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -22,7 +23,8 @@ public class MenuServiceImpl implements MenuService {
     private UserService userService;
 
     public MenuStructureResponse getStructure(){
-        UserRole role_level = ContextHolder.getUser().getRole();
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserRole role_level = userService.findByUserName(username).getRole();
 
         Map<Long, MenuStructureResponse.MenuTree> menuTreeMap = new HashMap<>();
         MenuStructureResponse menuTreeResponse = new MenuStructureResponse();

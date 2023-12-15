@@ -1,19 +1,20 @@
 package com.demo.admin.service.impl;
 
-import com.demo.admin.UserMapper;
 import com.demo.admin.dto.UserQueryRequest;
 import com.demo.admin.dto.UserRegisterRequest;
+import com.demo.admin.converter.UserConverter;
 import com.demo.common.constant.RedisConstant;
-import com.demo.common.entity.UserInfo;
+import com.demo.admin.entity.UserInfo;
 import com.demo.admin.service.UserService;
 import com.demo.admin.dao.UserInfoDao;
 import com.demo.admin.dao.UserRoleDao;
-import com.demo.admin.util.JwtManager;
+import com.demo.admin.security.JwtManager;
 import com.demo.common.entity.BaseEntity;
 import com.demo.common.entity.enums.UserRole;
 import com.demo.common.util.LambdaUtil;
 import com.demo.common.util.RedisUtil;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserInfoDao userDao;
     @Autowired
-    private UserMapper userMapper;
+    private UserConverter userMapper;
     @Autowired
     private UserRoleDao userRoleDao;
     @Autowired
@@ -49,6 +50,7 @@ public class UserServiceImpl implements UserService {
     public void register(List<UserRegisterRequest> request){
         saveUser(userMapper.userRegisterRequestToUser(request));
     }
+    @SneakyThrows
     @Transactional
     @Override
     public void saveUser(UserInfo... userInfoRecords) {
@@ -116,12 +118,12 @@ public class UserServiceImpl implements UserService {
         if(token != null){
             return token;
         }
-        token = jwt.generateToken(user.getUserName(), user.getPwd());
+        token = jwt.generateToken(user.getUserName(), user.getPassword());
         redisUtil.set("token."+user.getUserName(), token, expiration, TimeUnit.SECONDS);
         return token;
     }
     public boolean passwordMatch(String password, UserInfo admin){
-        return passwordEncoder.matches(password, admin.getPwd());
+        return passwordEncoder.matches(password, admin.getPassword());
     }
     @Override
     public String passwordEncode(String password){

@@ -1,5 +1,7 @@
-package com.demo.common.entity;
+package com.demo.admin.entity;
 
+import com.demo.admin.enums.Gender;
+import com.demo.common.entity.BaseEntity;
 import com.demo.common.entity.enums.UserRole;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,11 +23,14 @@ public class UserInfo extends BaseEntity implements Serializable {
     private String firstName;
     private String lastName;
     @Column(nullable = false)
-    private String pwd;
-    private String gender;
+    private String password;
+
+    @Enumerated(EnumType.ORDINAL)
+    private Gender gender;
     private String email;
     private String phone;
     private Date resignDate;
+
     @Column(nullable = false)
     @Enumerated(EnumType.ORDINAL)
     private UserRole role;

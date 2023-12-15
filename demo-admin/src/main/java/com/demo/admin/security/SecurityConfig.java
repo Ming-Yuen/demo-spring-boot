@@ -1,11 +1,10 @@
-package com.demo.admin.config;
+package com.demo.admin.security;
 
-import com.demo.admin.filter.JwtAuthenticationTokenFilter;
-import com.demo.admin.filter.RestAuthenticationEntryPoint;
-import com.demo.admin.filter.RestfulAccessDeniedHandler;
+import com.demo.admin.security.filter.JwtAuthenticationTokenFilter;
+import com.demo.admin.security.filter.RestAuthenticationEntryPoint;
+import com.demo.admin.security.filter.RestfulAccessDeniedHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,6 +1,6 @@
 package com.demo.admin.dto;
 
-import com.demo.common.entity.UserInfo;
+import com.demo.admin.entity.UserInfo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

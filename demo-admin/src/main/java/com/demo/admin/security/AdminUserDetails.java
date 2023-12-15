@@ -1,6 +1,6 @@
-package com.demo.admin.dto;
+package com.demo.admin.security;
 
-import com.demo.common.entity.UserInfo;
+import com.demo.admin.entity.UserInfo;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -25,7 +25,7 @@ public class AdminUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return admin.getPwd();
+        return admin.getPassword();
     }
 
     @Override

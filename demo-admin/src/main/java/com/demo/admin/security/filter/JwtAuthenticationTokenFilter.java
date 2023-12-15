@@ -1,11 +1,9 @@
-package com.demo.admin.filter;
+package com.demo.admin.security.filter;
 
-import com.demo.admin.dto.AdminUserDetails;
+import com.demo.admin.security.JwtManager;
 import com.demo.admin.service.UserService;
-import com.demo.common.dto.TxHeaderRequest;
-import com.demo.common.entity.UserInfo;
-import com.demo.common.util.ContextHolder;
-import com.demo.admin.util.JwtManager;
+import com.demo.admin.entity.UserInfo;
+import com.demo.admin.security.AdminUserDetails;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,7 +19,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.LocalDateTime;
 
 @Slf4j
 @Component
@@ -44,14 +41,11 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                     if (jwt.validateToken(authToken, userDetails)) {
                         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                        ContextHolder.setUser(userDetails.getAdmin());
                         SecurityContextHolder.getContext().setAuthentication(authentication);
                     }
                 }
             }catch (Exception e){
                 log.error("JWT token error : " + e.getMessage(), e);
-            }finally {
-                ContextHolder.clear();
             }
         }
         chain.doFilter(request, response);

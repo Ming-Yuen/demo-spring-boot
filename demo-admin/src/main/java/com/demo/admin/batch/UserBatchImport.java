@@ -1,8 +1,9 @@
 package com.demo.admin.batch;
 
+import com.demo.admin.enums.Gender;
 import com.demo.admin.service.UserService;
 import com.demo.admin.listener.JobCompletionNotificationListener;
-import com.demo.common.entity.UserInfo;
+import com.demo.admin.entity.UserInfo;
 import com.demo.common.entity.enums.UserRole;
 import com.demo.common.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -128,9 +129,9 @@ public class UserBatchImport {
             userInfo.setUserName(fieldSet.readString("username"));
             userInfo.setFirstName(fieldSet.readString("firstName"));
             userInfo.setLastName(fieldSet.readString("lastName"));
-            userInfo.setPwd(fieldSet.readString("password"));
+            userInfo.setPassword(fieldSet.readString("password"));
             userInfo.setEmail(fieldSet.readString("email"));
-            userInfo.setGender(fieldSet.readString("gender"));
+            userInfo.setGender(Gender.fromString(fieldSet.readString("gender")));
             userInfo.setCreatedBy("admin");
             userInfo.setCreatedAt(OffsetDateTime.now());
             userInfo.setUpdatedBy("admin");
