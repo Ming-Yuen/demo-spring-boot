@@ -18,5 +18,5 @@ public class UserRegisterRequest {
     private String email;
     private String phone;
     @NotBlank
-    private UserRole roleId;
+    private UserRole role;
 }

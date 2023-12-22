@@ -1,11 +1,14 @@
 package com.demo.common.entity.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum UserRole {
 
     admin(900),
     user(100);
 
-    int level;
+    final int level;
     UserRole(int level){
         this.level = level;
     }

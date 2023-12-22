@@ -7,7 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface UserInfoDao extends CrudRepository<UserInfo, String>, QuerydslPredicateExecutor<UserInfo>, HibernateRepository<UserInfo> {
+public interface UserInfoDao extends CrudRepository<UserInfo, String>,QuerydslPredicateExecutor<UserInfo>, HibernateRepository<UserInfo> {//
     UserInfo findByUserName(String username);
     List<UserInfo> findByUserNameIn(String... userNameList);
 }

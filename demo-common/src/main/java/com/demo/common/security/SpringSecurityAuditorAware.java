@@ -1,4 +1,4 @@
-package com.demo.admin.security;
+package com.demo.common.security;
 
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.core.Authentication;

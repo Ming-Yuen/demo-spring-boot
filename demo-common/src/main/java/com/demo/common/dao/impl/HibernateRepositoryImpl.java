@@ -42,13 +42,13 @@ public class HibernateRepositoryImpl<T>
             Iterable<S> entities) {
         return unsupported();
     }
-
+    @Transactional
     public <S extends T> S persist(
             S entity) {
         entityManager.persist(entity);
         return entity;
     }
-
+    @Transactional
     public <S extends T> S persistAndFlush(
             S entity) {
         persist(entity);
@@ -77,12 +77,12 @@ public class HibernateRepositoryImpl<T>
             return result;
         });
     }
-
+    @Transactional
     public <S extends T> S merge(
             S entity) {
         return entityManager.merge(entity);
     }
-
+    @Transactional
     @Override
     public <S extends T> S mergeAndFlush(
             S entity) {
@@ -90,7 +90,7 @@ public class HibernateRepositoryImpl<T>
         entityManager.flush();
         return result;
     }
-
+    @Transactional
     @Override
     public <S extends T> List<S> mergeAll(
             Iterable<S> entities) {
@@ -100,7 +100,7 @@ public class HibernateRepositoryImpl<T>
         }
         return result;
     }
-
+    @Transactional
     @Override
     public <S extends T> List<S> mergeAllAndFlush(
             Iterable<S> entities) {
@@ -113,13 +113,13 @@ public class HibernateRepositoryImpl<T>
             return result;
         });
     }
-
+    @Transactional
     public <S extends T> S update(
             S entity) {
         session().update(entity);
         return entity;
     }
-
+    @Transactional
     @Override
     public <S extends T> S updateAndFlush(
             S entity) {
@@ -127,7 +127,7 @@ public class HibernateRepositoryImpl<T>
         entityManager.flush();
         return entity;
     }
-
+    @Transactional
     @Override
     public <S extends T> List<S> updateAll(
             Iterable<S> entities) {
@@ -137,7 +137,7 @@ public class HibernateRepositoryImpl<T>
         }
         return result;
     }
-
+    @Transactional
     @Override
     public <S extends T> List<S> updateAllAndFlush(
             Iterable<S> entities) {
@@ -150,7 +150,7 @@ public class HibernateRepositoryImpl<T>
             return result;
         });
     }
-
+    @Transactional
     protected Integer getBatchSize(
             Session session) {
         SessionFactoryImplementor sessionFactory = session
@@ -168,7 +168,7 @@ public class HibernateRepositoryImpl<T>
                 .unwrap(AbstractSharedSessionContract.class)
                 .getConfiguredJdbcBatchSize();
     }
-
+    @Transactional
     protected <R> R executeBatch(
             Supplier<R> callback) {
         Session session = session();

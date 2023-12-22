@@ -19,5 +19,6 @@ public interface UserService {
 
     String passwordEncode(String password);
     List<UserInfo> query(UserQueryRequest request);
+    void saveUserEncryptPassword(UserInfo... userInfoRecords);
     void saveUser(UserInfo... userInfoRecords);
 }

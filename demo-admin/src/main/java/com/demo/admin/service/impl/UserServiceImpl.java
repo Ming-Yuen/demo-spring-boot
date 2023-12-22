@@ -50,11 +50,18 @@ public class UserServiceImpl implements UserService {
     @SneakyThrows
     @Override
     public void register(List<UserRegisterRequest> request){
+        UserInfo[] userInfo = userMapper.userRegisterRequestToUser(request);
+        saveUserEncryptPassword(userInfo);
+    }
 
-        log.info(Json.objectMapper.writeValueAsString(request));
-        UserInfo[] userInfos = userMapper.userRegisterRequestToUser(request);
-        log.info(Json.objectMapper.writeValueAsString(userInfos));
-        saveUser(userMapper.userRegisterRequestToUser(request));
+    public void saveUserEncryptPassword(UserInfo... userInfoRecords) {
+        if(userInfoRecords == null){
+            return;
+        }
+        Arrays.stream(userInfoRecords).forEach(userInfo -> {
+            userInfo.setPassword(this.passwordEncode(userInfo.getPassword()));
+        });
+        saveUser(userInfoRecords);
     }
     @SneakyThrows
     @Transactional
@@ -75,6 +82,7 @@ public class UserServiceImpl implements UserService {
             }
         }
         userDao.peristAllAndFlush(usersToInsert);
+        log.info(Json.objectMapper.writeValueAsString(usersToUpdate));
         userDao.mergeAllAndFlush(usersToUpdate);
 //        redisUtil.multiSet(usersToInsert, UserInfo::getUserName);
 //        redisUtil.multiSet(usersToUpdate, UserInfo::getUserName);
@@ -98,7 +106,7 @@ public class UserServiceImpl implements UserService {
         }
         Map<String, UserInfo> userInfoTempMap = new HashMap<>();
         for(int index = 0; index < usernames.length; index+=batch_size){
-            userDao.findByUserNameIn(Arrays.stream(usernames).skip(index).limit(batch_size).toArray(String[]::new)).forEach(userInfo -> {
+            userDao.findByUserNameIn(noCacheUser.stream().skip(index).limit(batch_size).toArray(String[]::new)).forEach(userInfo -> {
                 userInfoTempMap.put(userInfo.getUserName(), userInfo);
             });
         }
@@ -117,7 +125,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public String login(String username, String password) {
         UserInfo user = userDao.findByUserName(username);
-        if(user == null || !passwordMatch(password, user)){
+        if(user == null){
+            throw new IllegalArgumentException("User is not registered");
+        }
+        if(!passwordMatch(password, user)){
             throw new IllegalArgumentException("Incorrect password");
         }
         String token = (String) redisUtil.get("token."+user.getUserName());

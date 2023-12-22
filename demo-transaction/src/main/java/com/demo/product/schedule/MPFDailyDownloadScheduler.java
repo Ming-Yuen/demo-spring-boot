@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 @Slf4j
 @Configuration
-@ConditionalOnProperty(name = "quartz.enabled", havingValue = "true", matchIfMissing = true)
 public class MPFDailyDownloadScheduler extends QuartzJobBean {
     @Autowired
     private Job mpfDailyDownloadJob;
@@ -22,7 +21,7 @@ public class MPFDailyDownloadScheduler extends QuartzJobBean {
     @Override
     protected void executeInternal(JobExecutionContext context) {
         try {
-            JobParameters jobParameters= new JobParametersBuilder().toJobParameters();//.addLong("time", System.currentTimeMillis()).toJobParameters();
+            JobParameters jobParameters= new JobParametersBuilder().toJobParameters();
             JobExecution result = jobLauncher.run(mpfDailyDownloadJob, jobParameters);
         } catch (Exception e) {
             log.error(e.getMessage(), e);

@@ -67,7 +67,7 @@ public class UserBatchImport {
     }
     @Bean
     public ItemWriter<UserInfo> writer() {
-        return users->userService.saveUser(users.toArray(new UserInfo[]{}));
+        return users->userService.saveUserEncryptPassword(users.toArray(new UserInfo[]{}));
     }
 
     @Bean
