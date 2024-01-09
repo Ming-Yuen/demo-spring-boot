@@ -80,28 +80,30 @@ public class MPFDownload {
                     objectMapper.registerModule(new JavaTimeModule());
                     ConcurrentHashMap<String, Product> productMap = new ConcurrentHashMap<>();
                     ConcurrentHashMap<String, ProductPrice> productPriceMap = new ConcurrentHashMap<>();
-                    objectMapper.readValue(jsonResponse, new TypeReference<List<MPFDailyResponse>>(){})
-                            .forEach(item->{
-                                if(!productService.existsByProductId(item.getFundId())){
-                                    Product product = new Product();
-                                    product.setProductId(item.getFundId());
-                                    product.setRegion("HK");
-                                    product.setName(item.getFundName());
-                                    product.setCategory(item.getPlatformName());
-                                    productMap.put(item.getFundId(), product);
-                                }
+                    List<MPFDailyResponse> records = objectMapper.readValue(jsonResponse, new TypeReference<List<MPFDailyResponse>>(){});
+                    if(!records.isEmpty()){
+                        records.forEach(item->{
+                            if(!productService.existsByProductId(item.getFundId())){
+                                Product product = new Product();
+                                product.setProductId(item.getFundId());
+                                product.setRegion("HK");
+                                product.setName(item.getFundName());
+                                product.setCategory(item.getPlatformName());
+                                productMap.put(item.getFundId(), product);
+                            }
 
-                                if(item.getNav() != null){
-                                    ProductPrice productPrice = productService.getLatestProductPrice(item.getNav().getAsOfDate(), item.getFundId(), "HK");
-                                    if(productPrice == null){
-                                        ProductPrice price = getProductPrice(item);
-                                        productPriceMap.put(String.join(".", String.valueOf(item.getNav().getAsOfDate()), item.getFundId()), price);
-                                    }
+                            if(item.getNav() != null){
+                                ProductPrice productPrice = productService.getLatestProductPrice(item.getNav().getAsOfDate(), item.getFundId(), "HK");
+                                if(productPrice == null){
+                                    ProductPrice price = getProductPrice(item);
+                                    productPriceMap.put(String.join(".", String.valueOf(item.getNav().getAsOfDate()), item.getFundId()), price);
                                 }
-                            });
-                    productService.save(productMap.values().toArray(new Product[]{}));
-                    productService.save(productPriceMap.values().toArray(new ProductPrice[]{}));
-                    FileUtils.write(new File("mpf//manulife"+ LocalDate.now().toString()+".txt"), jsonResponse, StandardCharsets.UTF_8);
+                            }
+                        });
+                        productService.save(productMap.values().toArray(new Product[]{}));
+                        productService.save(productPriceMap.values().toArray(new ProductPrice[]{}));
+                        FileUtils.write(new File("mpf//manulife"+ records.get(0).getNav().getAsOfDate()+".txt"), jsonResponse, StandardCharsets.UTF_8);
+                    }
                 }
             }
             return RepeatStatus.FINISHED;

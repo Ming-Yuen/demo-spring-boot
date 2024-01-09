@@ -2,11 +2,12 @@ package com.demo.product.dto.manulife;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 @Data
-public class MPFDailyResponse {
+public class MPFDailyResponse implements Serializable {
     private String classId;
     private String[] distOthers;
     private String[] distSecurities;
