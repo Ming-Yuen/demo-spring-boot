@@ -1,4 +1,4 @@
-package com.demo.admin.dto;
+package com.demo.admin.vo;
 
 import com.demo.admin.entity.MenuStructure;
 import com.demo.common.dto.DefaultResponse;

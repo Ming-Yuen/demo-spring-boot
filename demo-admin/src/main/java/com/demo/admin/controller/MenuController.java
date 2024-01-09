@@ -1,6 +1,6 @@
 package com.demo.admin.controller;
 
-import com.demo.admin.dto.MenuStructureResponse;
+import com.demo.admin.vo.MenuStructureResponse;
 import com.demo.admin.service.MenuService;
 import com.demo.common.controller.ControllerPath;
 import org.springframework.beans.factory.annotation.Autowired;

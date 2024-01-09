@@ -2,7 +2,7 @@ package com.demo.product.controller;
 
 import com.demo.common.controller.ControllerPath;
 import com.demo.product.dto.InventoryAdjustmentRequest;
-import com.demo.product.dto.InventoryAdjustmentResponse;
+import com.demo.product.vo.InventoryAdjustmentResponse;
 import com.demo.product.service.InventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

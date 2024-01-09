@@ -1,7 +1,7 @@
 package com.demo.product.service.impl;
 
 import com.demo.product.dto.InventoryAdjustmentRequest;
-import com.demo.product.dto.InventoryAdjustmentResponse;
+import com.demo.product.vo.InventoryAdjustmentResponse;
 import com.demo.product.service.InventoryService;
 import org.springframework.stereotype.Service;
 

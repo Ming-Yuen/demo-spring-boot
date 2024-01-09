@@ -1,7 +1,7 @@
 package com.demo.product.service;
 
 import com.demo.product.dto.InventoryAdjustmentRequest;
-import com.demo.product.dto.InventoryAdjustmentResponse;
+import com.demo.product.vo.InventoryAdjustmentResponse;
 
 import java.util.List;
 

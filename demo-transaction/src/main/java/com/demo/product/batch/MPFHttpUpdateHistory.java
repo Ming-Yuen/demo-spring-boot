@@ -1,9 +1,10 @@
 package com.demo.product.batch;
 
-import com.demo.product.dto.manulife.MPFDailyResponse;
+import com.demo.product.converter.ProductPriceConverter;
+import com.demo.product.vo.manulife.MPFDailyResponse;
 import com.demo.product.entity.Product;
 import com.demo.product.entity.ProductPrice;
-import com.demo.product.mapper.ProductMapper;
+import com.demo.product.converter.ProductConverter;
 import com.demo.product.service.ProductService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,7 +24,6 @@ import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,17 +31,13 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @EnableBatchProcessing
 @Configuration
-public class MPFDownload {
+public class MPFHttpUpdateHistory {
     private final String task = this.getClass().getName();
     @Autowired
     private JobBuilderFactory jobBuilderFactory;
@@ -50,11 +46,13 @@ public class MPFDownload {
     @Autowired
     private ProductService productService;
     @Autowired
-    private ProductMapper productMapper;
+    private ProductConverter productConverter;
+    @Autowired
+    private ProductPriceConverter productPriceConverter;
 
     @Bean
     public Step downloadAndSaveStep() {
-        return stepBuilderFactory.get("downloadAndSaveJob")
+        return stepBuilderFactory.get(task)
                 .tasklet(new MPFDownloadTasklet())
                 .build();
     }
@@ -82,20 +80,17 @@ public class MPFDownload {
                     ConcurrentHashMap<String, ProductPrice> productPriceMap = new ConcurrentHashMap<>();
                     List<MPFDailyResponse> records = objectMapper.readValue(jsonResponse, new TypeReference<List<MPFDailyResponse>>(){});
                     if(!records.isEmpty()){
+
                         records.forEach(item->{
                             if(!productService.existsByProductId(item.getFundId())){
-                                Product product = new Product();
-                                product.setProductId(item.getFundId());
-                                product.setRegion("HK");
-                                product.setName(item.getFundName());
-                                product.setCategory(item.getPlatformName());
+                                Product product = productConverter.convert(item);
                                 productMap.put(item.getFundId(), product);
                             }
 
                             if(item.getNav() != null){
                                 ProductPrice productPrice = productService.getLatestProductPrice(item.getNav().getAsOfDate(), item.getFundId(), "HK");
                                 if(productPrice == null){
-                                    ProductPrice price = getProductPrice(item);
+                                    ProductPrice price = productPriceConverter.convert(item);
                                     productPriceMap.put(String.join(".", String.valueOf(item.getNav().getAsOfDate()), item.getFundId()), price);
                                 }
                             }
@@ -107,16 +102,6 @@ public class MPFDownload {
                 }
             }
             return RepeatStatus.FINISHED;
-        }
-
-        private ProductPrice getProductPrice(MPFDailyResponse item) {
-            ProductPrice price = new ProductPrice();
-            price.setRegion("HK");
-            price.setCurrencyUnit("HKD");
-            price.setProductId(item.getFundId());
-            price.setEffectiveDate(item.getNav().getAsOfDate());
-            price.setPrice(item.getNav().getPrice());
-            return price;
         }
     }
 }

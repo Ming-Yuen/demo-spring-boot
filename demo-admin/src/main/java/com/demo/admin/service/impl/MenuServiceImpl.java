@@ -1,12 +1,11 @@
 package com.demo.admin.service.impl;
 
 import com.demo.admin.dao.MenuDao;
-import com.demo.admin.dto.MenuStructureResponse;
+import com.demo.admin.vo.MenuStructureResponse;
 import com.demo.common.entity.enums.UserRole;
 import com.demo.admin.service.MenuService;
 import com.demo.admin.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 

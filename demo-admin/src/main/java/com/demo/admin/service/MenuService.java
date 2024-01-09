@@ -1,7 +1,6 @@
 package com.demo.admin.service;
 
-import com.demo.admin.dto.MenuStructureResponse;
-import org.springframework.transaction.annotation.Transactional;
+import com.demo.admin.vo.MenuStructureResponse;
 
 public interface MenuService{
     MenuStructureResponse getStructure();

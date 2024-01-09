@@ -1,4 +1,4 @@
-package com.demo.admin.dto;
+package com.demo.admin.vo;
 
 import com.demo.admin.entity.UserInfo;
 import lombok.AllArgsConstructor;
