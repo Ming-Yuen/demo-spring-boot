@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(ControllerPath.menu)
-public class MenuController {
+public class StructureController {
 
     @Autowired
     private MenuService menuService;
-    @PostMapping(path = ControllerPath.structure + ControllerPath.query, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = ControllerPath.STRUCTURE + ControllerPath.MENU+ControllerPath.QUERY, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public MenuStructureResponse enquiry(){
         return menuService.getStructure();
     }

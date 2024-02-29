@@ -19,7 +19,7 @@ import java.util.List;
 public class ProductController {
     @Autowired
     private ProductService productService;
-    @PostMapping(path = ControllerPath.query, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = ControllerPath.QUERY, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public List<Product> enquiry(@Valid @RequestBody ProductEnquiryRequest request){
         return productService.enquiry(request);
     }

@@ -29,7 +29,7 @@ public class UserController {
     public TokenResponse login(@Valid @RequestBody TokenRequest request){
         return new TokenResponse(userService.login(request.getUsername(), request.getPassword()));
     }
-    @PostMapping(path = ControllerPath.query, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = ControllerPath.QUERY, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public UserQueryResponse query(@Valid @RequestBody UserQueryRequest request){
         return new UserQueryResponse(userService.query(request));
     }
