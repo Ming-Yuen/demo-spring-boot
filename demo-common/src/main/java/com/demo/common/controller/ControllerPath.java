@@ -4,7 +4,7 @@ public class ControllerPath {
 
     public static final String user = "/user";
     public static final String token = "/token";
-    public static final String update = "/update";
+    public static final String UPDATE = "/update";
     public static final String QUERY = "/query";
     public static final String menu = "/menu";
     public static final String STRUCTURE = "/structure";
@@ -16,4 +16,5 @@ public class ControllerPath {
     public static final String create = "/create";
     public static final String inventory = "/inventory";
     public static final String adjustment = "/adjustment";
+    public static final String DEFAULT = "/default";
 }

@@ -18,5 +18,7 @@ public class MenuStructure extends BaseEntity {
     private Long parent;
     private String icon;
     private String name;
-    private Integer roleId;
+    private String type;
+    private String link;
+    private Long roleId;
 }

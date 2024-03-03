@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ScheduleController {
     @Autowired
     private ScheduleService scheduleService;
-    @PostMapping(path = ControllerPath.update)
+    @PostMapping(path = ControllerPath.UPDATE)
     public void update(ScheduleUpdateRequest scheduleUpdateRequest){
         scheduleService.update(scheduleUpdateRequest);
     }

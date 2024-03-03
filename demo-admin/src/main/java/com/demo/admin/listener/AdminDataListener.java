@@ -1,9 +1,6 @@
 package com.demo.admin.listener;
 
-import com.demo.admin.schedule.CsvToUserScheduler;
-import com.demo.common.dto.ScheduleUpdateRequest;
-import com.demo.common.entity.Schedule;
-import com.demo.admin.entity.UserInfo;
+import com.demo.admin.entity.User;
 import com.demo.common.entity.enums.UserRole;
 import com.demo.admin.service.UserService;
 import com.demo.common.service.ScheduleService;
@@ -26,9 +23,9 @@ public class AdminDataListener {//implements CommandLineRunner {
 //    public void run(String... args) {
     @PostConstruct
     public void init() {
-        UserInfo user = userService.findByUserName("admin");
+        User user = userService.findByUserName("admin");
         if(user == null){
-            user = new UserInfo();
+            user = new User();
             user.setUserName("admin");
             user.setPassword("admin");
             user.setRole(UserRole.admin);
@@ -39,16 +36,16 @@ public class AdminDataListener {//implements CommandLineRunner {
 
             userService.saveUserEncryptPassword(user);
         }
-        Schedule schedule = scheduleService.findByName("Import_User_info_from_csv_file");
-        if(schedule == null) {
-            ScheduleUpdateRequest request = new ScheduleUpdateRequest();
-            request.setName("Import_User_info_from_csv_file");
-            request.setDescription("Read csv file import data to user_info");
-            request.setJobClass(CsvToUserScheduler.class.getName());
-            request.setCron("*/5 * * * * ? *");
-            request.setEnable(1);
-            scheduleService.update(request);
-        }
+//        Schedule schedule = scheduleService.findByName("Import_User_info_from_csv_file");
+//        if(schedule == null) {
+//            ScheduleUpdateRequest request = new ScheduleUpdateRequest();
+//            request.setName("Import_User_info_from_csv_file");
+//            request.setDescription("Read csv file import data to user_info");
+//            request.setJobClass(CsvToUserScheduler.class.getName());
+//            request.setCron("*/5 * * * * ? *");
+//            request.setEnable(1);
+//            scheduleService.update(request);
+//        }
         log.info("data init success");
     }
 }

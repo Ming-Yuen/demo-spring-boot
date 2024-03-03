@@ -1,9 +1,9 @@
 package com.demo.admin.batch;
 
+import com.demo.admin.entity.User;
 import com.demo.admin.enums.Gender;
 import com.demo.admin.service.UserService;
 import com.demo.admin.listener.JobCompletionNotificationListener;
-import com.demo.admin.entity.UserInfo;
 import com.demo.common.entity.enums.UserRole;
 import com.demo.common.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -44,11 +44,11 @@ public class UserBatchImport {
     @Autowired
     public UserService userService;
     @Bean
-    public ItemReader<UserInfo> reader() {
-        FlatFileItemReader<UserInfo> reader = new FlatFileItemReader<>();
+    public ItemReader<User> reader() {
+        FlatFileItemReader<User> reader = new FlatFileItemReader<>();
 //        reader.setResource(new ClassPathResource("C:\\Users\\Administrator\\Documents\\logs\\data.csv"));
         reader.setResource(new FileSystemResource(String.join(File.separator, System.getProperty("user.home"), "Documents", "Testing", "user_data.csv")));
-        reader.setLineMapper(new DefaultLineMapper<UserInfo>() {{
+        reader.setLineMapper(new DefaultLineMapper<User>() {{
             setLineTokenizer(new DelimitedLineTokenizer() {{
                 setNames("username", "firstName", "lastName", "password", "email", "gender", "modifyTime");
             }});
@@ -66,14 +66,14 @@ public class UserBatchImport {
         return new UserItemProcessor();
     }
     @Bean
-    public ItemWriter<UserInfo> writer() {
-        return users->userService.saveUserEncryptPassword(users.toArray(new UserInfo[]{}));
+    public ItemWriter<User> writer() {
+        return users->userService.saveUserEncryptPassword(users.toArray(new User[]{}));
     }
 
     @Bean
-    public Step insertToPending(ItemReader<UserInfo> reader, ItemWriter<UserInfo> writer, UserItemProcessor processor) {
+    public Step insertToPending(ItemReader<User> reader, ItemWriter<User> writer, UserItemProcessor processor) {
         return stepBuilderFactory.get("step1")
-                .<UserInfo, UserInfo>chunk(10000)
+                .<User, User>chunk(10000)
                 .reader(reader)
                 .processor(processor)
                 .writer(writer)
@@ -90,10 +90,10 @@ public class UserBatchImport {
                 .build();
     }
 
-    public static class UserItemProcessor implements ItemProcessor<UserInfo, UserInfo> {
+    public static class UserItemProcessor implements ItemProcessor<User, User> {
         final AtomicInteger count = new AtomicInteger(0);
         @Override
-        public UserInfo process(UserInfo user) throws Exception {
+        public User process(User user) throws Exception {
             final int process_count = count.addAndGet(1);
             if(process_count % 10000 == 0){
                 log.info("read {} row", process_count);
@@ -122,22 +122,22 @@ public class UserBatchImport {
         }
     }
 
-    public class UserFieldSetMapper implements FieldSetMapper<UserInfo> {
+    public class UserFieldSetMapper implements FieldSetMapper<User> {
         @Override
-        public UserInfo mapFieldSet(FieldSet fieldSet) {
-            UserInfo userInfo = new UserInfo();
-            userInfo.setUserName(fieldSet.readString("username"));
-            userInfo.setFirstName(fieldSet.readString("firstName"));
-            userInfo.setLastName(fieldSet.readString("lastName"));
-            userInfo.setPassword(fieldSet.readString("password"));
-            userInfo.setEmail(fieldSet.readString("email"));
-            userInfo.setGender(Gender.fromString(fieldSet.readString("gender")));
-            userInfo.setCreatedBy("admin");
-            userInfo.setCreatedAt(OffsetDateTime.now());
-            userInfo.setUpdatedBy("admin");
-            userInfo.setUpdatedAt(DateUtil.convertOffsetDatetime("yyyy-MM-dd HH:mm:ss.SSS", fieldSet.readString("modifyTime")));
-            userInfo.setRole(UserRole.user);
-            return userInfo;
+        public User mapFieldSet(FieldSet fieldSet) {
+            User user = new User();
+            user.setUserName(fieldSet.readString("username"));
+            user.setFirstName(fieldSet.readString("firstName"));
+            user.setLastName(fieldSet.readString("lastName"));
+            user.setPassword(fieldSet.readString("password"));
+            user.setEmail(fieldSet.readString("email"));
+            user.setGender(Gender.fromString(fieldSet.readString("gender")));
+            user.setCreatedBy("admin");
+            user.setCreatedAt(OffsetDateTime.now());
+            user.setUpdatedBy("admin");
+            user.setUpdatedAt(DateUtil.convertOffsetDatetime("yyyy-MM-dd HH:mm:ss.SSS", fieldSet.readString("modifyTime")));
+            user.setRole(UserRole.user);
+            return user;
         }
     }
 

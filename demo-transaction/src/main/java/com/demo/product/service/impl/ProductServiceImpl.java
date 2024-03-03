@@ -9,7 +9,6 @@ import com.demo.product.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -41,7 +40,6 @@ public class ProductServiceImpl implements ProductService {
     public boolean existsByProductId(String productId) {
         return productDao.existsByProductId(productId);
     }
-    @Cacheable("latestProductPrice")
     @Override
     public ProductPrice getLatestProductPrice(LocalDate txDate, String productId, String region){
         return productPriceDao.findFirstByEffectiveDateBeforeAndProductIdAndRegionOrderByEffectiveDate(txDate, productId, region);

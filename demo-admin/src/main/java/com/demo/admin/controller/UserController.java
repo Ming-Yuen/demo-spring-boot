@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 public class UserController {
     @Autowired
     private UserService userService;
-    @PostMapping(path = ControllerPath.update, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = ControllerPath.UPDATE, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public DefaultResponse update(@Valid @RequestBody List<UserRegisterRequest> request){
         userService.register(request);
         return new UserRegisterResponse(request.stream().map(UserRegisterRequest::getUserName).collect(Collectors.toList()));

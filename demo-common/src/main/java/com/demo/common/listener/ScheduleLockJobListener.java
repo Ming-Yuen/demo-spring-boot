@@ -1,6 +1,5 @@
 package com.demo.common.listener;
 
-import com.demo.common.util.RedisUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
