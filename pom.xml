@@ -159,6 +159,10 @@
             <version>4.22.0</version>
         </dependency>
 <!--        <dependency>-->
+<!--            <groupId>org.liquibase.ext</groupId>-->
+<!--            <artifactId>liquibase-hibernate5</artifactId>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
 <!--            <groupId>org.springframework.boot</groupId>-->
 <!--            <artifactId>spring-boot-starter-data-mongodb</artifactId>-->
 <!--        </dependency>-->
@@ -183,10 +187,15 @@
         </dependency>
 
 <!--        redis-->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-data-redis</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson-spring-boot-starter</artifactId>
+                <version>3.15.2</version>
+            </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
@@ -230,15 +239,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-quartz</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.redisson</groupId>
-            <artifactId>redisson-spring-boot-starter</artifactId>
-            <version>3.15.2</version>
-        </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.liquibase.ext</groupId>-->
-<!--            <artifactId>liquibase-hibernate5</artifactId>-->
-<!--        </dependency>-->
         <!--rabbitmq-->
 <!--        <dependency>-->
 <!--            <groupId>org.springframework.boot</groupId>-->

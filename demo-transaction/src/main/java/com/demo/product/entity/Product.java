@@ -7,7 +7,6 @@ import lombok.EqualsAndHashCode;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity

@@ -3,6 +3,7 @@ package com.demo.admin.security;
 import com.demo.admin.security.filter.JwtAuthenticationTokenFilter;
 import com.demo.admin.security.filter.RestAuthenticationEntryPoint;
 import com.demo.admin.security.filter.RestfulAccessDeniedHandler;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -22,6 +23,7 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 @Order(3)
+@Slf4j
 public class SecurityConfig {
     @Value("${jwt.ignore}")
     private List<String> ignoreList;
@@ -35,13 +37,14 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry = http.authorizeRequests();
         registry.antMatchers(HttpMethod.GET).permitAll();
+        log.debug("security ignore : {}", ignoreList);
         for(String path : ignoreList){
             registry.antMatchers(path).permitAll();
         }
-        registry.antMatchers("/actuator/**")
-//                .requestMatchers(EndpointRequest.toAnyEndpoint())
-                .hasRole("ADMIN")
-                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll();
+//        registry.antMatchers("/actuator/**")
+////                .requestMatchers(EndpointRequest.toAnyEndpoint())
+//                .hasRole("ADMIN")
+//                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll();
 
         return registry.anyRequest().authenticated()
                 .and().csrf().disable()
