@@ -5,5 +5,5 @@
 
 <!--    <include file="db/changelog/20230831_mariadb_create_table.xml"/>-->
     <include file="db/changelog/changelog-store_procedure.xml"/>
-    <include file="db/changelog/20240308_insert_menu_structure.xml"/>
+<!--    <include file="db/changelog/20240308_insert_menu_structure.xml"/>-->
 </databaseChangeLog>

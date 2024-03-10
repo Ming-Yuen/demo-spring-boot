@@ -20,10 +20,14 @@ import java.time.LocalDate;
 )
 public class ProductPrice extends BaseEntity {
     @Column(nullable = false, insertable = true, updatable = false)
+    private String organization;
+    @Column(nullable = false, insertable = true, updatable = false)
     private String region;
     @Column(nullable = false, insertable = true, updatable = false)
     private String productId;
     private BigDecimal price;
     private LocalDate effectiveDate;
+    private LocalDate expiryDate;
     private String currencyUnit;
+    private String description;
 }

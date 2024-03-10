@@ -14,12 +14,11 @@ public class MenuStructureResponse extends DefaultResponse {
     private List<MenuTree> menu = new LinkedList<MenuTree>();
     @Data
     public static class MenuTree{
-        private Long parent;
+        private String parent;
         private String icon;
-        private String name;
+        private String title;
         private String type;
         private String link;
-        private Long roleId;
         private List<MenuTree> child;
     }
 }

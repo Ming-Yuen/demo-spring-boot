@@ -43,8 +43,8 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
 //    @Autowired
 //    private RedisUtil redisUtil;
-    @Value("${jdbc.parameter_size}")
-    private Integer batch_size;
+    @Value("${jpaQueryParameterSize}")
+    private Integer jpaQueryParameterSize;
     @SneakyThrows
     @Override
     public void register(List<UserRegisterRequest> request){
@@ -103,8 +103,8 @@ public class UserServiceImpl implements UserService {
 //            }
         }
         Map<String, User> userInfoTempMap = new HashMap<>();
-        for(int index = 0; index < usernames.length; index+=batch_size){
-            userDao.findByUserNameIn(noCacheUser.stream().skip(index).limit(batch_size).toArray(String[]::new)).forEach(userInfo -> {
+        for(int index = 0; index < usernames.length; index+=jpaQueryParameterSize){
+            userDao.findByUserNameIn(noCacheUser.stream().skip(index).limit(jpaQueryParameterSize).toArray(String[]::new)).forEach(userInfo -> {
                 userInfoTempMap.put(userInfo.getUserName(), userInfo);
             });
         }

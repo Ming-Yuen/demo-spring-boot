@@ -18,6 +18,8 @@ import java.time.LocalDate;
 )
 public class Product extends BaseEntity implements Serializable {
     @Column(nullable = false, insertable = true, updatable = false)
+    private String org;
+    @Column(nullable = false, insertable = true, updatable = false)
     private String region;
     @Column(nullable = false, insertable = true, updatable = false)
     private String productId;

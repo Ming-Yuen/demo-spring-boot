@@ -1,4 +1,4 @@
-package com.demo.product.listener;
+package com.demo.transaction.listener;
 
 import com.demo.common.dto.ScheduleUpdateRequest;
 import com.demo.common.entity.Schedule;

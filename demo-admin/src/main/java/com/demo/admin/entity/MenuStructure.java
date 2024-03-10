@@ -15,14 +15,14 @@ import java.io.Serializable;
 @Entity
 @Table(name = "menu_structure",
         uniqueConstraints  = {
-                @UniqueConstraint(name = "uk_menuStructure", columnNames = "name")
+                @UniqueConstraint(name = "uk_menuStructure", columnNames = "title")
         }
 )
 public class MenuStructure extends BaseEntity implements Serializable {
-    private Long parent;
+    private String parent;
     private String icon;
     @Column(nullable = false)
-    private String name;
+    private String title;
     @Column(nullable = false)
     private String type;
     @Column(nullable = false)

@@ -22,7 +22,7 @@ public class MenuUpdateRequest {
 
         private String parent;
         @NotBlank
-        private String name;
+        private String title;
         @NotNull
         private String type;
         @NotBlank

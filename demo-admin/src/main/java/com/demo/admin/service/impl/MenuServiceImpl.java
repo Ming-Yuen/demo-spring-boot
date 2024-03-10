@@ -65,16 +65,18 @@ public class MenuServiceImpl implements MenuService {
 
     private MenuStructureResponse convertToResponse(List<MenuStructure> menuStructures){
         MenuStructureResponse menuTreeResponse = new MenuStructureResponse();
-        Map<Long, MenuStructureResponse.MenuTree> menuTreeMap = new HashMap<>();
+        Map<String, MenuStructureResponse.MenuTree> menuTreeMap = new HashMap<>();
         menuStructures.forEach(menuItem->{
             MenuStructureResponse.MenuTree menuTree = null;
-            if((menuTree = menuTreeMap.get(menuItem.getParent())) == null){
-                menuTree = menuMapper.convert(menuItem);
-                menuTreeResponse.getMenu().add(menuTree);
-            }else {
+            if(menuItem.getParent() == null){
+                menuTreeResponse.getMenu().add(menuTree = menuMapper.convert(menuItem));
+            }else if((menuTree = menuTreeMap.get(menuItem.getParent())) != null){
+                if(menuTree.getChild() ==null){
+                    menuTree.setChild(new ArrayList<>());
+                }
                 menuTree.getChild().add(menuMapper.convert(menuItem));
             }
-            menuTreeMap.put(menuItem.getId(), menuTree);
+            menuTreeMap.put(menuItem.getTitle(), menuTree);
         });
         return menuTreeResponse;
     }

@@ -12,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableWebMvc
 @EnableCaching
 @EnableScheduling
-@EnableJpaAuditing(auditorAwareRef = "auditorAware")
+//@EnableJpaAuditing(auditorAwareRef = "auditorAware")
 public class DemoTransactionApplication {
     public static void main(String[] args) {
         SpringApplication.run(DemoTransactionApplication.class);
