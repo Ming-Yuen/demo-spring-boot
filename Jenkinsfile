@@ -7,12 +7,15 @@ pipeline {
     stages {
         stage('Clone repository') {
             steps {
+                script {
+                    def currentPath = pwd()
+                    echo "Current Path: ${currentPath}"
+                }
                 git branch: 'main', url: 'https://github.com/Ming-Yuen/demo-spring-boot.git'
             }
         }
         stage('Build') {
             steps {
-                // 构建项目，例如使用Maven
                 sh 'mvn clean package'
             }
         }

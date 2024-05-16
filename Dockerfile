@@ -5,8 +5,7 @@ FROM openjdk:8
 WORKDIR /app
 
 # 将构建环境中的 JAR 文件复制到容器中的 /app 目录
-COPY demo/demo-report/target/demo-report-1.0.1-SNAPSHOT.jar /app/demo.jar
-
+COPY demo-common/target/demo-common-1.0.1-SNAPSHOT.jar /app/demo.jar
 # 暴露容器监听的端口
 EXPOSE 8080
 
