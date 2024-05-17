@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 @RequestMapping(ControllerPath.user)
 public class UserController {
     @Autowired
-    @PreAuthorize()
     private UserService userService;
     @PostMapping(path = ControllerPath.UPDATE, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public DefaultResponse update(@Valid @RequestBody List<UserRegisterRequest> request){
