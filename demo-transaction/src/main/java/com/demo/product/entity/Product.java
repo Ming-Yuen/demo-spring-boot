@@ -7,7 +7,6 @@ import lombok.EqualsAndHashCode;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -18,6 +17,8 @@ import java.util.Date;
         }
 )
 public class Product extends BaseEntity implements Serializable {
+    @Column(nullable = false, insertable = true, updatable = false)
+    private String org;
     @Column(nullable = false, insertable = true, updatable = false)
     private String region;
     @Column(nullable = false, insertable = true, updatable = false)

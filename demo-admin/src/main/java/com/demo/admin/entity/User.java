@@ -17,7 +17,7 @@ import java.util.Date;
                 @UniqueConstraint(name = "uk_username", columnNames = {"username"})
         }
 )
-public class UserInfo extends BaseEntity implements Serializable {
+public class User extends BaseEntity implements Serializable {
     @Column(nullable = false, updatable = false)
     private String userName;
     private String firstName;

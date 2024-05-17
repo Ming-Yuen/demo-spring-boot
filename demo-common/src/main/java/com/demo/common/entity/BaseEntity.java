@@ -14,7 +14,7 @@ public class BaseEntity extends AuditingEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @Version
-//    @Column(name = "version", nullable = false, updatable = false)
-//    private Integer version;
+    @Version
+    @Column(name = "version", nullable = false, updatable = false)
+    private Integer version = 1;
 }

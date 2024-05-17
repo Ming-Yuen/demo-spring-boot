@@ -4,7 +4,6 @@ import com.demo.common.entity.Schedule;
 import com.demo.common.exception.ValidationException;
 import com.demo.common.listener.ScheduleLockJobListener;
 import com.demo.common.service.ScheduleService;
-import com.demo.common.util.RedisUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

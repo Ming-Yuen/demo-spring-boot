@@ -1,8 +1,8 @@
 package com.demo.admin.security.filter;
 
+import com.demo.admin.entity.User;
 import com.demo.admin.security.JwtManager;
 import com.demo.admin.service.UserService;
-import com.demo.admin.entity.UserInfo;
 import com.demo.admin.security.AdminUserDetails;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +51,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         chain.doFilter(request, response);
     }
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserInfo umsAdminList = userService.findByUserName(username);
+        User umsAdminList = userService.findByUserName(username);
         if (umsAdminList != null) {
             return new AdminUserDetails(umsAdminList);
         }

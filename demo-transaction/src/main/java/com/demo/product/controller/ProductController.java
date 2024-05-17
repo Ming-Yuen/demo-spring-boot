@@ -1,9 +1,11 @@
 package com.demo.product.controller;
 
 import com.demo.common.controller.ControllerPath;
+import com.demo.common.dto.DefaultResponse;
 import com.demo.product.dto.ProductEnquiryRequest;
 import com.demo.product.entity.Product;
 import com.demo.product.service.ProductService;
+import com.demo.product.vo.ProductUpdateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,8 +21,14 @@ import java.util.List;
 public class ProductController {
     @Autowired
     private ProductService productService;
-    @PostMapping(path = ControllerPath.query, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = ControllerPath.QUERY, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public List<Product> enquiry(@Valid @RequestBody ProductEnquiryRequest request){
         return productService.enquiry(request);
+    }
+
+    @PostMapping(path = ControllerPath.UPDATE, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public DefaultResponse update(@Valid @RequestBody ProductUpdateRequest[] request){
+        productService.update(request);
+        return new DefaultResponse();
     }
 }

@@ -22,16 +22,16 @@ public class UserController {
     @Autowired
     @PreAuthorize()
     private UserService userService;
-    @PostMapping(path = ControllerPath.update, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = ControllerPath.UPDATE, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public DefaultResponse update(@Valid @RequestBody List<UserRegisterRequest> request){
         userService.register(request);
         return new UserRegisterResponse(request.stream().map(UserRegisterRequest::getUserName).collect(Collectors.toList()));
     }
-    @PostMapping(path = ControllerPath.token, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public TokenResponse login(@Valid @RequestBody TokenRequest request){
+    @PostMapping(path = ControllerPath.TOKEN, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public TokenResponse tokenEnquiry(@Valid @RequestBody TokenRequest request){
         return new TokenResponse(userService.login(request.getUsername(), request.getPassword()));
     }
-    @PostMapping(path = ControllerPath.query, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = ControllerPath.QUERY, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public UserQueryResponse query(@Valid @RequestBody UserQueryRequest request){
         return new UserQueryResponse(userService.query(request));
     }

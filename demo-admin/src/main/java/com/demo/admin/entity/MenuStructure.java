@@ -4,19 +4,29 @@ import com.demo.common.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import java.io.Serializable;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-@Table(name = "menuStructure",
+@Table(name = "menu_structure",
         uniqueConstraints  = {
-                @UniqueConstraint(name = "uk_menuStructure", columnNames = "name")
+                @UniqueConstraint(name = "uk_menuStructure", columnNames = "title")
         }
 )
-public class MenuStructure extends BaseEntity {
-    private Long parent;
+public class MenuStructure extends BaseEntity implements Serializable {
+    private String parent;
     private String icon;
-    private String name;
-    private Integer roleId;
+    @Column(nullable = false)
+    private String title;
+    @Column(nullable = false)
+    private String type;
+    @Column(nullable = false)
+    private String link;
+    @Column(nullable = false)
+    private Long roleId;
 }

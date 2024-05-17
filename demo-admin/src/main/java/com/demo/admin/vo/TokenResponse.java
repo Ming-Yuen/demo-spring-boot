@@ -9,5 +9,5 @@ import lombok.EqualsAndHashCode;
 @Data
 @AllArgsConstructor
 public class TokenResponse extends DefaultResponse {
-    private String token;
+    private String inter;
 }
