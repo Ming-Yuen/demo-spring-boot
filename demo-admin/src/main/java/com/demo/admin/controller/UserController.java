@@ -9,6 +9,7 @@ import com.demo.common.controller.ControllerPath;
 import com.demo.common.dto.DefaultResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 @RequestMapping(ControllerPath.user)
 public class UserController {
     @Autowired
+    @PreAuthorize()
     private UserService userService;
     @PostMapping(path = ControllerPath.update, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public DefaultResponse update(@Valid @RequestBody List<UserRegisterRequest> request){
