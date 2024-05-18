@@ -30,7 +30,7 @@ pipeline {
         }
         stage('Docker Run') {
             steps {
-                sh 'docker run -d -p 8180:8180 demo-spring-boot'
+                sh 'docker run -d -p 8180:8180 --name demo-spring-boot demo-spring-boot'
             }
         }
     }
