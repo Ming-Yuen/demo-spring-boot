@@ -6,6 +6,8 @@ WORKDIR /app
 
 # 将构建环境中的 JAR 文件复制到容器中的 /app 目录
 COPY demo-admin/target/demo-admin-1.0.1-SNAPSHOT.jar /app/demo-admin.jar
+COPY application.properties /app/application.properties
+
 # 暴露容器监听的端口
 EXPOSE 8180
 

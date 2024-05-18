@@ -20,11 +20,7 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'mvn clean compile' // 清理并编译项目
-                sh 'mvn install' // 清理并编译项目
-                        sh 'mvn mapstruct:mapstruct-jdk8:generate' // 生成MapStruct类
-                        sh 'mvn querydsl:generate' // 生成Querydsl类
-                        sh 'mvn package' // 打包项目
+               sh 'mvn clean package' // 打包项目
             }
         }
         stage('Docker Build') {
