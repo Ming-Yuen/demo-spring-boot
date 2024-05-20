@@ -7,6 +7,7 @@ pipeline {
     stages {
         stage('Clone repository') {
             steps {
+                echo '测试测尺.'
                 sh 'docker stop demo-spring-boot || true'
                 sh 'docker rm demo-spring-boot || true'
                 sh 'docker rmi demo-spring-boot || true'
