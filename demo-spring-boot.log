@@ -1,0 +1,131 @@
+452  [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 6.1.7.Final
+478  [main] INFO  com.demo.DemoAdminApplication - Starting DemoAdminApplication on DESKTOP-MKO405Q with PID 14588 (C:\Users\Administrator\demo\demo-spring-boot\demo-admin\target\classes started by Administrator in C:\Users\Administrator\demo\demo-spring-boot)
+479  [main] INFO  com.demo.DemoAdminApplication - The following profiles are active: dev
+1369 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+1371 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+1551 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 174ms. Found 8 JPA repository interfaces.
+1563 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+1564 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+1586 [main] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.demo.admin.dao.MenuDao. If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository.
+1587 [main] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.demo.admin.dao.UserDao. If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository.
+1587 [main] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.demo.admin.dao.UserRoleDao. If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository.
+1587 [main] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.demo.common.dao.ScheduleDao. If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository.
+1587 [main] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.demo.product.dao.ProductDao. If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository.
+1587 [main] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.demo.product.dao.ProductPriceDao. If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository.
+1587 [main] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.demo.transaction.dao.SalesDao. If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository.
+1588 [main] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.demo.transaction.dao.SalesItemDao. If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository.
+1588 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 16ms. Found 0 Redis repository interfaces.
+2304 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8081 (http)
+2312 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8081"]
+2312 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2312 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.46]
+2399 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2400 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1873 ms
+2628 [main] INFO  org.redisson.Version - Redisson 3.15.2
+3230 [redisson-netty-2-23] INFO  o.r.c.p.MasterPubSubConnectionPool - 1 connections initialized for /192.168.158.136:6379
+3235 [redisson-netty-2-18] INFO  o.r.c.pool.MasterConnectionPool - 24 connections initialized for /192.168.158.136:6379
+3474 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+3526 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 5.4.32.Final
+3651 [main] INFO  o.h.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+3735 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+4255 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+4267 [main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.OracleDialect
+4271 [main] WARN  o.hibernate.dialect.Oracle9Dialect - HHH000063: The Oracle9Dialect dialect has been deprecated; use either Oracle9iDialect or Oracle10gDialect instead
+4272 [main] WARN  org.hibernate.dialect.OracleDialect - HHH000064: The OracleDialect dialect has been deprecated; use Oracle8iDialect instead
+5124 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+5131 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+5754 [main] DEBUG org.hibernate.SQL - select user0_.id as id1_8_, user0_.created_at as created_2_8_, user0_.created_by as created_3_8_, user0_.updated_at as updated_4_8_, user0_.update_by as update_b5_8_, user0_.version as version6_8_, user0_.email as email7_8_, user0_.first_name as first_na8_8_, user0_.gender as gender9_8_, user0_.last_name as last_na10_8_, user0_.password as passwor11_8_, user0_.phone as phone12_8_, user0_.resign_date as resign_13_8_, user0_.role as role14_8_, user0_.user_name as user_na15_8_ from users user0_ where user0_.user_name in (?)
+5758 [main] TRACE o.h.type.descriptor.sql.BasicBinder - binding parameter [1] as [VARCHAR] - [admin]
+5762 [main] TRACE o.h.t.descriptor.sql.BasicExtractor - extracted value ([id1_8_] : [BIGINT]) - [1]
+5766 [main] TRACE o.h.t.descriptor.sql.BasicExtractor - extracted value ([created_2_8_] : [TIMESTAMP]) - [2024-05-21T21:53:12+08:00]
+5767 [main] TRACE o.h.t.descriptor.sql.BasicExtractor - extracted value ([created_3_8_] : [VARCHAR]) - [system]
+5767 [main] TRACE o.h.t.descriptor.sql.BasicExtractor - extracted value ([updated_4_8_] : [TIMESTAMP]) - [2024-05-21T21:53:12+08:00]
+5767 [main] TRACE o.h.t.descriptor.sql.BasicExtractor - extracted value ([update_b5_8_] : [VARCHAR]) - [system]
+5767 [main] TRACE o.h.t.descriptor.sql.BasicExtractor - extracted value ([version6_8_] : [INTEGER]) - [1]
+5767 [main] TRACE o.h.t.descriptor.sql.BasicExtractor - extracted value ([email7_8_] : [VARCHAR]) - [null]
+5767 [main] TRACE o.h.t.descriptor.sql.BasicExtractor - extracted value ([first_na8_8_] : [VARCHAR]) - [null]
+5767 [main] TRACE o.h.t.descriptor.sql.BasicExtractor - extracted value ([gender9_8_] : [INTEGER]) - [null]
+5767 [main] TRACE o.h.t.descriptor.sql.BasicExtractor - extracted value ([last_na10_8_] : [VARCHAR]) - [null]
+5767 [main] TRACE o.h.t.descriptor.sql.BasicExtractor - extracted value ([passwor11_8_] : [VARCHAR]) - [$2a$10$FLn2buO5a1kkv2xAzDBp5eBUCC27t.empf.zMJgjxQTC.DkMSi92G]
+5768 [main] TRACE o.h.t.descriptor.sql.BasicExtractor - extracted value ([phone12_8_] : [VARCHAR]) - [null]
+5768 [main] TRACE o.h.t.descriptor.sql.BasicExtractor - extracted value ([resign_13_8_] : [TIMESTAMP]) - [null]
+5768 [main] TRACE o.h.t.descriptor.sql.BasicExtractor - extracted value ([role14_8_] : [INTEGER]) - [admin]
+5768 [main] TRACE o.h.t.descriptor.sql.BasicExtractor - extracted value ([user_na15_8_] : [VARCHAR]) - [admin]
+5777 [main] INFO  c.d.a.listener.AdminDataListener - data init success
+5855 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+6057 [main] DEBUG org.hibernate.SQL - select schedule0_.id as id1_6_, schedule0_.created_at as created_2_6_, schedule0_.created_by as created_3_6_, schedule0_.updated_at as updated_4_6_, schedule0_.update_by as update_b5_6_, schedule0_.version as version6_6_, schedule0_.config as config7_6_, schedule0_.cron as cron8_6_, schedule0_.description as descript9_6_, schedule0_.enable as enable10_6_, schedule0_.job_class as job_cla11_6_, schedule0_.name as name12_6_ from schedule schedule0_ where schedule0_.name=?
+6057 [main] TRACE o.h.type.descriptor.sql.BasicBinder - binding parameter [1] as [VARCHAR] - [Import_MPF_History]
+6058 [main] TRACE o.h.t.descriptor.sql.BasicExtractor - extracted value ([id1_6_] : [BIGINT]) - [2]
+6059 [main] TRACE o.h.t.descriptor.sql.BasicExtractor - extracted value ([created_2_6_] : [TIMESTAMP]) - [2024-05-21T21:53:12+08:00]
+6059 [main] TRACE o.h.t.descriptor.sql.BasicExtractor - extracted value ([created_3_6_] : [VARCHAR]) - [system]
+6059 [main] TRACE o.h.t.descriptor.sql.BasicExtractor - extracted value ([updated_4_6_] : [TIMESTAMP]) - [2024-05-21T21:53:12+08:00]
+6059 [main] TRACE o.h.t.descriptor.sql.BasicExtractor - extracted value ([update_b5_6_] : [VARCHAR]) - [system]
+6059 [main] TRACE o.h.t.descriptor.sql.BasicExtractor - extracted value ([version6_6_] : [INTEGER]) - [1]
+6059 [main] TRACE o.h.t.descriptor.sql.BasicExtractor - extracted value ([config7_6_] : [VARCHAR]) - [null]
+6059 [main] TRACE o.h.t.descriptor.sql.BasicExtractor - extracted value ([cron8_6_] : [VARCHAR]) - [*/5 * * * * ? *]
+6059 [main] TRACE o.h.t.descriptor.sql.BasicExtractor - extracted value ([descript9_6_] : [VARCHAR]) - [Import MPF history]
+6059 [main] TRACE o.h.t.descriptor.sql.BasicExtractor - extracted value ([enable10_6_] : [INTEGER]) - [1]
+6059 [main] TRACE o.h.t.descriptor.sql.BasicExtractor - extracted value ([job_cla11_6_] : [VARCHAR]) - [com.demo.product.schedule.MPFDailyDownloadScheduler]
+6059 [main] TRACE o.h.t.descriptor.sql.BasicExtractor - extracted value ([name12_6_] : [VARCHAR]) - [Import_MPF_History]
+6060 [main] INFO  c.d.t.l.TransactionDataListener - data init success
+6064 [main] INFO  o.s.s.c.ThreadPoolTaskExecutor - Initializing ExecutorService
+6064 [main] INFO  o.s.s.c.ThreadPoolTaskExecutor - Initializing ExecutorService 'taskExecutor'
+6097 [main] INFO  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: d707bd55-ea35-4ac1-a481-bd5244e2edc1
+
+6168 [main] INFO  o.s.s.w.DefaultSecurityFilterChain - Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@19993ed, org.springframework.security.web.context.SecurityContextPersistenceFilter@77a14911, org.springframework.security.web.header.HeaderWriterFilter@12ce659, org.springframework.security.web.authentication.logout.LogoutFilter@33f059ad, com.demo.admin.security.filter.JwtAuthenticationTokenFilter@54fbaa65, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1142843c, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@71ae1cb, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@7479cdf7, org.springframework.security.web.session.SessionManagementFilter@56c26b21, org.springframework.security.web.access.ExceptionTranslationFilter@77f66138, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@19487d13]
+6196 [main] INFO  org.quartz.impl.StdSchedulerFactory - Using default implementation for ThreadExecutor
+6199 [main] INFO  org.quartz.simpl.SimpleThreadPool - Job execution threads will use class loader of thread: main
+6209 [main] INFO  o.quartz.core.SchedulerSignalerImpl - Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
+6209 [main] INFO  org.quartz.core.QuartzScheduler - Quartz Scheduler v.2.3.2 created.
+6210 [main] INFO  org.quartz.simpl.RAMJobStore - RAMJobStore initialized.
+6210 [main] INFO  org.quartz.core.QuartzScheduler - Scheduler meta-data: Quartz Scheduler (v2.3.2) 'DefaultQuartzScheduler' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 10 threads.
+  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+
+6211 [main] INFO  org.quartz.impl.StdSchedulerFactory - Quartz scheduler 'DefaultQuartzScheduler' initialized from default resource file in Quartz package: 'quartz.properties'
+6211 [main] INFO  org.quartz.impl.StdSchedulerFactory - Quartz scheduler version: 2.3.2
+6211 [main] INFO  org.quartz.core.QuartzScheduler - JobFactory set to: com.demo.common.config.AutowiredSpringBeanJobFactory$$EnhancerBySpringCGLIB$$1216041c@33ef393a
+6211 [main] INFO  org.quartz.core.QuartzScheduler - Scheduler DefaultQuartzScheduler_$_NON_CLUSTERED started.
+6292 [main] WARN  o.s.w.s.r.ResourceHttpRequestHandler - Locations list is empty. No resources will be served unless a custom ResourceResolver is configured as an alternative to PathResourceResolver.
+6868 [main] WARN  o.s.b.a.batch.JpaBatchConfigurer - JPA does not support custom isolation levels, so locks may not be taken when launching Jobs
+6872 [main] INFO  o.s.b.c.r.s.JobRepositoryFactoryBean - No database type set, using meta data indicating: ORACLE
+6892 [main] INFO  o.s.b.c.l.support.SimpleJobLauncher - No TaskExecutor has been set, defaulting to synchronous executor.
+6955 [main] INFO  org.quartz.impl.StdSchedulerFactory - Using default implementation for ThreadExecutor
+6956 [main] INFO  o.quartz.core.SchedulerSignalerImpl - Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
+6957 [main] INFO  org.quartz.core.QuartzScheduler - Quartz Scheduler v.2.3.2 created.
+6957 [main] INFO  org.quartz.simpl.RAMJobStore - RAMJobStore initialized.
+6957 [main] INFO  org.quartz.core.QuartzScheduler - Scheduler meta-data: Quartz Scheduler (v2.3.2) 'quartzScheduler' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 10 threads.
+  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+
+6957 [main] INFO  org.quartz.impl.StdSchedulerFactory - Quartz scheduler 'quartzScheduler' initialized from an externally provided properties instance.
+6957 [main] INFO  org.quartz.impl.StdSchedulerFactory - Quartz scheduler version: 2.3.2
+6957 [main] INFO  org.quartz.core.QuartzScheduler - JobFactory set to: org.springframework.scheduling.quartz.SpringBeanJobFactory@6ddeeb78
+6963 [main] INFO  o.s.s.c.ThreadPoolTaskScheduler - Initializing ExecutorService 'taskScheduler'
+6983 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8081"]
+7017 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8081 (http) with context path ''
+7068 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 10111 (http)
+7068 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-10111"]
+7068 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+7068 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.46]
+7084 [main] INFO  o.a.c.c.C.[.[localhost].[/] - Initializing Spring embedded WebApplicationContext
+7084 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 64 ms
+7093 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 13 endpoint(s) beneath base path '/actuator'
+7111 [main] WARN  o.s.w.s.r.ResourceHttpRequestHandler - Locations list is empty. No resources will be served unless a custom ResourceResolver is configured as an alternative to PathResourceResolver.
+7119 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-10111"]
+7121 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 10111 (http) with context path ''
+7124 [main] INFO  o.s.s.quartz.SchedulerFactoryBean - Starting Quartz Scheduler now
+7124 [main] INFO  org.quartz.core.QuartzScheduler - Scheduler quartzScheduler_$_NON_CLUSTERED started.
+7132 [main] INFO  com.demo.DemoAdminApplication - Started DemoAdminApplication in 6.924 seconds (JVM running for 7.332)
+7136 [main] INFO  c.d.common.listener.RefreshListener - catalina.base : C:\Users\Administrator\AppData\Local\Temp\tomcat.10111.4684572215517350708
+7136 [main] INFO  c.d.common.listener.RefreshListener - Database url : jdbc:oracle:thin:@192.168.158.136:1521:xe, username : demo
