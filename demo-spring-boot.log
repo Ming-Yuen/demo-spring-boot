@@ -129,3 +129,10 @@ Using generated security password: d707bd55-ea35-4ac1-a481-bd5244e2edc1
 7132 [main] INFO  com.demo.DemoAdminApplication - Started DemoAdminApplication in 6.924 seconds (JVM running for 7.332)
 7136 [main] INFO  c.d.common.listener.RefreshListener - catalina.base : C:\Users\Administrator\AppData\Local\Temp\tomcat.10111.4684572215517350708
 7136 [main] INFO  c.d.common.listener.RefreshListener - Database url : jdbc:oracle:thin:@192.168.158.136:1521:xe, username : demo
+3435798 [http-nio-8081-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+3435798 [http-nio-8081-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+3435805 [http-nio-8081-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 7 ms
+3435820 [http-nio-8081-exec-1] INFO  c.demo.common.filter.ServletFilter - IP : 0:0:0:0:0:0:0:1, port : 49680, method : get, url : http://localhost:8081/structure/menu/default/query
+3435842 [http-nio-8081-exec-1] DEBUG org.hibernate.SQL - select menustruct0_.id as id1_1_, menustruct0_.created_at as created_2_1_, menustruct0_.created_by as created_3_1_, menustruct0_.updated_at as updated_4_1_, menustruct0_.update_by as update_b5_1_, menustruct0_.version as version6_1_, menustruct0_.icon as icon7_1_, menustruct0_.link as link8_1_, menustruct0_.parent as parent9_1_, menustruct0_.role_id as role_id10_1_, menustruct0_.title as title11_1_, menustruct0_.type as type12_1_ from menu_structure menustruct0_ where menustruct0_.role_id in (?)
+3435844 [http-nio-8081-exec-1] TRACE o.h.type.descriptor.sql.BasicBinder - binding parameter [1] as [BIGINT] - [0]
+3435910 [http-nio-8081-exec-1] INFO  c.demo.common.filter.ServletFilter - response : {"success":true,"menu":[]}
