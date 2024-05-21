@@ -9,7 +9,7 @@ COPY demo-admin/target/demo-admin-1.0.1-SNAPSHOT.jar /app/demo-admin.jar
 COPY application.properties /app/application.properties
 
 # 暴露容器监听的端口
-EXPOSE 8180
+EXPOSE 8081
 
 # 定义容器启动时执行的命令
 CMD ["java", "-jar", "/app/demo-admin.jar"]
