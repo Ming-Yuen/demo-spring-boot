@@ -13,7 +13,8 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-@Table(uniqueConstraints  = {
+@Table(name = "users",
+        uniqueConstraints  = {
                 @UniqueConstraint(name = "uk_username", columnNames = {"username"})
         }
 )
