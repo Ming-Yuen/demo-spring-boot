@@ -1,10 +1,10 @@
 package com.demo.product.batch;
 
-import com.demo.product.converter.ProductPriceConverter;
+import com.demo.product.mapper.ProductMapper;
+import com.demo.product.mapper.ProductPriceMapper;
 import com.demo.product.vo.manulife.MPFDailyResponse;
 import com.demo.product.entity.Product;
 import com.demo.product.entity.ProductPrice;
-import com.demo.product.converter.ProductConverter;
 import com.demo.product.service.ProductService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -46,9 +46,9 @@ public class MPFHttpUpdateHistory {
     @Autowired
     private ProductService productService;
     @Autowired
-    private ProductConverter productConverter;
+    private ProductMapper productMapper;
     @Autowired
-    private ProductPriceConverter productPriceConverter;
+    private ProductPriceMapper productPriceMapper;
 
     @Bean
     public Step downloadAndSaveStep() {
@@ -83,14 +83,14 @@ public class MPFHttpUpdateHistory {
 
                         records.forEach(item->{
                             if(!productService.existsByProductId(item.getFundId())){
-                                Product product = productConverter.convert(item);
+                                Product product = productMapper.convert(item);
                                 productMap.put(item.getFundId(), product);
                             }
 
                             if(item.getNav() != null){
                                 ProductPrice productPrice = productService.getLatestProductPrice(item.getNav().getAsOfDate(), item.getFundId(), "HK");
                                 if(productPrice == null){
-                                    ProductPrice price = productPriceConverter.convert(item);
+                                    ProductPrice price = productPriceMapper.convert(item);
                                     productPriceMap.put(String.join(".", String.valueOf(item.getNav().getAsOfDate()), item.getFundId()), price);
                                 }
                             }

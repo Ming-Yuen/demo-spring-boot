@@ -13,7 +13,6 @@ import com.demo.common.entity.enums.UserRole;
 import com.demo.common.util.Json;
 import com.demo.common.util.LambdaUtil;
 //import com.demo.common.util.RedisUtil;
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,8 +28,6 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class UserServiceImpl implements UserService {
-    @Autowired
-    private JPAQueryFactory queryFactory;
     @Autowired
     private UserDao userDao;
     @Autowired

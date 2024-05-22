@@ -5,12 +5,10 @@ import com.demo.admin.dao.MenuDao;
 import com.demo.admin.dto.MenuQueryRequest;
 import com.demo.admin.dto.MenuUpdateRequest;
 import com.demo.admin.entity.MenuStructure;
-import com.demo.admin.entity.QMenuStructure;
 import com.demo.admin.vo.MenuStructureResponse;
 import com.demo.common.entity.enums.UserRole;
 import com.demo.admin.service.MenuService;
 import com.demo.admin.service.UserService;
-import com.querydsl.jpa.impl.JPADeleteClause;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -84,8 +82,7 @@ public class MenuServiceImpl implements MenuService {
     @Transactional
     @Override
     public void menuUpdate(MenuUpdateRequest menuUpdateRequest) {
-        QMenuStructure qMenuStructure = QMenuStructure.menuStructure;
-        long delete_count = new JPADeleteClause(entityManager, qMenuStructure).where(qMenuStructure.type.eq("web")).execute();
+        long delete_count = menuDao.deleteByType("web");
         log.debug("menu delete count : {}", delete_count);
 
         menuDao.peristAllAndFlush(menuMapper.convert(menuUpdateRequest.getMenu()));

@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.time.LocalDate;
 
 @EqualsAndHashCode(callSuper = true)
@@ -13,18 +12,19 @@ import java.time.LocalDate;
 @Data
 @Table(name = "product",
         uniqueConstraints  = {
-                @UniqueConstraint(name = "uk_product1", columnNames = {"productId","region"})
+                @UniqueConstraint(name = "uk_product", columnNames = {"productId"})
         }
 )
-public class Product extends BaseEntity implements Serializable {
-    @Column(nullable = false, insertable = true, updatable = false)
-    private String org;
-    @Column(nullable = false, insertable = true, updatable = false)
-    private String region;
+public class Product extends BaseEntity {
     @Column(nullable = false, insertable = true, updatable = false)
     private String productId;
     @Column(nullable = false)
-    private String name;
+    private String productName;
     private String category;
-    private LocalDate activeDate;
+    private Integer enable;
+
+    @Data
+    public static class ProductId{
+        String productId;
+    }
 }
