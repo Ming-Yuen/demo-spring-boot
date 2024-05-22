@@ -6,13 +6,12 @@ import com.demo.admin.security.filter.RestfulAccessDeniedHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
@@ -24,7 +23,7 @@ import java.util.List;
 @EnableWebSecurity
 @Order(3)
 @Slf4j
-public class SecurityConfig {
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${jwt.ignore}")
     private List<String> ignoreList;
     @Autowired
@@ -33,8 +32,8 @@ public class SecurityConfig {
     private RestfulAccessDeniedHandler restfulAccessDeniedHandler;
     @Autowired
     private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
         ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry = http.authorizeRequests();
         registry.antMatchers(HttpMethod.GET).permitAll();
         log.debug("security ignore : {}", ignoreList);
@@ -46,15 +45,14 @@ public class SecurityConfig {
 //                .hasRole("ADMIN")
 //                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll();
 
-        return registry.anyRequest().authenticated()
+        registry.anyRequest().authenticated()
                 .and().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .exceptionHandling()
                 .accessDeniedHandler(restfulAccessDeniedHandler)
 //                .authenticationEntryPoint(restAuthenticationEntryPoint)
-                .and().addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
+                .and().addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 //    //    @Override
 ////    protected void configure(AuthenticationManagerBuilder auth) throws Exception{
