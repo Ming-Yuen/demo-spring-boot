@@ -17,7 +17,6 @@ public interface UserService {
     User findByUserName(String username);
     Collection<Long> getManageRoles(UserRole userRole);
 
-    String passwordEncode(String password);
     List<User> query(UserQueryRequest request);
     void saveUserEncryptPassword(User... userRecords);
     void saveUser(User... userRecords);

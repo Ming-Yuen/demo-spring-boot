@@ -1,6 +1,6 @@
 package com.demo.admin.service.impl;
 
-import com.demo.admin.MenuMapper;
+import com.demo.admin.mapper.MenuMapper;
 import com.demo.admin.dao.MenuDao;
 import com.demo.admin.dto.MenuQueryRequest;
 import com.demo.admin.dto.MenuUpdateRequest;
@@ -14,8 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityManager;
 import java.util.*;
 
 @Slf4j
@@ -27,8 +25,6 @@ public class MenuServiceImpl implements MenuService {
     private UserService userService;
     @Autowired
     private MenuMapper menuMapper;
-    @Autowired
-    private EntityManager entityManager;
 
     @Override
     public MenuStructureResponse getStructure(MenuQueryRequest menuQueryRequest){
@@ -36,7 +32,7 @@ public class MenuServiceImpl implements MenuService {
             return convertToResponse(menuDao.findByRoleIdIn(Collections.singletonList(0L)));
         }
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        UserRole role_level = userService.findByUserName(username).getRole();
+        UserRole role_level = UserRole.getRoleById(userService.findByUserName(username).getRole());
 
         Map<Long, MenuStructureResponse.MenuTree> menuTreeMap = new HashMap<>();
 
@@ -85,6 +81,6 @@ public class MenuServiceImpl implements MenuService {
         long delete_count = menuDao.deleteByType("web");
         log.debug("menu delete count : {}", delete_count);
 
-        menuDao.peristAllAndFlush(menuMapper.convert(menuUpdateRequest.getMenu()));
+        menuDao.saveAll(menuMapper.convert(menuUpdateRequest.getMenu()));
     }
 }

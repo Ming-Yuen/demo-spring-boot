@@ -15,7 +15,9 @@ public interface ProductMapper {
     ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
     @Mapping(target = "productId", source = "fundId")
     @Mapping(target = "productName", source = "fundName")
-    @Mapping(target = "category", source = "platformName")
+    @Mapping(target = "company", source = "platformName")
+    @Mapping(target = "category", source = "productLine")
+    @Mapping(target = "riskRating", source = "riskRating")
     Product convert(MPFDailyResponse mpfDailyResponse);
 
     Product[] convert(List<ProductUpdateRequest> collect);

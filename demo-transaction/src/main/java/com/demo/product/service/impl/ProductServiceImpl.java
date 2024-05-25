@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -34,8 +35,6 @@ public class ProductServiceImpl implements ProductService {
     private ProductPriceDao productPriceDao;
     @Autowired
     private ProductPriceMapper productPriceMapper;
-    @Value("${jpaQueryParameterSize}")
-    private Integer jpaQueryParameterSize;
 
     @Override
     public List<Product> enquiry(ProductEnquiryRequest request) {
@@ -56,8 +55,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductPrice getLatestProductPrice(LocalDate txDate, String productId, String region) {
-        return productPriceDao.findFirstByEffectiveDateBeforeAndProductIdAndRegionOrderByEffectiveDate(txDate, productId, region);
+    public ProductPrice getLatestProductPrice(OffsetDateTime txDatetime, String productId, String region) {
+        return productPriceDao.findFirstByEffectiveDateBeforeAndProductIdOrderByEffectiveDate(txDatetime, productId);
     }
 
     @Override
@@ -71,11 +70,7 @@ public class ProductServiceImpl implements ProductService {
     public void update(ProductUpdateRequest[] request) {
         List<ProductUpdateRequest> latestProductList = Arrays.stream(request).filter(LambdaUtil.distinctByKey(ProductUpdateRequest::getModifyDateTime)).collect(Collectors.toList());
 
-        for (int indexProductRequest = 0; indexProductRequest < request.length; indexProductRequest += jpaQueryParameterSize) {
-            List<ProductUpdateRequest> productUpdateRequestSubList = latestProductList.subList(indexProductRequest, Math.min(indexProductRequest + jpaQueryParameterSize, latestProductList.size()));
-
-            update(productMapper.convert(productUpdateRequestSubList));
-        }
+        update(productMapper.convert(latestProductList));
     }
 
     @Transactional
@@ -84,7 +79,7 @@ public class ProductServiceImpl implements ProductService {
         String[] productIds = Arrays.stream(products).map(Product::getProductId).toArray(String[]::new);
         Set<String> presentProductIds = productDao.findByProductId(productIds, Product.ProductId.class).stream().map(Product.ProductId::getProductId).collect(Collectors.toSet());
 
-        productDao.persistAll(Arrays.stream(products).filter(product -> !presentProductIds.contains(product.getProductId())).collect(Collectors.toList()));
+        productDao.saveAll(Arrays.stream(products).filter(product -> !presentProductIds.contains(product.getProductId())).collect(Collectors.toList()));
     }
     @Transactional
     @Override

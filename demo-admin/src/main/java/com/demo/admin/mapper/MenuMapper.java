@@ -1,4 +1,4 @@
-package com.demo.admin;
+package com.demo.admin.mapper;
 
 import com.demo.admin.dto.MenuUpdateRequest;
 import com.demo.admin.entity.MenuStructure;

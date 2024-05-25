@@ -1,9 +1,8 @@
 package com.demo.admin.entity;
 
 import com.demo.common.entity.BaseEntity;
+import jakarta.persistence.*;
 import lombok.Data;
-
-import javax.persistence.*;
 
 @Data
 @Entity

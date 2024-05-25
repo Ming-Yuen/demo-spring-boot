@@ -1,9 +1,9 @@
 package com.demo.common.entity;
 
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.*;
 
 @EqualsAndHashCode(callSuper = true)
 @Data

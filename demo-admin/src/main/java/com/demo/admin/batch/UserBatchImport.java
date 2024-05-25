@@ -1,18 +1,18 @@
 package com.demo.admin.batch;
 
 import com.demo.admin.entity.User;
-import com.demo.admin.enums.Gender;
 import com.demo.admin.service.UserService;
 import com.demo.admin.listener.JobCompletionNotificationListener;
-import com.demo.common.entity.enums.UserRole;
 import com.demo.common.util.DateUtil;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
-import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
-import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
@@ -27,6 +27,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import java.io.File;
 import java.time.OffsetDateTime;
@@ -34,15 +35,19 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
 @Configuration
-@EnableBatchProcessing
+//@EnableBatchProcessing
+@RequiredArgsConstructor
 public class UserBatchImport {
     private final String task = this.getClass().getName();
     @Autowired
-    public JobBuilderFactory jobBuilderFactory;
-    @Autowired
-    public StepBuilderFactory stepBuilderFactory;
-    @Autowired
     public UserService userService;
+    private final JobRepository jobRepository;
+    private final PlatformTransactionManager transactionManager;
+
+//    public UserBatchImport(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
+//        this.jobRepository = jobRepository;
+//        this.transactionManager = transactionManager;
+//    }
     @Bean
     public ItemReader<User> reader() {
         FlatFileItemReader<User> reader = new FlatFileItemReader<>();
@@ -67,13 +72,13 @@ public class UserBatchImport {
     }
     @Bean
     public ItemWriter<User> writer() {
-        return users->userService.saveUserEncryptPassword(users.toArray(new User[]{}));
+        return users->userService.saveUserEncryptPassword(users.getItems().toArray(new User[]{}));
     }
 
     @Bean
-    public Step insertToPending(ItemReader<User> reader, ItemWriter<User> writer, UserItemProcessor processor) {
-        return stepBuilderFactory.get("step1")
-                .<User, User>chunk(10000)
+    public Step insertToPending(final JobRepository jobRepository, final PlatformTransactionManager transactionManager, ItemReader<User> reader, ItemWriter<User> writer, UserItemProcessor processor) {
+        return new StepBuilder("step1", jobRepository)
+                .<User, User>chunk(10000, transactionManager)
                 .reader(reader)
                 .processor(processor)
                 .writer(writer)
@@ -82,8 +87,8 @@ public class UserBatchImport {
     }
 
     @Bean
-    public Job importUserJob(Step insertToPending) {
-        return jobBuilderFactory.get(task)
+    public Job importUserJob(final JobRepository jobRepository,Step insertToPending) {
+        return new JobBuilder(task, jobRepository)
                 .incrementer(new RunIdIncrementer())
                 .listener(new JobCompletionNotificationListener())
                 .start(insertToPending)
@@ -131,12 +136,12 @@ public class UserBatchImport {
             user.setLastName(fieldSet.readString("lastName"));
             user.setPassword(fieldSet.readString("password"));
             user.setEmail(fieldSet.readString("email"));
-            user.setGender(Gender.fromString(fieldSet.readString("gender")));
+            user.setGender(fieldSet.readString("gender"));
             user.setCreatedBy("admin");
             user.setCreatedAt(OffsetDateTime.now());
             user.setUpdatedBy("admin");
             user.setUpdatedAt(DateUtil.convertOffsetDatetime("yyyy-MM-dd HH:mm:ss.SSS", fieldSet.readString("modifyTime")));
-            user.setRole(UserRole.user);
+            user.setRole("user");
             return user;
         }
     }

@@ -1,5 +1,6 @@
 package com.demo.product.schedule;
 
+import com.demo.product.batch.MPFHttpUpdateHistory;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.JobExecutionContext;
 import org.springframework.batch.core.Job;
@@ -16,13 +17,13 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
 public class MPFDailyDownloadScheduler extends QuartzJobBean {
     @Autowired
     private JobLocator jobLocator;
-
     @Autowired
     private JobLauncher jobLauncher;
     @Override
     protected void executeInternal(JobExecutionContext context) {
         try {
-            Job job = jobLocator.getJob(context.getJobDetail().getJobClass().toString());
+            log.debug("->"+context.getJobDetail().getJobClass().toString());
+            Job job = jobLocator.getJob(MPFHttpUpdateHistory.class.getName());
             JobParameters jobParameters= new JobParametersBuilder().toJobParameters();
             JobExecution result = jobLauncher.run(job, jobParameters);
         } catch (Exception e) {
