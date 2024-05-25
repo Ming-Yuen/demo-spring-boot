@@ -4,7 +4,7 @@ import com.demo.admin.enums.Gender;
 import com.demo.common.entity.enums.UserRole;
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 @Data
 public class UserRegisterRequest {
     @NotBlank

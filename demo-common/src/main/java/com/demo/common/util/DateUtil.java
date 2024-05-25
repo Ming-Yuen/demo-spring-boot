@@ -1,5 +1,6 @@
 package com.demo.common.util;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -16,5 +17,9 @@ public class DateUtil {
         LocalDateTime localDateTime = LocalDateTime.parse(dateTimeString, formatter);
         ZoneOffset defaultOffset = ZoneRules.getOffset(localDateTime);
         return OffsetDateTime.of(localDateTime, defaultOffset);
+    }
+
+    public static OffsetDateTime convertOffsetDatetime(LocalDate localDate){
+        return localDate.atStartOfDay().atOffset(ZoneOffset.UTC);
     }
 }

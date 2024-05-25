@@ -1,6 +1,7 @@
 package com.demo.transaction.service.impl;
 
 import com.demo.common.dto.DeltaResponse;
+import com.demo.common.util.DateUtil;
 import com.demo.product.entity.ProductPrice;
 import com.demo.product.service.ProductService;
 import com.demo.transaction.dao.SalesDao;
@@ -14,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.List;
 @Slf4j
@@ -44,7 +45,7 @@ public class SalesServiceImpl implements SalesService {
                         if(productService.existsByProductId(orderItem.getProductId())){
                             throw new RuntimeException("Item not found, sku : " + orderItem.getProductId());
                         }
-                        ProductPrice productPrice = productService.getLatestProductPrice(order.getTxDatetime().toLocalDate(), order.getRegion(), orderItem.getProductId());
+                        ProductPrice productPrice = productService.getLatestProductPrice(DateUtil.convertOffsetDatetime(order.getTxDatetime().toLocalDate()), order.getRegion(), orderItem.getProductId());
                         if(productPrice == null){
                             throw new RuntimeException("Region " + order.getRegion() + ", product : " + orderItem.getProductId() + " price not found");
                         }

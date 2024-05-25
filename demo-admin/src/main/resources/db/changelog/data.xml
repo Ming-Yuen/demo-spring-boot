@@ -4,6 +4,24 @@
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
 
     <changeSet id="20231030022703" author="admin">
+        <insert tableName="menu_structure">
+            <column name="name" value="Account trading" />
+            <column name="type" value="web" />
+            <column name="link" value="web" />
+            <column name="roleId" value="user" />
+        </insert>
+        <insert tableName="menu_structure">
+            <column name="name" value="Item trading" />
+            <column name="type" value="web" />
+            <column name="link" value="web" />
+            <column name="roleId" value="user" />
+        </insert>
+        <insert tableName="menu_structure">
+            <column name="name" value="Account trading" />
+            <column name="type" value="web" />
+            <column name="link" value="web" />
+            <column name="roleId" value="user" />
+        </insert>
         <insert tableName="schedule">
             <column name="created_at"   valueDate="2023-10-30T02:27:03.873+08:00"/>
             <column name="created_by"   value="admin"/>

@@ -11,12 +11,6 @@
 
     <artifactId>demo-admin</artifactId>
 
-    <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
     <build>
         <plugins>
             <plugin>
@@ -29,7 +23,7 @@
                             <goal>repackage</goal>
                         </goals>
                         <configuration>
-                            <mainClass>com.demo.DemoAdminApplication</mainClass>
+                            <mainClass>DemoAdminApplication</mainClass>
                         </configuration>
                     </execution>
                 </executions>

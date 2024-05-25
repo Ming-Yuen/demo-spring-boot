@@ -1,4 +1,4 @@
-package com.demo.admin.converter;
+package com.demo.admin.mapper;
 
 import com.demo.admin.dto.UserRegisterRequest;
 import com.demo.admin.entity.User;
@@ -14,7 +14,7 @@ public interface UserConverter {
 
     User[] userRegisterRequestToUser(List<UserRegisterRequest> dto);
 
-    default UserRole map(int value) {
+    default UserRole map(String value) {
         return UserRole.getRoleById(value);
     }
 }

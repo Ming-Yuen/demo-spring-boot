@@ -1,8 +1,8 @@
 package com.demo.common.config;
 
+import com.demo.common.config.AutowiredSpringBeanJobFactory;
 import com.demo.common.entity.Schedule;
 import com.demo.common.exception.ValidationException;
-import com.demo.common.listener.ScheduleLockJobListener;
 import com.demo.common.service.ScheduleService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -10,32 +10,28 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
-import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Map;
 @Slf4j
 @Component
-@Order(2)
-public class ScheduleConfig implements ApplicationRunner {
+public class ScheduleConfig implements CommandLineRunner {
     @Value("${quartz.enabled}")
     private boolean quartzEnable;
     @Autowired
     private ScheduleService scheduleService;
     @Autowired
     private AutowiredSpringBeanJobFactory autowiredSpringBeanJobFactory;
-    @Autowired
-    private RedissonClient redissonClient;
     @Override
-    public void run(ApplicationArguments args) throws Exception {
+    public void run(String... args) throws Exception {
+        log.info("Quartz schedule config by {}", quartzEnable);
         if(quartzEnable) {
             Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
             ObjectMapper objectMapper = new ObjectMapper();
@@ -89,7 +85,7 @@ public class ScheduleConfig implements ApplicationRunner {
         SchedulerFactory schedulerFactory = new StdSchedulerFactory();
         Scheduler scheduler = schedulerFactory.getScheduler();
         scheduler.setJobFactory(autowiredSpringBeanJobFactory);
-        scheduler.getListenerManager().addJobListener(new ScheduleLockJobListener(redissonClient));
+//        scheduler.getListenerManager().addJobListener(new ScheduleLockJobListener(redissonClient));
         scheduler.start();
         return scheduler;
     }

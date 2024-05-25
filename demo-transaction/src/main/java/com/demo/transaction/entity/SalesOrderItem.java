@@ -4,7 +4,7 @@ import com.demo.common.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 import java.math.BigDecimal;
 @EqualsAndHashCode(callSuper = true)
 @Entity

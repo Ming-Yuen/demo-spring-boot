@@ -4,8 +4,8 @@ import com.demo.transaction.entity.enums.PaymentEnum;
 import com.demo.transaction.entity.enums.SalesStatusEnum;
 import lombok.Data;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.List;

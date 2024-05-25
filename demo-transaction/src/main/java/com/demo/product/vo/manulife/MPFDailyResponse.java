@@ -58,7 +58,7 @@ public class MPFDailyResponse implements Serializable {
     private String fundUmbrellaName;
     @Data
     private static class CumulativeReturn{
-        private String asOfDate;
+        private LocalDate asOfDate;
         private Period[] periods;
     }
     @Data
@@ -92,7 +92,7 @@ public class MPFDailyResponse implements Serializable {
     }
     @Data
     private static class CalendarYearReturn{
-        private String asOfDate;
+        private LocalDate asOfDate;
         private Period[] periods;
     }
     @Data

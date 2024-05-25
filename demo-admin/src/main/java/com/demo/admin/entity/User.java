@@ -6,7 +6,7 @@ import com.demo.common.entity.enums.UserRole;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -15,7 +15,7 @@ import java.util.Date;
 @Entity
 @Table(name = "users",
         uniqueConstraints  = {
-                @UniqueConstraint(name = "uk_username", columnNames = {"username"})
+                @UniqueConstraint(name = "uk_username", columnNames = {"user_name"})
         }
 )
 public class User extends BaseEntity implements Serializable {
@@ -26,13 +26,11 @@ public class User extends BaseEntity implements Serializable {
     @Column(nullable = false)
     private String password;
 
-    @Enumerated(EnumType.ORDINAL)
-    private Gender gender;
+    private String gender;
     private String email;
     private String phone;
     private Date resignDate;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.ORDINAL)
-    private UserRole role;
+    private String role;
 }

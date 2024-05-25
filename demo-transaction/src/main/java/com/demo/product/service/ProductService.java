@@ -8,6 +8,7 @@ import com.demo.product.vo.ProductUpdateRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 public interface ProductService {
@@ -16,7 +17,7 @@ public interface ProductService {
 
     boolean existsByProductId(String productId);
 
-    ProductPrice getLatestProductPrice(LocalDate txDate, String region, String productId);
+    ProductPrice getLatestProductPrice(OffsetDateTime txDate, String region, String productId);
 
     void save(ProductPrice... price);
 

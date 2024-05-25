@@ -1,5 +1,6 @@
 package com.demo.product.batch;
 
+import com.demo.common.util.DateUtil;
 import com.demo.product.mapper.ProductMapper;
 import com.demo.product.mapper.ProductPriceMapper;
 import com.demo.product.vo.manulife.MPFDailyResponse;
@@ -9,16 +10,18 @@ import com.demo.product.service.ProductService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
-import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
-import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.scope.context.ChunkContext;
+import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +30,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
@@ -35,14 +39,13 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
-@EnableBatchProcessing
+//@EnableBatchProcessing
 @Configuration
+@RequiredArgsConstructor
 public class MPFHttpUpdateHistory {
     private final String task = this.getClass().getName();
-    @Autowired
-    private JobBuilderFactory jobBuilderFactory;
-    @Autowired
-    private StepBuilderFactory stepBuilderFactory;
+    private final JobRepository jobRepository;
+    private final PlatformTransactionManager transactionManager;
     @Autowired
     private ProductService productService;
     @Autowired
@@ -51,15 +54,15 @@ public class MPFHttpUpdateHistory {
     private ProductPriceMapper productPriceMapper;
 
     @Bean
-    public Step downloadAndSaveStep() {
-        return stepBuilderFactory.get(task)
-                .tasklet(new MPFDownloadTasklet())
+    public Step downloadAndSaveStep(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
+        return new StepBuilder("downloadAndSaveStep", jobRepository)
+                .tasklet(new MPFDownloadTasklet(),transactionManager)
                 .build();
     }
 
     @Bean
-    public Job downloadAndSaveJob(Step downloadAndSaveStep) {
-        return jobBuilderFactory.get(task)
+    public Job downloadAndSaveJob(final JobRepository jobRepository,Step downloadAndSaveStep) {
+        return new JobBuilder("com.demo.product.batch.MPFHttpUpdateHistory",jobRepository)
                 .incrementer(new RunIdIncrementer())
                 .start(downloadAndSaveStep)
                 .build();
@@ -82,13 +85,16 @@ public class MPFHttpUpdateHistory {
                     if(!records.isEmpty()){
 
                         records.forEach(item->{
+                            if(item.getNav().getAsOfDate() != null){
+                                return;
+                            }
                             if(!productService.existsByProductId(item.getFundId())){
                                 Product product = productMapper.convert(item);
                                 productMap.put(item.getFundId(), product);
                             }
 
                             if(item.getNav() != null){
-                                ProductPrice productPrice = productService.getLatestProductPrice(item.getNav().getAsOfDate(), item.getFundId(), "HK");
+                                ProductPrice productPrice = productService.getLatestProductPrice(DateUtil.convertOffsetDatetime(item.getNav().getAsOfDate()), item.getFundId(), "HK");
                                 if(productPrice == null){
                                     ProductPrice price = productPriceMapper.convert(item);
                                     productPriceMap.put(String.join(".", String.valueOf(item.getNav().getAsOfDate()), item.getFundId()), price);

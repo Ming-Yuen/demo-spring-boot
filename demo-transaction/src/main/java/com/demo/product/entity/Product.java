@@ -4,7 +4,7 @@ import com.demo.common.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @EqualsAndHashCode(callSuper = true)
@@ -20,7 +20,9 @@ public class Product extends BaseEntity {
     private String productId;
     @Column(nullable = false)
     private String productName;
+    private String company;
     private String category;
+    private String riskRating;
     private Integer enable;
 
     @Data
