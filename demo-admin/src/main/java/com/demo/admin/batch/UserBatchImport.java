@@ -1,6 +1,6 @@
 package com.demo.admin.batch;
 
-import com.demo.admin.entity.User;
+import com.demo.admin.entity.UserInfo;
 import com.demo.admin.service.UserService;
 import com.demo.admin.listener.JobCompletionNotificationListener;
 import com.demo.common.util.DateUtil;
@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
@@ -49,11 +48,11 @@ public class UserBatchImport {
 //        this.transactionManager = transactionManager;
 //    }
     @Bean
-    public ItemReader<User> reader() {
-        FlatFileItemReader<User> reader = new FlatFileItemReader<>();
+    public ItemReader<UserInfo> reader() {
+        FlatFileItemReader<UserInfo> reader = new FlatFileItemReader<>();
 //        reader.setResource(new ClassPathResource("C:\\Users\\Administrator\\Documents\\logs\\data.csv"));
         reader.setResource(new FileSystemResource(String.join(File.separator, System.getProperty("user.home"), "Documents", "Testing", "user_data.csv")));
-        reader.setLineMapper(new DefaultLineMapper<User>() {{
+        reader.setLineMapper(new DefaultLineMapper<UserInfo>() {{
             setLineTokenizer(new DelimitedLineTokenizer() {{
                 setNames("username", "firstName", "lastName", "password", "email", "gender", "modifyTime");
             }});
@@ -71,14 +70,14 @@ public class UserBatchImport {
         return new UserItemProcessor();
     }
     @Bean
-    public ItemWriter<User> writer() {
-        return users->userService.saveUserEncryptPassword(users.getItems().toArray(new User[]{}));
+    public ItemWriter<UserInfo> writer() {
+        return users->userService.saveUserEncryptPassword(users.getItems().toArray(new UserInfo[]{}));
     }
 
     @Bean
-    public Step insertToPending(final JobRepository jobRepository, final PlatformTransactionManager transactionManager, ItemReader<User> reader, ItemWriter<User> writer, UserItemProcessor processor) {
+    public Step insertToPending(final JobRepository jobRepository, final PlatformTransactionManager transactionManager, ItemReader<UserInfo> reader, ItemWriter<UserInfo> writer, UserItemProcessor processor) {
         return new StepBuilder("step1", jobRepository)
-                .<User, User>chunk(10000, transactionManager)
+                .<UserInfo, UserInfo>chunk(10000, transactionManager)
                 .reader(reader)
                 .processor(processor)
                 .writer(writer)
@@ -95,15 +94,15 @@ public class UserBatchImport {
                 .build();
     }
 
-    public static class UserItemProcessor implements ItemProcessor<User, User> {
+    public static class UserItemProcessor implements ItemProcessor<UserInfo, UserInfo> {
         final AtomicInteger count = new AtomicInteger(0);
         @Override
-        public User process(User user) throws Exception {
+        public UserInfo process(UserInfo userInfo) throws Exception {
             final int process_count = count.addAndGet(1);
             if(process_count % 10000 == 0){
                 log.info("read {} row", process_count);
             }
-            return user;
+            return userInfo;
 //            UserInfo old_userPending = map.get(user.getUserName());
 //            if(old_userPending == null){
 //                synchronized (map){
@@ -127,22 +126,22 @@ public class UserBatchImport {
         }
     }
 
-    public class UserFieldSetMapper implements FieldSetMapper<User> {
+    public class UserFieldSetMapper implements FieldSetMapper<UserInfo> {
         @Override
-        public User mapFieldSet(FieldSet fieldSet) {
-            User user = new User();
-            user.setUserName(fieldSet.readString("username"));
-            user.setFirstName(fieldSet.readString("firstName"));
-            user.setLastName(fieldSet.readString("lastName"));
-            user.setPassword(fieldSet.readString("password"));
-            user.setEmail(fieldSet.readString("email"));
-            user.setGender(fieldSet.readString("gender"));
-            user.setCreatedBy("admin");
-            user.setCreatedAt(OffsetDateTime.now());
-            user.setUpdatedBy("admin");
-            user.setUpdatedAt(DateUtil.convertOffsetDatetime("yyyy-MM-dd HH:mm:ss.SSS", fieldSet.readString("modifyTime")));
-            user.setRole("user");
-            return user;
+        public UserInfo mapFieldSet(FieldSet fieldSet) {
+            UserInfo userInfo = new UserInfo();
+            userInfo.setUserName(fieldSet.readString("username"));
+            userInfo.setFirstName(fieldSet.readString("firstName"));
+            userInfo.setLastName(fieldSet.readString("lastName"));
+            userInfo.setUserPwd(fieldSet.readString("password"));
+            userInfo.setEmail(fieldSet.readString("email"));
+            userInfo.setGender(fieldSet.readString("gender"));
+            userInfo.setCreatedBy("admin");
+            userInfo.setCreatedAt(OffsetDateTime.now());
+            userInfo.setUpdatedBy("admin");
+            userInfo.setUpdatedAt(DateUtil.convertOffsetDatetime("yyyy-MM-dd HH:mm:ss.SSS", fieldSet.readString("modifyTime")));
+            userInfo.setRole("user");
+            return userInfo;
         }
     }
 

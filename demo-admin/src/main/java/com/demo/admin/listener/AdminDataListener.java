@@ -1,6 +1,6 @@
 package com.demo.admin.listener;
 
-import com.demo.admin.entity.User;
+import com.demo.admin.entity.UserInfo;
 import com.demo.admin.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,18 +16,21 @@ public class AdminDataListener implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        User user = userService.findByUserName("admin");
-        if(user == null){
-            user = new User();
-            user.setUserName("admin");
-            user.setPassword("admin");
-            user.setRole("admin");
-            user.setCreatedBy(user.getUserName());
-            user.setCreatedAt(OffsetDateTime.now());
-            user.setUpdatedBy(user.getUserName());
-            user.setUpdatedAt(OffsetDateTime.now());
+        UserInfo userInfo = userService.findByUserName("admin");
+        if(userInfo == null){
+            userInfo = new UserInfo();
+            userInfo.setUserName("admin");
+            userInfo.setFirstName("temp");
+            userInfo.setLastName("temp");
+            userInfo.setUserPwd("admin");
+            userInfo.setRole("admin");
+            userInfo.setGender("none");
+            userInfo.setCreatedBy(userInfo.getUserName());
+            userInfo.setCreatedAt(OffsetDateTime.now());
+            userInfo.setUpdatedBy(userInfo.getUserName());
+            userInfo.setUpdatedAt(OffsetDateTime.now());
 
-            userService.saveUserEncryptPassword(user);
+            userService.saveUserEncryptPassword(userInfo);
         }
     }
 }

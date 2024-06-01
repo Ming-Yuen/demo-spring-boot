@@ -3,5 +3,15 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <include file="db/changelog/spring-batch-mariadb-schema.xml"/>
+    <property name="now" value="now()" dbms="mysql,h2"/>
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+    <property name="now" value="current_timestamp" dbms="oracle"/>
+    <property name="now" value="getdate()" dbms="mssql"/>
+
+    <include file="db/changelog/spring_batch_schema.xml"/>
+    <include file="db/changelog/admin_schema.xml"/>
+    <include file="db/changelog/admin_frontend_data.xml"/>
+    <include file="db/changelog/schedule_schema.xml"/>
+    <include file="db/changelog/schedule_data.xml"/>
+    <include file="db/changelog/product_schema.xml"/>
 </databaseChangeLog>

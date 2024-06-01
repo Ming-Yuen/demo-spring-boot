@@ -1,6 +1,6 @@
 package com.demo.admin.security.filter;
 
-import com.demo.admin.entity.User;
+import com.demo.admin.entity.UserInfo;
 import com.demo.admin.security.JwtManager;
 import com.demo.admin.service.UserService;
 import com.demo.admin.security.AdminUserDetails;
@@ -51,7 +51,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         chain.doFilter(request, response);
     }
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User umsAdminList = userService.findByUserName(username);
+        UserInfo umsAdminList = userService.findByUserName(username);
         if (umsAdminList != null) {
             return new AdminUserDetails(umsAdminList);
         }

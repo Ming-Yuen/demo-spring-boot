@@ -12,7 +12,8 @@
         <module>demo-common</module>
         <module>demo-admin</module>
         <module>demo-transaction</module>
-        <module>demo-report</module>
+        <module>demo-schedule</module>
+        <module>demo-product</module>
     </modules>
 
     <properties>

@@ -1,0 +1,60 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
+
+    <changeSet id="admin_schema" author="ming">
+        <createTable tableName="menu_structure">
+            <column name="id" type="BIGINT" autoIncrement="true"><constraints primaryKey="true"/></column>
+            <column name="parent" type="varchar(30)"/>
+            <column name="curr" type="varchar(30)"><constraints nullable="false"/></column>
+            <column name="type" type="varchar(9)"><constraints nullable="false"/></column>
+            <column name="icon" type="varchar(3000)"/>
+            <column name="link" type="varchar(3000)"><constraints nullable="false"/></column>
+            <column name="created_by" type="varchar(30)"><constraints nullable="false"/></column>
+            <column name="created_at" type="TIMESTAMP WITH TIME ZONE"><constraints nullable="false"/></column>
+            <column name="updated_by" type="varchar(30)"><constraints nullable="false"/></column>
+            <column name="updated_at" type="TIMESTAMP WITH TIME ZONE"><constraints nullable="false"/></column>
+            <column name="role_id" type="varchar(9)"><constraints nullable="false"/></column>
+            <column name="version" type="int"><constraints nullable="false"/></column>
+        </createTable>
+        <addUniqueConstraint constraintName="uk_menu_structure" tableName="menu_structure" columnNames="curr"/>
+
+        <createTable tableName="user_info">
+            <column name="id" type="BIGINT" autoIncrement="true"><constraints primaryKey="true"/></column>
+            <column name="user_name" type="varchar(30)"><constraints nullable="false"/></column>
+            <column name="first_name" type="varchar(30)"><constraints nullable="false"/></column>
+            <column name="last_name" type="varchar(30)"><constraints nullable="false"/></column>
+            <column name="user_pwd" type="varchar(30)"><constraints nullable="false"/></column>
+            <column name="gender" type="varchar(9)"><constraints nullable="false"/></column>
+            <column name="phone" type="varchar(30)"/>
+            <column name="email" type="varchar(30)"/>
+            <column name="resign_date" type="date"/>
+            <column name="created_by" type="varchar(30)"><constraints nullable="false"/></column>
+            <column name="created_at" type="TIMESTAMP WITH TIME ZONE"><constraints nullable="false"/></column>
+            <column name="updated_by" type="varchar(30)"><constraints nullable="false"/></column>
+            <column name="updated_at" type="TIMESTAMP WITH TIME ZONE"><constraints nullable="false"/></column>
+            <column name="role" type="varchar(9)"><constraints nullable="false"/></column>
+            <column name="version" type="int"><constraints nullable="false"/></column>
+        </createTable>
+        <addUniqueConstraint constraintName="uk_user_info" tableName="user_info" columnNames="user_name"/>
+
+        <createTable tableName="user_role">
+            <column name="id" type="BIGINT" autoIncrement="true"><constraints primaryKey="true"/></column>
+            <column name="role_id" type="varchar(30)"><constraints nullable="false"/></column>
+            <column name="role_level" type="varchar(9)"><constraints nullable="false"/></column>
+            <column name="created_by" type="varchar(30)"><constraints nullable="false"/></column>
+            <column name="created_at" type="TIMESTAMP WITH TIME ZONE"><constraints nullable="false"/></column>
+            <column name="updated_by" type="varchar(30)"><constraints nullable="false"/></column>
+            <column name="updated_at" type="TIMESTAMP WITH TIME ZONE"><constraints nullable="false"/></column>
+            <column name="version" type="int"><constraints nullable="false"/></column>
+        </createTable>
+        <addUniqueConstraint constraintName="uk_user_role" tableName="user_role" columnNames="role_id"/>
+    </changeSet>
+
+    <changeSet id="admin_schema_sequence" author="ming" dbms="oracle">
+        <createSequence sequenceName="menu_structure_seq" startValue="1" incrementBy="50" ordered="true"/>
+        <createSequence sequenceName="user_info_seq" startValue="1" incrementBy="50" ordered="true"/>
+        <createSequence sequenceName="user_role_seq" startValue="1" incrementBy="50" ordered="true"/>
+    </changeSet>
+</databaseChangeLog>

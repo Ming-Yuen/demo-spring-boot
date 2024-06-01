@@ -2,15 +2,14 @@ package com.demo.admin.service.impl;
 
 import com.demo.admin.dto.UserQueryRequest;
 import com.demo.admin.dto.UserRegisterRequest;
+import com.demo.admin.entity.UserInfo;
 import com.demo.admin.mapper.UserConverter;
-import com.demo.admin.entity.User;
 import com.demo.admin.service.UserService;
 import com.demo.admin.dao.UserDao;
 import com.demo.admin.dao.UserRoleDao;
 import com.demo.admin.security.JwtManager;
 import com.demo.common.entity.BaseEntity;
 import com.demo.common.entity.enums.UserRole;
-import com.demo.common.util.Json;
 import com.demo.common.util.LambdaUtil;
 //import com.demo.common.util.RedisUtil;
 import jakarta.persistence.EntityManager;
@@ -42,47 +41,47 @@ public class UserServiceImpl implements UserService {
     @SneakyThrows
     @Override
     public void register(List<UserRegisterRequest> request){
-        User[] user = userMapper.userRegisterRequestToUser(request);
-        saveUserEncryptPassword(user);
+        UserInfo[] userInfo = userMapper.userRegisterRequestToUser(request);
+        saveUserEncryptPassword(userInfo);
     }
     @Transactional
-    public void saveUserEncryptPassword(User... userRecords) {
-        if(userRecords == null){
+    public void saveUserEncryptPassword(UserInfo... userInfoRecords) {
+        if(userInfoRecords == null){
             return;
         }
-        Arrays.stream(userRecords).forEach(userInfo -> {
-            userInfo.setPassword(userInfo.getPassword());
+        Arrays.stream(userInfoRecords).forEach(userInfo -> {
+            userInfo.setUserPwd(userInfo.getUserPwd());
         });
-        saveUser(userRecords);
+        saveUser(userInfoRecords);
     }
     @Transactional
     @Override
-    public void saveUser(User... userRecords) {
-        userRecords = Arrays.stream(userRecords).filter(LambdaUtil.distinctByKey(User::getUserName)).toArray(User[]::new);
-        List<User> usersToInsert = new ArrayList<>();
-        List<User> usersToUpdate = new ArrayList<>();
+    public void saveUser(UserInfo... userInfoRecords) {
+        userInfoRecords = Arrays.stream(userInfoRecords).filter(LambdaUtil.distinctByKey(UserInfo::getUserName)).toArray(UserInfo[]::new);
+        List<UserInfo> usersToInsert = new ArrayList<>();
+        List<UserInfo> usersToUpdate = new ArrayList<>();
 
-        Map<String, User> userInfoMap= findByUserName(Arrays.stream(userRecords).map(User::getUserName).toArray(String[] :: new));
-        for(User user : userRecords) {
-            User old_user = userInfoMap.get(user.getUserName());
-            if (old_user == null) {
-                usersToInsert.add(user);
-                entityManager.persist(user);
+        Map<String, UserInfo> userInfoMap= findByUserName(Arrays.stream(userInfoRecords).map(UserInfo::getUserName).toArray(String[] :: new));
+        for(UserInfo userInfo : userInfoRecords) {
+            UserInfo old_userInfo = userInfoMap.get(userInfo.getUserName());
+            if (old_userInfo == null) {
+                usersToInsert.add(userInfo);
+                entityManager.persist(userInfo);
             } else {
-                user.setId(old_user.getId());
-                usersToUpdate.add(user);
-                entityManager.merge(user);
+                userInfo.setId(old_userInfo.getId());
+                usersToUpdate.add(userInfo);
+                entityManager.merge(userInfo);
             }
         }
     }
     @Override
-    public User findByUserName(String username){
+    public UserInfo findByUserName(String username){
         return findByUserName(new String[]{username}).get(username);
     }
 
     @Override
-    public Map<String, User> findByUserName(String... usernames){
-        Map<String, User> userInfoMap = new HashMap<>();
+    public Map<String, UserInfo> findByUserName(String... usernames){
+        Map<String, UserInfo> userInfoMap = new HashMap<>();
         ArrayList<String> noCacheUser = new ArrayList<>();
         for(String username : usernames){
 //            UserInfo userInfo = (UserInfo) redisUtil.get(RedisConstant.userInfo);
@@ -92,7 +91,7 @@ public class UserServiceImpl implements UserService {
                 noCacheUser.add(username);
 //            }
         }
-        Map<String, User> userInfoTempMap = new HashMap<>();
+        Map<String, UserInfo> userInfoTempMap = new HashMap<>();
         userDao.findByUserNameIn(noCacheUser.toArray(String[]::new)).forEach(userInfo -> {
             userInfoTempMap.put(userInfo.getUserName(), userInfo);
         });
@@ -110,23 +109,23 @@ public class UserServiceImpl implements UserService {
     private Long expiration;
     @Override
     public String login(String username, String password) {
-        User user = userDao.findByUserName(username);
-        if(user == null){
+        UserInfo userInfo = userDao.findByUserName(username);
+        if(userInfo == null){
             throw new IllegalArgumentException("User is not registered");
         }
-        if(!password.equals(user.getPassword())){
+        if(!password.equals(userInfo.getUserPwd())){
             throw new IllegalArgumentException("Incorrect password");
         }
 //        String token = (String) redisUtil.get("token."+user.getUserName());
 //        if(token != null){
 //            return token;
 //        }
-        String token = jwt.generateToken(user.getUserName(), user.getPassword());
+        String token = jwt.generateToken(userInfo.getUserName(), userInfo.getUserPwd());
 //        redisUtil.set("token."+user.getUserName(), token, expiration, TimeUnit.SECONDS);
         return token;
     }
     @Override
-    public List<User> query(UserQueryRequest request) {
+    public List<UserInfo> query(UserQueryRequest request) {
         return userDao.findByUserNameIn(request.getUserNameList());
     }
 }

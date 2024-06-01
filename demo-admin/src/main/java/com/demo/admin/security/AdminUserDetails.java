@@ -1,6 +1,6 @@
 package com.demo.admin.security;
 
-import com.demo.admin.entity.User;
+import com.demo.admin.entity.UserInfo;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -11,9 +11,9 @@ import java.util.Collection;
 
 @Data
 public class AdminUserDetails implements UserDetails {
-    private User admin;
+    private UserInfo admin;
 
-    public AdminUserDetails(User admin) {
+    public AdminUserDetails(UserInfo admin) {
         this.admin = admin;
     }
 
@@ -25,7 +25,7 @@ public class AdminUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return admin.getPassword();
+        return admin.getUserPwd();
     }
 
     @Override

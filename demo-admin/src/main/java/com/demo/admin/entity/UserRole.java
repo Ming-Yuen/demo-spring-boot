@@ -6,14 +6,9 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "userRole",
-        uniqueConstraints  = {
-                @UniqueConstraint(name = "uk_userRole", columnNames = "name")
-        }
-)
 public class UserRole extends BaseEntity {
     @Column(nullable = false)
-    private String name;
+    private String roleId;
     @Enumerated(EnumType.ORDINAL)
     @Column(nullable = false)
     private com.demo.common.entity.enums.UserRole roleLevel;
