@@ -1,11 +1,11 @@
 package com.demo.admin.dao;
 
-import com.demo.admin.entity.User;
+import com.demo.admin.entity.UserInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface UserDao extends JpaRepository<User, String>{
-    User findByUserName(String username);
-    List<User> findByUserNameIn(String... userNameList);
+public interface UserDao extends JpaRepository<UserInfo, String>{
+    UserInfo findByUserName(String username);
+    List<UserInfo> findByUserNameIn(String... userNameList);
 }

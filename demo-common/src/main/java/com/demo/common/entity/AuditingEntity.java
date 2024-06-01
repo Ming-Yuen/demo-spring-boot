@@ -26,7 +26,7 @@ public class AuditingEntity implements Serializable {
     private OffsetDateTime createdAt;
 
     @LastModifiedBy
-    @Column(name = "update_by", nullable = false)
+    @Column(name = "updated_by", nullable = false)
     private String updatedBy;
 
     @UpdateTimestamp

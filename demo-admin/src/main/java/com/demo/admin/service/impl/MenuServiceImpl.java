@@ -70,7 +70,7 @@ public class MenuServiceImpl implements MenuService {
                 }
                 menuTree.getChild().add(menuMapper.convert(menuItem));
             }
-            menuTreeMap.put(menuItem.getTitle(), menuTree);
+            menuTreeMap.put(menuItem.getCurr(), menuTree);
         });
         return menuTreeResponse;
     }

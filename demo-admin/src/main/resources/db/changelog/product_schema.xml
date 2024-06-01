@@ -1,0 +1,72 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
+
+    <changeSet id="product_schema" author="ming">
+        <createTable tableName="currency">
+            <column name="id" type="BIGINT" autoIncrement="true"><constraints primaryKey="true"/></column>
+            <column name="unit" type="varchar(9)"><constraints nullable="false"/></column>
+            <column name="rate" type="decimal(4,16)"><constraints nullable="false"/></column>
+            <column name="created_by" type="varchar(30)"><constraints nullable="false"/></column>
+            <column name="created_at" type="TIMESTAMP WITH TIME ZONE"><constraints nullable="false"/></column>
+            <column name="updated_by" type="varchar(30)"><constraints nullable="false"/></column>
+            <column name="updated_at" type="TIMESTAMP WITH TIME ZONE"><constraints nullable="false"/></column>
+            <column name="version" type="int"><constraints nullable="false"/></column>
+        </createTable>
+        <addUniqueConstraint constraintName="uk_currency" tableName="currency" columnNames="unit"/>
+
+        <createTable tableName="product">
+            <column name="id" type="BIGINT" autoIncrement="true"><constraints primaryKey="true"/></column>
+            <column name="product_id" type="varchar(30)"><constraints nullable="false"/></column>
+            <column name="product_name" type="varchar(3000)"><constraints nullable="false"/></column>
+            <column name="company" type="varchar(300)"><constraints nullable="false"/></column>
+            <column name="category" type="varchar(30)"><constraints nullable="false"/></column>
+            <column name="risk_rating" type="varchar(30)"><constraints nullable="false"/></column>
+            <column name="enable" type="int"><constraints nullable="false"/></column>
+            <column name="created_by" type="varchar(30)"><constraints nullable="false"/></column>
+            <column name="created_at" type="TIMESTAMP WITH TIME ZONE"><constraints nullable="false"/></column>
+            <column name="updated_by" type="varchar(30)"><constraints nullable="false"/></column>
+            <column name="updated_at" type="TIMESTAMP WITH TIME ZONE"><constraints nullable="false"/></column>
+            <column name="version" type="int"><constraints nullable="false"/></column>
+        </createTable>
+        <addUniqueConstraint constraintName="uk_product" tableName="product" columnNames="product_id"/>
+
+        <createTable tableName="product_price">
+            <column name="id" type="BIGINT" autoIncrement="true"><constraints primaryKey="true"/></column>
+            <column name="product_id" type="varchar(30)"><constraints nullable="false"/></column>
+            <column name="price" type="decimal(16,4)"><constraints nullable="false"/></column>
+            <column name="effective_date" type="TIMESTAMP WITH TIME ZONE"><constraints nullable="false"/></column>
+            <column name="expiry_date" type="TIMESTAMP WITH TIME ZONE"><constraints nullable="true"/></column>
+            <column name="created_by" type="varchar(30)"><constraints nullable="false"/></column>
+            <column name="created_at" type="TIMESTAMP WITH TIME ZONE"><constraints nullable="false"/></column>
+            <column name="updated_by" type="varchar(30)"><constraints nullable="false"/></column>
+            <column name="updated_at" type="TIMESTAMP WITH TIME ZONE"><constraints nullable="false"/></column>
+            <column name="version" type="int"><constraints nullable="false"/></column>
+        </createTable>
+        <createIndex indexName="idx_product_price" tableName="product_price">
+            <column name="product_id"/>
+            <column name="effective_date"/>
+            <column name="expiry_date"/>
+        </createIndex>
+
+        <createTable tableName="inventory">
+            <column name="id" type="BIGINT" autoIncrement="true"><constraints primaryKey="true"/></column>
+            <column name="product_id" type="varchar(30)"><constraints nullable="false"/></column>
+            <column name="qty" type="int"><constraints nullable="false"/></column>
+            <column name="created_by" type="varchar(30)"><constraints nullable="false"/></column>
+            <column name="created_at" type="TIMESTAMP WITH TIME ZONE"><constraints nullable="false"/></column>
+            <column name="updated_by" type="varchar(30)"><constraints nullable="false"/></column>
+            <column name="updated_at" type="TIMESTAMP WITH TIME ZONE"><constraints nullable="false"/></column>
+            <column name="version" type="int"><constraints nullable="false"/></column>
+        </createTable>
+        <addUniqueConstraint constraintName="uk_inventory" tableName="inventory" columnNames="product_id"/>
+    </changeSet>
+
+    <changeSet id="product_schema_sequence" author="ming" dbms="oracle">
+        <createSequence sequenceName="currency_seq" startValue="1" incrementBy="50" ordered="true"/>
+        <createSequence sequenceName="product_seq" startValue="1" incrementBy="50" ordered="true"/>
+        <createSequence sequenceName="product_price_seq" startValue="1" incrementBy="50" ordered="true"/>
+        <createSequence sequenceName="inventory_seq" startValue="1" incrementBy="50" ordered="true"/>
+    </changeSet>
+</databaseChangeLog>
