@@ -4,8 +4,10 @@ import com.demo.admin.entity.UserInfo;
 import com.demo.admin.security.JwtManager;
 import com.demo.admin.service.UserService;
 import com.demo.admin.security.AdminUserDetails;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,15 +21,19 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 @Slf4j
 @Component
+@AllArgsConstructor
+@NoArgsConstructor
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
-    @Autowired
     private UserService userService;
-    @Autowired
     private JwtManager jwt;
     private final static String tokenHead = "Bearer ";
+    public JwtAuthenticationTokenFilter(JwtManager jwt){
+        this.jwt = jwt;
+    }
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         String authHeader = request.getHeader("Authorization");
@@ -51,9 +57,9 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         chain.doFilter(request, response);
     }
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserInfo umsAdminList = userService.findByUserName(username);
-        if (umsAdminList != null) {
-            return new AdminUserDetails(umsAdminList);
+        List<UserInfo> umsAdminList = userService.findByUserName(UserInfo.class, username);
+        if (!umsAdminList.isEmpty()) {
+            return new AdminUserDetails(umsAdminList.get(0));
         }
         throw new UsernameNotFoundException("User name or password incorrect");
     }

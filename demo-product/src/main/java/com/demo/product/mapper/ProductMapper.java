@@ -9,9 +9,8 @@ import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper//(componentModel = "spring")
 public interface ProductMapper {
-    ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
     @Mapping(target = "productId", source = "fundId")
     @Mapping(target = "productName", source = "fundName")
     @Mapping(target = "company", source = "platformName")

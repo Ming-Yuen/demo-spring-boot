@@ -1,6 +1,5 @@
-package com.demo.admin.schedule;
+package com.demo.schedule.schedule;
 
-import com.demo.admin.batch.UserBatchImport;
 import com.demo.common.exception.ValidationException;
 import com.github.javafaker.Faker;
 import lombok.extern.slf4j.Slf4j;
@@ -27,8 +26,6 @@ public class CsvToUserScheduler extends QuartzJobBean {
     private Job importUserJob;
     @Autowired
     private JobLauncher jobLauncher;
-    @Autowired
-    private UserBatchImport userBatchImport;
 
     @Override
     protected void executeInternal(JobExecutionContext context) {

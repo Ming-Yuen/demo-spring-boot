@@ -1,6 +1,7 @@
 package com.demo.common.controller;
 
 import com.demo.common.dto.DefaultResponse;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
@@ -24,9 +25,6 @@ import java.util.List;
 @RestControllerAdvice
 @Slf4j
 public class ResponseAdvice implements ResponseBodyAdvice<Object> {
-
-    @Autowired
-    private DefaultResponse defaultResponse;
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
         return false;
@@ -42,6 +40,7 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
     @ExceptionHandler(Throwable.class)
     public Object throwable(Throwable t) {
         log.error(t.getMessage(), t);
+        DefaultResponse defaultResponse = new DefaultResponse();
         defaultResponse.setSuccess(false);
         defaultResponse.setErrorMessage(Arrays.asList(t.getMessage()));
         defaultResponse.setErrorNum(1);
@@ -52,6 +51,7 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Object throwable(MethodArgumentNotValidException e) {
         log.error(e.getMessage(), e);
+        DefaultResponse defaultResponse = new DefaultResponse();
         defaultResponse.setSuccess(false);
 
         List<FieldError> errors = e.getBindingResult().getFieldErrors();

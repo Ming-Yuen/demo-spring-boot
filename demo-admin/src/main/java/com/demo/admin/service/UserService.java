@@ -7,14 +7,14 @@ import com.demo.common.entity.enums.UserRole;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 public interface UserService {
 
     void register(List<UserRegisterRequest> user);
     String login(String username, String password);
-    Map<String, UserInfo> findByUserName(String... usernames);
-    UserInfo findByUserName(String username);
+
+    <T> List<T> findByUserName(Class<T> type, String... usernames);
+
     Collection<Long> getManageRoles(UserRole userRole);
 
     List<UserInfo> query(UserQueryRequest request);

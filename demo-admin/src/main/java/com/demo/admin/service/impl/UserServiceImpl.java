@@ -5,8 +5,8 @@ import com.demo.admin.dto.UserRegisterRequest;
 import com.demo.admin.entity.UserInfo;
 import com.demo.admin.mapper.UserConverter;
 import com.demo.admin.service.UserService;
-import com.demo.admin.dao.UserDao;
-import com.demo.admin.dao.UserRoleDao;
+import com.demo.admin.repository.UserRepository;
+import com.demo.admin.repository.UserRoleRepository;
 import com.demo.admin.security.JwtManager;
 import com.demo.common.entity.BaseEntity;
 import com.demo.common.entity.enums.UserRole;
@@ -23,21 +23,29 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 public class UserServiceImpl implements UserService {
-    @Autowired
-    private UserDao userDao;
-    @Autowired
+    private UserRepository userRepository;
     private UserConverter userMapper;
-    @Autowired
-    private UserRoleDao userRoleDao;
-    @Autowired
+    private UserRoleRepository userRoleRepository;
     private JwtManager jwt;
     @PersistenceContext
     private EntityManager entityManager;
+//    @Value("${jwt.expiration}")
+    private Long expiration;
+
+    public UserServiceImpl(UserRepository userRepository, UserConverter userMapper, UserRoleRepository userRoleRepository, JwtManager jwt, @Value("${jwt.expiration}") Long expiration) {
+        this.userRepository = userRepository;
+        this.userMapper = userMapper;
+        this.userRoleRepository = userRoleRepository;
+        this.jwt = jwt;
+        this.expiration = expiration;
+    }
+
     @SneakyThrows
     @Override
     public void register(List<UserRegisterRequest> request){
@@ -61,71 +69,49 @@ public class UserServiceImpl implements UserService {
         List<UserInfo> usersToInsert = new ArrayList<>();
         List<UserInfo> usersToUpdate = new ArrayList<>();
 
-        Map<String, UserInfo> userInfoMap= findByUserName(Arrays.stream(userInfoRecords).map(UserInfo::getUserName).toArray(String[] :: new));
+        List<UserInfo.SelectUserName> userNameList = findByUserName(UserInfo.SelectUserName.class, Arrays.stream(userInfoRecords).map(UserInfo::getUserName).toArray(String[] :: new));
+        Map<String, UserInfo.SelectUserName> userInfoMap = userNameList == null ? null : userNameList.stream().collect(Collectors.toMap(UserInfo.SelectUserName::userName, Function.identity()));
         for(UserInfo userInfo : userInfoRecords) {
-            UserInfo old_userInfo = userInfoMap.get(userInfo.getUserName());
+            UserInfo.SelectUserName old_userInfo = userInfoMap == null ? null : userInfoMap.get(userInfo.getUserName());
             if (old_userInfo == null) {
                 usersToInsert.add(userInfo);
                 entityManager.persist(userInfo);
             } else {
-                userInfo.setId(old_userInfo.getId());
+                userInfo.setId(old_userInfo.id());
                 usersToUpdate.add(userInfo);
                 entityManager.merge(userInfo);
             }
         }
     }
-    @Override
-    public UserInfo findByUserName(String username){
-        return findByUserName(new String[]{username}).get(username);
-    }
 
     @Override
-    public Map<String, UserInfo> findByUserName(String... usernames){
-        Map<String, UserInfo> userInfoMap = new HashMap<>();
-        ArrayList<String> noCacheUser = new ArrayList<>();
-        for(String username : usernames){
-//            UserInfo userInfo = (UserInfo) redisUtil.get(RedisConstant.userInfo);
-//            if(userInfo != null){
-//                userInfoMap.put(userInfo.getUserName(), userInfo);
-//            }else{
-                noCacheUser.add(username);
-//            }
-        }
-        Map<String, UserInfo> userInfoTempMap = new HashMap<>();
-        userDao.findByUserNameIn(noCacheUser.toArray(String[]::new)).forEach(userInfo -> {
-            userInfoTempMap.put(userInfo.getUserName(), userInfo);
-        });
-//        if(!userInfoTempMap.isEmpty()){
-//            redisUtil.multiSet(userInfoTempMap);
-//        }
-        userInfoMap.putAll(userInfoTempMap);
-        return userInfoMap;
+    public <T> List<T> findByUserName(Class<T> type, String... usernames){
+        return userRepository.findByUserNameIn(type, usernames);
     }
     @Override
     public Collection<Long> getManageRoles(UserRole userRole){
-        return userRoleDao.findByRoleLevelGreaterThanEqual(userRole).stream().map(BaseEntity::getId).collect(Collectors.toList());
+        return userRoleRepository.findByRoleLevelGreaterThanEqual(userRole).stream().map(BaseEntity::getId).collect(Collectors.toList());
     }
-    @Value("${jwt.expiration}")
-    private Long expiration;
     @Override
     public String login(String username, String password) {
-        UserInfo userInfo = userDao.findByUserName(username);
-        if(userInfo == null){
+        List<UserInfo.SelectUserPwd> userInfoList = findByUserName(UserInfo.SelectUserPwd.class, username);
+        if(userInfoList.isEmpty()){
             throw new IllegalArgumentException("User is not registered");
         }
-        if(!password.equals(userInfo.getUserPwd())){
+        UserInfo.SelectUserPwd userInfo = userInfoList.get(0);
+        if(!password.equals(userInfo.userPwd())){
             throw new IllegalArgumentException("Incorrect password");
         }
 //        String token = (String) redisUtil.get("token."+user.getUserName());
 //        if(token != null){
 //            return token;
 //        }
-        String token = jwt.generateToken(userInfo.getUserName(), userInfo.getUserPwd());
+        String token = jwt.generateToken(userInfo.userName(), userInfo.userPwd());
 //        redisUtil.set("token."+user.getUserName(), token, expiration, TimeUnit.SECONDS);
         return token;
     }
     @Override
     public List<UserInfo> query(UserQueryRequest request) {
-        return userDao.findByUserNameIn(request.getUserNameList());
+        return findByUserName(UserInfo.class, request.getUserNameList());
     }
 }

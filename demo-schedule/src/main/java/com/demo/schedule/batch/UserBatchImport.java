@@ -1,9 +1,9 @@
-package com.demo.admin.batch;
+package com.demo.schedule.batch;
 
 import com.demo.admin.entity.UserInfo;
 import com.demo.admin.service.UserService;
-import com.demo.admin.listener.JobCompletionNotificationListener;
 import com.demo.common.util.DateUtil;
+import com.demo.schedule.listener.JobCompletionNotificationListener;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -136,10 +136,6 @@ public class UserBatchImport {
             userInfo.setUserPwd(fieldSet.readString("password"));
             userInfo.setEmail(fieldSet.readString("email"));
             userInfo.setGender(fieldSet.readString("gender"));
-            userInfo.setCreatedBy("admin");
-            userInfo.setCreatedAt(OffsetDateTime.now());
-            userInfo.setUpdatedBy("admin");
-            userInfo.setUpdatedAt(DateUtil.convertOffsetDatetime("yyyy-MM-dd HH:mm:ss.SSS", fieldSet.readString("modifyTime")));
             userInfo.setRole("user");
             return userInfo;
         }
