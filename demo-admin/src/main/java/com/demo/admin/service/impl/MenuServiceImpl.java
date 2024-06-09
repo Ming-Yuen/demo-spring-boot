@@ -1,7 +1,8 @@
 package com.demo.admin.service.impl;
 
+import com.demo.admin.entity.UserInfo;
 import com.demo.admin.mapper.MenuMapper;
-import com.demo.admin.dao.MenuDao;
+import com.demo.admin.repository.MenuRepository;
 import com.demo.admin.dto.MenuQueryRequest;
 import com.demo.admin.dto.MenuUpdateRequest;
 import com.demo.admin.entity.MenuStructure;
@@ -9,6 +10,7 @@ import com.demo.admin.vo.MenuStructureResponse;
 import com.demo.common.entity.enums.UserRole;
 import com.demo.admin.service.MenuService;
 import com.demo.admin.service.UserService;
+import com.demo.common.exception.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,19 +22,22 @@ import java.util.*;
 @Service
 public class MenuServiceImpl implements MenuService {
     @Autowired
-    private MenuDao menuDao;
+    private MenuRepository menuRepository;
     @Autowired
     private UserService userService;
     @Autowired
     private MenuMapper menuMapper;
 
     @Override
-    public MenuStructureResponse getStructure(MenuQueryRequest menuQueryRequest){
+    public MenuStructureResponse getStructure(MenuQueryRequest menuQueryRequest) throws ValidationException {
         if(menuQueryRequest == null){
-            return convertToResponse(menuDao.findByRoleIdIn(Collections.singletonList(0L)));
+            return convertToResponse(menuRepository.findByRoleIdIn(Collections.singletonList(0L)));
         }
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        UserRole role_level = UserRole.getRoleById(userService.findByUserName(username).getRole());
+        if(userService.findByUserName(UserInfo.SelectUserName.class, username).isEmpty()){
+            throw new ValidationException("user is not registered");
+        }
+        UserRole role_level = UserRole.getRoleById(userService.findByUserName(UserInfo.SelectUserRole.class, username).get(0).role());
 
         Map<Long, MenuStructureResponse.MenuTree> menuTreeMap = new HashMap<>();
 
@@ -54,7 +59,7 @@ public class MenuServiceImpl implements MenuService {
 //                menu.remove(i);
 //            }
 //        }
-        return convertToResponse(menuDao.findByRoleIdIn(manageRoleId));
+        return convertToResponse(menuRepository.findByRoleIdIn(manageRoleId));
     }
 
     private MenuStructureResponse convertToResponse(List<MenuStructure> menuStructures){
@@ -78,9 +83,9 @@ public class MenuServiceImpl implements MenuService {
     @Transactional
     @Override
     public void menuUpdate(MenuUpdateRequest menuUpdateRequest) {
-        long delete_count = menuDao.deleteByType("web");
+        long delete_count = menuRepository.deleteByType("web");
         log.debug("menu delete count : {}", delete_count);
 
-        menuDao.saveAll(menuMapper.convert(menuUpdateRequest.getMenu()));
+        menuRepository.saveAll(menuMapper.convert(menuUpdateRequest.getMenu()));
     }
 }

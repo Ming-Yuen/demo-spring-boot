@@ -6,6 +6,7 @@ import com.demo.admin.vo.MenuStructureResponse;
 import com.demo.admin.service.MenuService;
 import com.demo.common.controller.ControllerPath;
 import com.demo.common.dto.DefaultResponse;
+import com.demo.common.exception.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -20,12 +21,12 @@ public class StructureController {
     private MenuService menuService;
 
     @GetMapping(path = ControllerPath.MENU+ControllerPath.DEFAULT+ControllerPath.QUERY)
-    public MenuStructureResponse menuEnquiry(){
+    public MenuStructureResponse menuEnquiry() throws ValidationException {
         return menuService.getStructure(null);
     }
 
     @PostMapping(path = ControllerPath.MENU+ControllerPath.QUERY, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public MenuStructureResponse menuEnquiry(@Valid @RequestBody MenuQueryRequest menuQueryRequest){
+    public MenuStructureResponse menuEnquiry(@Valid @RequestBody MenuQueryRequest menuQueryRequest) throws ValidationException {
         return menuService.getStructure(menuQueryRequest);
     }
 

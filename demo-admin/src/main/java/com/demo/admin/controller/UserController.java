@@ -7,6 +7,7 @@ import com.demo.admin.vo.UserQueryResponse;
 import com.demo.admin.vo.UserRegisterResponse;
 import com.demo.common.controller.ControllerPath;
 import com.demo.common.dto.DefaultResponse;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,11 +19,11 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(ControllerPath.user)
+@AllArgsConstructor
 public class UserController {
-    @Autowired
     private UserService userService;
     @PostMapping(path = ControllerPath.UPDATE, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public DefaultResponse update(@Valid @RequestBody List<UserRegisterRequest> request){
+    public DefaultResponse register(@Valid @RequestBody List<UserRegisterRequest> request){
         userService.register(request);
         return new UserRegisterResponse(request.stream().map(UserRegisterRequest::getUserName).collect(Collectors.toList()));
     }

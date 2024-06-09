@@ -1,10 +1,10 @@
 package com.demo.admin.entity;
 
 import com.demo.common.entity.BaseEntity;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import jakarta.persistence.*;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -26,4 +26,7 @@ public class UserInfo extends BaseEntity implements Serializable {
 
     @Column(nullable = false)
     private String role;
+    public record SelectUserName(Long id, String userName){}
+    public record SelectUserPwd(String userName, String userPwd){}
+    public record SelectUserRole(String role){}
 }

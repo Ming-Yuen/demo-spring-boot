@@ -4,6 +4,7 @@ import com.demo.admin.security.filter.JwtAuthenticationTokenFilter;
 import com.demo.admin.security.filter.RestAuthenticationEntryPoint;
 import com.demo.admin.security.filter.RestfulAccessDeniedHandler;
 import com.demo.common.controller.ControllerPath;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,18 +19,16 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
+@AllArgsConstructor
 public class SecurityConfig {
-    @Autowired
     private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
-    @Autowired
     private RestfulAccessDeniedHandler restfulAccessDeniedHandler;
-    @Autowired
     private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/"+ ControllerPath.user+"/"+ControllerPath.TOKEN+"/**").permitAll()
+                    .requestMatchers(ControllerPath.user + ControllerPath.TOKEN).permitAll()
                         .requestMatchers(HttpMethod.GET).permitAll()
                         .anyRequest().authenticated()
                 )
