@@ -2,7 +2,6 @@ package com.demo.schedule.batch;
 
 import com.demo.admin.entity.UserInfo;
 import com.demo.admin.service.UserService;
-import com.demo.common.util.DateUtil;
 import com.demo.schedule.listener.JobCompletionNotificationListener;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +28,6 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import java.io.File;
-import java.time.OffsetDateTime;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
@@ -71,7 +69,7 @@ public class UserBatchImport {
     }
     @Bean
     public ItemWriter<UserInfo> writer() {
-        return users->userService.saveUserEncryptPassword(users.getItems().toArray(new UserInfo[]{}));
+        return users->userService.updateUserMaster(users.getItems().toArray(new UserInfo[]{}));
     }
 
     @Bean
@@ -133,7 +131,7 @@ public class UserBatchImport {
             userInfo.setUserName(fieldSet.readString("username"));
             userInfo.setFirstName(fieldSet.readString("firstName"));
             userInfo.setLastName(fieldSet.readString("lastName"));
-            userInfo.setUserPwd(fieldSet.readString("password"));
+            userInfo.setUserPassword(fieldSet.readString("password"));
             userInfo.setEmail(fieldSet.readString("email"));
             userInfo.setGender(fieldSet.readString("gender"));
             userInfo.setRole("user");

@@ -1,7 +1,6 @@
 package com.demo.admin.vo;
 
-import com.demo.admin.entity.MenuStructure;
-import com.demo.common.dto.DefaultResponse;
+import com.demo.common.dto.ApiResponse;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -10,7 +9,7 @@ import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class MenuStructureResponse extends DefaultResponse {
+public class MenuStructureResponse extends ApiResponse {
     private List<MenuTree> menu = new LinkedList<MenuTree>();
     @Data
     public static class MenuTree{
