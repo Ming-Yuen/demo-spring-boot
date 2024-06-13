@@ -7,7 +7,7 @@ import com.demo.admin.mapper.UserConverter;
 import com.demo.admin.service.UserService;
 import com.demo.admin.repository.UserRepository;
 import com.demo.admin.repository.UserRoleRepository;
-import com.demo.admin.security.JwtManager;
+import com.demo.admin.security.JwtUtil;
 import com.demo.common.entity.BaseEntity;
 import com.demo.common.entity.enums.UserRole;
 import com.demo.common.util.LambdaUtil;
@@ -17,7 +17,6 @@ import jakarta.persistence.PersistenceContext;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,13 +31,12 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     private UserConverter userMapper;
     private UserRoleRepository userRoleRepository;
-    private JwtManager jwt;
+    private JwtUtil jwt;
     @PersistenceContext
     private EntityManager entityManager;
-//    @Value("${jwt.expiration}")
     private Long expiration;
 
-    public UserServiceImpl(UserRepository userRepository, UserConverter userMapper, UserRoleRepository userRoleRepository, JwtManager jwt, @Value("${jwt.expiration}") Long expiration) {
+    public UserServiceImpl(UserRepository userRepository, UserConverter userMapper, UserRoleRepository userRoleRepository, JwtUtil jwt, @Value("${jwt.expiration}") Long expiration) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.userRoleRepository = userRoleRepository;
@@ -48,23 +46,14 @@ public class UserServiceImpl implements UserService {
 
     @SneakyThrows
     @Override
-    public void register(List<UserRegisterRequest> request){
-        UserInfo[] userInfo = userMapper.userRegisterRequestToUser(request);
-        saveUserEncryptPassword(userInfo);
-    }
     @Transactional
-    public void saveUserEncryptPassword(UserInfo... userInfoRecords) {
-        if(userInfoRecords == null){
-            return;
-        }
-        Arrays.stream(userInfoRecords).forEach(userInfo -> {
-            userInfo.setUserPwd(userInfo.getUserPwd());
-        });
-        saveUser(userInfoRecords);
+    public void updateUserRequest(List<UserRegisterRequest> request){
+        UserInfo[] userInfo = userMapper.userRegisterRequestToUser(request.toArray(new UserRegisterRequest[]{}));
+        updateUserMaster(userInfo);
     }
     @Transactional
     @Override
-    public void saveUser(UserInfo... userInfoRecords) {
+    public void updateUserMaster(UserInfo... userInfoRecords) {
         userInfoRecords = Arrays.stream(userInfoRecords).filter(LambdaUtil.distinctByKey(UserInfo::getUserName)).toArray(UserInfo[]::new);
         List<UserInfo> usersToInsert = new ArrayList<>();
         List<UserInfo> usersToUpdate = new ArrayList<>();
@@ -111,7 +100,7 @@ public class UserServiceImpl implements UserService {
         return token;
     }
     @Override
-    public List<UserInfo> query(UserQueryRequest request) {
+    public List<UserInfo> userQueryRequest(UserQueryRequest request) {
         return findByUserName(UserInfo.class, request.getUserNameList());
     }
 }

@@ -5,7 +5,7 @@ import com.demo.admin.dto.MenuUpdateRequest;
 import com.demo.admin.vo.MenuStructureResponse;
 import com.demo.admin.service.MenuService;
 import com.demo.common.controller.ControllerPath;
-import com.demo.common.dto.DefaultResponse;
+import com.demo.common.dto.ApiResponse;
 import com.demo.common.exception.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -31,8 +31,8 @@ public class StructureController {
     }
 
     @PostMapping(path = ControllerPath.MENU+ControllerPath.UPDATE, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public DefaultResponse menuUpdate(@Valid @RequestBody MenuUpdateRequest menuUpdateRequest){
+    public ApiResponse menuUpdate(@Valid @RequestBody MenuUpdateRequest menuUpdateRequest){
         menuService.menuUpdate(menuUpdateRequest);
-        return new DefaultResponse();
+        return new ApiResponse();
     }
 }

@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class DeltaResponse extends DefaultResponse {
+public class DeltaResponse extends ApiResponse {
     private ConcurrentLinkedQueue<String> success = new ConcurrentLinkedQueue<String>();
     private ConcurrentLinkedQueue<ErrorRecord> failedList = new ConcurrentLinkedQueue<ErrorRecord>();
     @Data

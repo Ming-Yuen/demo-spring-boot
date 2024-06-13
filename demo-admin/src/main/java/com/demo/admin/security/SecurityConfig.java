@@ -5,7 +5,6 @@ import com.demo.admin.security.filter.RestAuthenticationEntryPoint;
 import com.demo.admin.security.filter.RestfulAccessDeniedHandler;
 import com.demo.common.controller.ControllerPath;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -15,8 +14,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import java.util.List;
-
 @Configuration
 @EnableWebSecurity
 @AllArgsConstructor
@@ -25,11 +22,12 @@ public class SecurityConfig {
     private RestfulAccessDeniedHandler restfulAccessDeniedHandler;
     private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain configure(HttpSecurity http) throws Exception {
         return http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                    .requestMatchers(ControllerPath.user + ControllerPath.TOKEN).permitAll()
+                    .requestMatchers(ControllerPath.USER + ControllerPath.TOKEN).permitAll()
                         .requestMatchers(HttpMethod.GET).permitAll()
+                        .requestMatchers(HttpMethod.POST).permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

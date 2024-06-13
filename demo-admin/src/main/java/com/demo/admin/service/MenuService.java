@@ -3,11 +3,8 @@ package com.demo.admin.service;
 import com.demo.admin.dto.MenuQueryRequest;
 import com.demo.admin.dto.MenuUpdateRequest;
 import com.demo.admin.vo.MenuStructureResponse;
-import com.demo.common.dto.DefaultResponse;
 import com.demo.common.exception.ValidationException;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 public interface MenuService{
 

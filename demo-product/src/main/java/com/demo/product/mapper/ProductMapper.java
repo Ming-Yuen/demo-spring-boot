@@ -9,7 +9,7 @@ import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
-@Mapper//(componentModel = "spring")
+@Mapper(componentModel = "spring")
 public interface ProductMapper {
     @Mapping(target = "productId", source = "fundId")
     @Mapping(target = "productName", source = "fundName")

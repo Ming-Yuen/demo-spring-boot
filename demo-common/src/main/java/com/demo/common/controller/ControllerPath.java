@@ -2,7 +2,7 @@ package com.demo.common.controller;
 
 public class ControllerPath {
 
-    public static final String user = "/user";
+    public static final String USER = "/user";
     public static final String TOKEN = "/token";
     public static final String UPDATE = "/update";
     public static final String QUERY = "/query";

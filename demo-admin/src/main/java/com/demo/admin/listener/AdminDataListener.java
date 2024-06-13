@@ -25,7 +25,7 @@ public class AdminDataListener implements CommandLineRunner {
             userInfo.setUserName("admin");
             userInfo.setFirstName("temp");
             userInfo.setLastName("temp");
-            userInfo.setUserPwd("admin");
+            userInfo.setUserPassword("admin");
             userInfo.setRole("admin");
             userInfo.setGender("none");
             userInfo.setCreatedBy(userInfo.getUserName());
@@ -33,7 +33,7 @@ public class AdminDataListener implements CommandLineRunner {
             userInfo.setUpdatedBy(userInfo.getUserName());
             userInfo.setUpdatedAt(OffsetDateTime.now());
 
-            userService.saveUserEncryptPassword(userInfo);
+            userService.updateUserMaster(userInfo);
         }
     }
 }

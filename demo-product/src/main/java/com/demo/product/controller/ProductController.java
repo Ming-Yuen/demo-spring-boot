@@ -1,7 +1,7 @@
 package com.demo.product.controller;
 
 import com.demo.common.controller.ControllerPath;
-import com.demo.common.dto.DefaultResponse;
+import com.demo.common.dto.ApiResponse;
 import com.demo.product.dto.ProductEnquiryRequest;
 import com.demo.product.entity.Product;
 import com.demo.product.service.ProductService;
@@ -27,8 +27,8 @@ public class ProductController {
     }
 
     @PostMapping(path = ControllerPath.UPDATE, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public DefaultResponse update(@Valid @RequestBody ProductUpdateRequest[] request){
+    public ApiResponse update(@Valid @RequestBody ProductUpdateRequest[] request){
         productService.update(request);
-        return new DefaultResponse();
+        return new ApiResponse();
     }
 }

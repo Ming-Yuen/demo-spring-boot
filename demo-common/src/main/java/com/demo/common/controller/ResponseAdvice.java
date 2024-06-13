@@ -1,8 +1,7 @@
 package com.demo.common.controller;
 
-import com.demo.common.dto.DefaultResponse;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.demo.common.dto.ApiResponse;
+import com.demo.common.exception.ValidationException;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -37,29 +36,28 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
     }
 
     @ResponseBody
+    @ExceptionHandler(ValidationException.class)
+    public Object throwable(ValidationException exception) {
+        log.error(exception.getMessage(), exception);
+        return new ApiResponse().setError(exception.toString());
+    }
+    @ResponseBody
     @ExceptionHandler(Throwable.class)
     public Object throwable(Throwable t) {
         log.error(t.getMessage(), t);
-        DefaultResponse defaultResponse = new DefaultResponse();
-        defaultResponse.setSuccess(false);
-        defaultResponse.setErrorMessage(Arrays.asList(t.getMessage()));
-        defaultResponse.setErrorNum(1);
-        return defaultResponse;
+        return new ApiResponse().setInternalError();
     }
 
     @ResponseBody
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Object throwable(MethodArgumentNotValidException e) {
         log.error(e.getMessage(), e);
-        DefaultResponse defaultResponse = new DefaultResponse();
-        defaultResponse.setSuccess(false);
 
         List<FieldError> errors = e.getBindingResult().getFieldErrors();
         List<String> message = new ArrayList<String>();
         errors.forEach(error->
                 message.add(error.getField() + ":" + error.getDefaultMessage())
         );
-        defaultResponse.setErrorMessage(message);
-        return defaultResponse;
+        return new ApiResponse().setError(message.toString());
     }
 }

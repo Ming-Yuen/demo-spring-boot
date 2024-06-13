@@ -3,6 +3,7 @@ package com.demo.admin.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,15 +11,19 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 @Slf4j
 @Component
-public class JwtManager {
+@NoArgsConstructor
+public class JwtUtil {
 
-    @Value("${jwt.secret}")
     private String secret;
-    @Value("${jwt.expiration}")
     private Long expiration;
+    public JwtUtil(@Value("${jwt.secret}") String secret, @Value("${jwt.expiration}") Long expiration){
+        this.secret = secret;
+        this.expiration = expiration;
+    }
 
     public String generateToken(String username, String password) {
         HashMap<String, Object> map = new HashMap<String, Object>();

@@ -10,14 +10,13 @@ import java.util.List;
 
 public interface UserService {
 
-    void register(List<UserRegisterRequest> user);
+    void updateUserRequest(List<UserRegisterRequest> user);
     String login(String username, String password);
 
     <T> List<T> findByUserName(Class<T> type, String... usernames);
 
     Collection<Long> getManageRoles(UserRole userRole);
 
-    List<UserInfo> query(UserQueryRequest request);
-    void saveUserEncryptPassword(UserInfo... userInfoRecords);
-    void saveUser(UserInfo... userInfoRecords);
+    List<UserInfo> userQueryRequest(UserQueryRequest request);
+    void updateUserMaster(UserInfo... userInfoRecords);
 }
