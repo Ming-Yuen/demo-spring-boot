@@ -1,7 +1,7 @@
 package com.demo.admin.dto;
 
 import com.demo.admin.enums.Gender;
-import com.demo.common.entity.enums.UserRole;
+import com.demo.admin.enums.PrivilegeType;
 import jakarta.validation.constraints.NotNull;
 
 import jakarta.validation.constraints.NotBlank;
@@ -20,5 +20,5 @@ public class UserRegisterRequest {
     private String email;
     private String phone;
     @NotNull
-    private UserRole role;
+    private PrivilegeType privilege;
 }

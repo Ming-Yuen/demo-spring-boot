@@ -2,14 +2,14 @@ package com.demo.admin.service.impl;
 
 import com.demo.admin.dto.UserQueryRequest;
 import com.demo.admin.dto.UserRegisterRequest;
+import com.demo.admin.entity.Privilege;
 import com.demo.admin.entity.UserInfo;
-import com.demo.admin.mapper.UserConverter;
+import com.demo.admin.mapper.UserMapper;
 import com.demo.admin.service.UserService;
 import com.demo.admin.repository.UserRepository;
-import com.demo.admin.repository.UserRoleRepository;
+import com.demo.admin.repository.PrivilegeRepository;
 import com.demo.admin.security.JwtUtil;
-import com.demo.common.entity.BaseEntity;
-import com.demo.common.entity.enums.UserRole;
+import com.demo.admin.enums.PrivilegeType;
 import com.demo.common.util.LambdaUtil;
 //import com.demo.common.util.RedisUtil;
 import jakarta.persistence.EntityManager;
@@ -29,17 +29,17 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
-    private UserConverter userMapper;
-    private UserRoleRepository userRoleRepository;
+    private UserMapper userMapper;
+    private PrivilegeRepository privilegeRepository;
     private JwtUtil jwt;
     @PersistenceContext
     private EntityManager entityManager;
     private Long expiration;
 
-    public UserServiceImpl(UserRepository userRepository, UserConverter userMapper, UserRoleRepository userRoleRepository, JwtUtil jwt, @Value("${jwt.expiration}") Long expiration) {
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, PrivilegeRepository privilegeRepository, JwtUtil jwt, @Value("${jwt.expiration}") Long expiration) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
-        this.userRoleRepository = userRoleRepository;
+        this.privilegeRepository = privilegeRepository;
         this.jwt = jwt;
         this.expiration = expiration;
     }
@@ -78,24 +78,29 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByUserNameIn(type, usernames);
     }
     @Override
-    public Collection<Long> getManageRoles(UserRole userRole){
-        return userRoleRepository.findByRoleLevelGreaterThanEqual(userRole).stream().map(BaseEntity::getId).collect(Collectors.toList());
+    public List<PrivilegeType> getSubPrivilege(PrivilegeType... privilegeTypes){
+        Set<PrivilegeType> privilegeList = new HashSet<PrivilegeType>();
+        List<Privilege.SelectSubPrivilege> selectSubPrivilegesList = privilegeRepository.findByPrivilegeIn(Privilege.SelectSubPrivilege.class, privilegeTypes);
+
+        privilegeList.addAll(selectSubPrivilegesList.stream().map(x->x.subPrivileges()).collect(Collectors.toSet()));
+
+        return privilegeList.stream().toList();
     }
     @Override
     public String login(String username, String password) {
-        List<UserInfo.SelectUserPwd> userInfoList = findByUserName(UserInfo.SelectUserPwd.class, username);
+        List<UserInfo.SelectUserPassword> userInfoList = findByUserName(UserInfo.SelectUserPassword.class, username);
         if(userInfoList.isEmpty()){
             throw new IllegalArgumentException("User is not registered");
         }
-        UserInfo.SelectUserPwd userInfo = userInfoList.get(0);
-        if(!password.equals(userInfo.userPwd())){
+        UserInfo.SelectUserPassword userInfo = userInfoList.get(0);
+        if(!password.equals(userInfo.userPassword())){
             throw new IllegalArgumentException("Incorrect password");
         }
 //        String token = (String) redisUtil.get("token."+user.getUserName());
 //        if(token != null){
 //            return token;
 //        }
-        String token = jwt.generateToken(userInfo.userName(), userInfo.userPwd());
+        String token = jwt.generateToken(userInfo.userName(), userInfo.userPassword());
 //        redisUtil.set("token."+user.getUserName(), token, expiration, TimeUnit.SECONDS);
         return token;
     }

@@ -3,9 +3,8 @@ package com.demo.admin.service;
 import com.demo.admin.dto.UserQueryRequest;
 import com.demo.admin.dto.UserRegisterRequest;
 import com.demo.admin.entity.UserInfo;
-import com.demo.common.entity.enums.UserRole;
+import com.demo.admin.enums.PrivilegeType;
 
-import java.util.Collection;
 import java.util.List;
 
 public interface UserService {
@@ -15,7 +14,7 @@ public interface UserService {
 
     <T> List<T> findByUserName(Class<T> type, String... usernames);
 
-    Collection<Long> getManageRoles(UserRole userRole);
+    List<PrivilegeType> getSubPrivilege(PrivilegeType... privilegeType);
 
     List<UserInfo> userQueryRequest(UserQueryRequest request);
     void updateUserMaster(UserInfo... userInfoRecords);

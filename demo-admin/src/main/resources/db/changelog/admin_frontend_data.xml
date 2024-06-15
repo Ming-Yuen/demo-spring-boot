@@ -8,7 +8,7 @@
             <column name="curr" value="Account trading" />
             <column name="type" value="web" />
             <column name="link" value="web" />
-            <column name="role_id" value="userInfo" />
+            <column name="privilege" value="user" />
             <column name="created_by" value="ming"/>
             <column name="created_at" valueDate="${now}"/>
             <column name="updated_by" value="ming"/>
@@ -19,7 +19,7 @@
             <column name="curr" value="Item trading" />
             <column name="type" value="web" />
             <column name="link" value="web" />
-            <column name="role_id" value="userInfo" />
+            <column name="privilege" value="user" />
             <column name="created_by" value="ming"/>
             <column name="created_at" valueDate="${now}"/>
             <column name="updated_by" value="ming"/>
@@ -30,7 +30,7 @@
             <column name="curr" value="Pet trading" />
             <column name="type" value="web" />
             <column name="link" value="web" />
-            <column name="role_id" value="userInfo" />
+            <column name="privilege" value="user" />
             <column name="created_by" value="ming"/>
             <column name="created_at" valueDate="${now}"/>
             <column name="updated_by" value="ming"/>

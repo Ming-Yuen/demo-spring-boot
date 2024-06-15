@@ -7,7 +7,6 @@ import com.demo.admin.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -24,14 +23,15 @@ import java.util.List;
 
 @Slf4j
 @Component
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     private JwtUtil jwt;
     private UserService userService;
     private final static String tokenHead = "Bearer ";
+
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {System.out.println("test1");
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         String authHeader = request.getHeader("Authorization");
         if (authHeader != null && authHeader.startsWith(tokenHead)) {
             String authToken = authHeader.substring(tokenHead.length());// The part after "Bearer "
@@ -51,7 +51,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                     }
                 }
             }catch (Exception e){
-                log.error("JWT token error : " + e.getMessage(), e);
+                throw new ServletException("Jwt token fail");
             }
         }
         chain.doFilter(request, response);

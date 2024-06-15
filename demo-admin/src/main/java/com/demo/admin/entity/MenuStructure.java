@@ -21,5 +21,5 @@ public class MenuStructure extends BaseEntity implements Serializable {
     @Column(nullable = false)
     private String link;
     @Column(nullable = false)
-    private Long roleId;
+    private Long privilege;
 }
