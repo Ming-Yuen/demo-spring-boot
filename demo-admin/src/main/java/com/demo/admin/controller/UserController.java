@@ -6,10 +6,12 @@ import com.demo.admin.vo.UserQueryResponse;
 import com.demo.admin.vo.UserRegisterResponse;
 import com.demo.common.controller.ControllerPath;
 import com.demo.common.dto.ApiResponse;
+import com.demo.common.util.ValidList;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
@@ -22,7 +24,7 @@ import java.util.stream.Collectors;
 public class UserController {
     private UserService userService;
     @PostMapping(path = ControllerPath.UPDATE, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ApiResponse<UserRegisterResponse>> update(@Valid @RequestBody List<UserRegisterRequest> request){
+    public ResponseEntity<ApiResponse<UserRegisterResponse>> update(@RequestBody @Validated  ValidList<UserRegisterRequest> request){
         userService.updateUserRequest(request);
         List<String> userNameList = request.stream().map(UserRegisterRequest::getUserName).collect(Collectors.toList());
         return new ResponseEntity<>(new ApiResponse<>().isSuccess(userNameList), HttpStatus.OK);

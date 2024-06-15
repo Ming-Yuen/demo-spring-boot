@@ -1,6 +1,7 @@
 package com.demo.admin.listener;
 
 import com.demo.admin.entity.UserInfo;
+import com.demo.admin.enums.PrivilegeType;
 import com.demo.admin.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -26,7 +27,7 @@ public class AdminDataListener implements CommandLineRunner {
             userInfo.setFirstName("temp");
             userInfo.setLastName("temp");
             userInfo.setUserPassword("admin");
-            userInfo.setPrivilege("admin");
+            userInfo.setPrivilege(PrivilegeType.admin);
             userInfo.setGender("none");
             userInfo.setCreatedBy(userInfo.getUserName());
             userInfo.setCreatedAt(OffsetDateTime.now());
