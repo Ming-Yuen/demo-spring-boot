@@ -15,7 +15,7 @@
             <column name="created_at" type="TIMESTAMP WITH TIME ZONE"><constraints nullable="false"/></column>
             <column name="updated_by" type="varchar(30)"><constraints nullable="false"/></column>
             <column name="updated_at" type="TIMESTAMP WITH TIME ZONE"><constraints nullable="false"/></column>
-            <column name="role_id" type="varchar(9)"><constraints nullable="false"/></column>
+            <column name="privilege" type="varchar(9)"><constraints nullable="false"/></column>
             <column name="version" type="int"><constraints nullable="false"/></column>
         </createTable>
         <addUniqueConstraint constraintName="uk_menu_structure" tableName="menu_structure" columnNames="curr"/>
@@ -34,27 +34,27 @@
             <column name="created_at" type="TIMESTAMP WITH TIME ZONE"><constraints nullable="false"/></column>
             <column name="updated_by" type="varchar(30)"><constraints nullable="false"/></column>
             <column name="updated_at" type="TIMESTAMP WITH TIME ZONE"><constraints nullable="false"/></column>
-            <column name="role" type="varchar(9)"><constraints nullable="false"/></column>
+            <column name="privilege" type="varchar(9)"><constraints nullable="false"/></column>
             <column name="version" type="int"><constraints nullable="false"/></column>
         </createTable>
         <addUniqueConstraint constraintName="uk_user_info" tableName="user_info" columnNames="user_name"/>
 
-        <createTable tableName="user_role">
+        <createTable tableName="privilege">
             <column name="id" type="BIGINT" autoIncrement="true"><constraints primaryKey="true"/></column>
-            <column name="role_id" type="varchar(30)"><constraints nullable="false"/></column>
-            <column name="role_level" type="varchar(9)"><constraints nullable="false"/></column>
+            <column name="privilege" type="varchar(30)"><constraints nullable="false"/></column>
+            <column name="subPrivilege" type="varchar(9)"><constraints nullable="false"/></column>
             <column name="created_by" type="varchar(30)"><constraints nullable="false"/></column>
             <column name="created_at" type="TIMESTAMP WITH TIME ZONE"><constraints nullable="false"/></column>
             <column name="updated_by" type="varchar(30)"><constraints nullable="false"/></column>
             <column name="updated_at" type="TIMESTAMP WITH TIME ZONE"><constraints nullable="false"/></column>
             <column name="version" type="int"><constraints nullable="false"/></column>
         </createTable>
-        <addUniqueConstraint constraintName="uk_user_role" tableName="user_role" columnNames="role_id"/>
+        <addUniqueConstraint constraintName="uk_privilege" tableName="privilege" columnNames="privilege"/>
     </changeSet>
 
     <changeSet id="admin_schema_sequence" author="ming" dbms="oracle">
         <createSequence sequenceName="menu_structure_seq" startValue="1" incrementBy="50" ordered="true"/>
         <createSequence sequenceName="user_info_seq" startValue="1" incrementBy="50" ordered="true"/>
-        <createSequence sequenceName="user_role_seq" startValue="1" incrementBy="50" ordered="true"/>
+        <createSequence sequenceName="privilege_seq" startValue="1" incrementBy="50" ordered="true"/>
     </changeSet>
 </databaseChangeLog>

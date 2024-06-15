@@ -2,6 +2,7 @@ package com.demo.admin.entity;
 
 import com.demo.common.entity.BaseEntity;
 
+import com.demo.admin.enums.PrivilegeType;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -25,8 +26,8 @@ public class UserInfo extends BaseEntity {
     private Date resignDate;
 
     @Column(nullable = false)
-    private String role;
+    private String privilege;
     public record SelectUserName(Long id, String userName){}
-    public record SelectUserPwd(String userName, String userPwd){}
-    public record SelectUserRole(String role){}
+    public record SelectUserPassword(String userName, String userPassword){}
+    public record SelectUserRole(PrivilegeType privilegeType){}
 }

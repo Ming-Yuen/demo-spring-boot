@@ -26,7 +26,7 @@ public class AdminDataListener implements CommandLineRunner {
             userInfo.setFirstName("temp");
             userInfo.setLastName("temp");
             userInfo.setUserPassword("admin");
-            userInfo.setRole("admin");
+            userInfo.setPrivilege("admin");
             userInfo.setGender("none");
             userInfo.setCreatedBy(userInfo.getUserName());
             userInfo.setCreatedAt(OffsetDateTime.now());

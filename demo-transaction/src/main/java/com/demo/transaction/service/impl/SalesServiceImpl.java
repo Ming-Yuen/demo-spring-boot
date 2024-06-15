@@ -15,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import jakarta.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.List;
 @Slf4j
@@ -29,8 +28,6 @@ public class SalesServiceImpl implements SalesService {
     private SalesItemDao salesItemDao;
     @Autowired
     private ProductService productService;
-    @Autowired
-    private HttpServletRequest servletRequest;
     @Override
     public DeltaResponse create(List<SalesRequest> request) {
         DeltaResponse response = new DeltaResponse();
@@ -42,14 +39,10 @@ public class SalesServiceImpl implements SalesService {
                     SalesOrder salesOrder = salesMapper.converToSales(order);
                     List<SalesOrderItem> salesOrderItems = salesMapper.convertToSalesItem(order.getSalesItems());
                     salesOrderItems.parallelStream().forEach(orderItem->{
-                        if(productService.existsByProductId(orderItem.getProductId())){
-                            throw new RuntimeException("Item not found, sku : " + orderItem.getProductId());
-                        }
                         ProductPrice productPrice = productService.getLatestProductPrice(DateUtil.convertOffsetDatetime(order.getTxDatetime().toLocalDate()), order.getRegion(), orderItem.getProductId());
                         if(productPrice == null){
                             throw new RuntimeException("Region " + order.getRegion() + ", product : " + orderItem.getProductId() + " price not found");
                         }
-                        
                     });
                     salesDao.save(salesOrder);
                     salesItemDao.saveAll(salesOrderItems);

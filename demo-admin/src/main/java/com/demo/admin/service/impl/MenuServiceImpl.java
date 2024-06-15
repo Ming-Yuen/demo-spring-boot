@@ -7,10 +7,11 @@ import com.demo.admin.dto.MenuQueryRequest;
 import com.demo.admin.dto.MenuUpdateRequest;
 import com.demo.admin.entity.MenuStructure;
 import com.demo.admin.vo.MenuStructureResponse;
-import com.demo.common.entity.enums.UserRole;
+import com.demo.admin.enums.PrivilegeType;
 import com.demo.admin.service.MenuService;
 import com.demo.admin.service.UserService;
 import com.demo.common.exception.ValidationException;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,46 +21,27 @@ import java.util.*;
 
 @Slf4j
 @Service
+@AllArgsConstructor
 public class MenuServiceImpl implements MenuService {
-    @Autowired
     private MenuRepository menuRepository;
-    @Autowired
     private UserService userService;
-    @Autowired
     private MenuMapper menuMapper;
 
     @Override
     public MenuStructureResponse getStructure(MenuQueryRequest menuQueryRequest) throws ValidationException {
         if(menuQueryRequest == null){
-            return convertToResponse(menuRepository.findByRoleIdIn(Collections.singletonList(0L)));
+            return convertToResponse(menuRepository.findByPrivilegeIn(PrivilegeType.user));
         }
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         if(userService.findByUserName(UserInfo.SelectUserName.class, username).isEmpty()){
             throw new ValidationException("user is not registered");
         }
-        UserRole role_level = UserRole.getRoleById(userService.findByUserName(UserInfo.SelectUserRole.class, username).get(0).role());
+        PrivilegeType[] privilegeTypes = userService.findByUserName(UserInfo.SelectUserRole.class, username).stream().map(x->x.privilegeType()).toArray(PrivilegeType[]::new);
 
         Map<Long, MenuStructureResponse.MenuTree> menuTreeMap = new HashMap<>();
 
-        Collection<Long> manageRoleId = userService.getManageRoles(role_level);
-//        menuDao.findByRoleIdIn(manageRoleId)
-//                .forEach(x->{
-//                    MenuStructureResponse.MenuTree menuTree = null;
-//                    if((menuTree = menuTreeMap.get(x.getParent())) == null){
-//                        menuTree = new MenuStructureResponse.MenuTree(x);
-//                        menuTreeResponse.getMenu().add(menuTree);
-//                    }else {
-//                        menuTree.getChild().add(new MenuStructureResponse.MenuTree(x));
-//                    }
-//                    menuTreeMap.put(x.getId(), menuTree);
-//                });
-//        List<MenuStructureResponse.MenuTree> menu = menuTreeResponse.getMenu();
-//        for (int i = 0; i < menu.size(); i++) {
-//            if(menu.get(i).getChild().isEmpty()){
-//                menu.remove(i);
-//            }
-//        }
-        return convertToResponse(menuRepository.findByRoleIdIn(manageRoleId));
+        List<PrivilegeType> privilegeTypeList = userService.getSubPrivilege(privilegeTypes);
+        return convertToResponse(menuRepository.findByPrivilegeIn(privilegeTypeList.toArray(new PrivilegeType[]{})));
     }
 
     private MenuStructureResponse convertToResponse(List<MenuStructure> menuStructures){

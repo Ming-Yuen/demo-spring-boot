@@ -134,7 +134,7 @@ public class UserBatchImport {
             userInfo.setUserPassword(fieldSet.readString("password"));
             userInfo.setEmail(fieldSet.readString("email"));
             userInfo.setGender(fieldSet.readString("gender"));
-            userInfo.setRole("user");
+            userInfo.setPrivilege("user");
             return userInfo;
         }
     }

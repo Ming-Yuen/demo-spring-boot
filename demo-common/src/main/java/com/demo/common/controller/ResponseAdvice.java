@@ -2,6 +2,7 @@ package com.demo.common.controller;
 
 import com.demo.common.dto.ApiResponse;
 import com.demo.common.exception.ValidationException;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -46,6 +47,13 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
     public Object throwable(Throwable t) {
         log.error(t.getMessage(), t);
         return new ApiResponse().setInternalError();
+    }
+
+    @ResponseBody
+    @ExceptionHandler(ExpiredJwtException.class)
+    public Object throwable(ExpiredJwtException t) {
+        log.error(t.getMessage(), t);
+        return new ApiResponse().setError(t.getMessage());
     }
 
     @ResponseBody

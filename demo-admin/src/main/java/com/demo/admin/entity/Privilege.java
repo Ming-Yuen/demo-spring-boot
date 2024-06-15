@@ -1,15 +1,17 @@
 package com.demo.admin.entity;
 
 import com.demo.common.entity.BaseEntity;
+import com.demo.admin.enums.PrivilegeType;
 import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
 @Entity
-public class UserRole extends BaseEntity {
+public class Privilege extends BaseEntity {
     @Column(nullable = false)
-    private String roleId;
+    private String privilege;
     @Enumerated(EnumType.ORDINAL)
     @Column(nullable = false)
-    private com.demo.common.entity.enums.UserRole roleLevel;
+    private PrivilegeType subPrivileges;
+    public record SelectSubPrivilege(PrivilegeType subPrivileges){}
 }
