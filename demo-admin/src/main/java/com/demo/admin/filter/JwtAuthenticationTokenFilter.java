@@ -1,11 +1,10 @@
-package com.demo.admin.security.filter;
+package com.demo.admin.filter;
 
 import com.demo.admin.entity.UserInfo;
 import com.demo.admin.security.JwtUtil;
 import com.demo.admin.security.AdminUserDetails;
 import com.demo.admin.service.UserService;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,7 +23,6 @@ import java.util.List;
 @Slf4j
 @Component
 @AllArgsConstructor
-@NoArgsConstructor
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     private JwtUtil jwt;
     private UserService userService;
@@ -35,23 +33,19 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         String authHeader = request.getHeader("Authorization");
         if (authHeader != null && authHeader.startsWith(tokenHead)) {
             String authToken = authHeader.substring(tokenHead.length());// The part after "Bearer "
-            try{
-                String username = jwt.getUserNameFromToken(authToken);
-                log.info("checking username:{}", username);
-                if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                    List<UserInfo> umsAdminList = userService.findByUserName(UserInfo.class, username);
-                    if (umsAdminList.isEmpty()) {
-                        throw new UsernameNotFoundException("User name or password incorrect");
-                    }
-                    AdminUserDetails userDetails = new AdminUserDetails(umsAdminList.get(0));;
-                    if (jwt.validateToken(authToken, userDetails)) {
-                        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                        SecurityContextHolder.getContext().setAuthentication(authentication);
-                    }
+            String username = jwt.getUserNameFromToken(authToken);
+            log.info("checking username:{}", username);
+            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                List<UserInfo> umsAdminList = userService.findByUserName(UserInfo.class, username);
+                if (umsAdminList.isEmpty()) {
+                    throw new UsernameNotFoundException("User name or password incorrect");
                 }
-            }catch (Exception e){
-                throw new ServletException("Jwt token fail");
+                AdminUserDetails userDetails = new AdminUserDetails(umsAdminList.get(0));;
+                if (jwt.validateToken(authToken, userDetails)) {
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
             }
         }
         chain.doFilter(request, response);

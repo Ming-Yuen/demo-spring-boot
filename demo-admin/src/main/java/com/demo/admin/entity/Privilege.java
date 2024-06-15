@@ -9,7 +9,7 @@ import lombok.Data;
 @Entity
 public class Privilege extends BaseEntity {
     @Column(nullable = false)
-    private String privilege;
+    private PrivilegeType privilege;
     @Enumerated(EnumType.ORDINAL)
     @Column(nullable = false)
     private PrivilegeType subPrivileges;

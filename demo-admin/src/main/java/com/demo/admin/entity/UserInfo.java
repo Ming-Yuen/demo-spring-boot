@@ -26,7 +26,8 @@ public class UserInfo extends BaseEntity {
     private Date resignDate;
 
     @Column(nullable = false)
-    private String privilege;
+    @Enumerated(EnumType.STRING)
+    private PrivilegeType privilege;
     public record SelectUserName(Long id, String userName){}
     public record SelectUserPassword(String userName, String userPassword){}
     public record SelectUserRole(PrivilegeType privilegeType){}
