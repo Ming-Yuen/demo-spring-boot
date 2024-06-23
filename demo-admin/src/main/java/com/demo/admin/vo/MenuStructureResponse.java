@@ -13,9 +13,10 @@ public class MenuStructureResponse extends ApiResponse {
     private List<MenuTree> menu = new LinkedList<MenuTree>();
     @Data
     public static class MenuTree{
+        private String id;
         private String parent;
         private String icon;
-        private String title;
+        private String name;
         private String type;
         private String link;
         private List<MenuTree> child;

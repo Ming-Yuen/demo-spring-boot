@@ -16,7 +16,7 @@ import lombok.EqualsAndHashCode;
                 @Index(name = "idx_schedule", columnList = "name,enable")
         }
 )
-public class Schedule extends BaseEntity {
+public class BatchTask extends BaseEntity {
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)

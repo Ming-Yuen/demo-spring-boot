@@ -48,7 +48,6 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void updateUserRequest(List<UserRegisterRequest> request){
-        System.out.println("111111111111111111111111111111");
         UserInfo[] userInfo = userMapper.userRegisterRequestToUser(request.toArray(new UserRegisterRequest[]{}));
         updateUserMaster(userInfo);
     }

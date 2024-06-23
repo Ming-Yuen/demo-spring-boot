@@ -3,12 +3,12 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
 
-    <changeSet id="schedule_data" author="ming">
-        <insert tableName="schedule">
+    <changeSet id="batch_task_data" author="ming">
+        <insert tableName="batchTask">
             <column name="name"         value="Import_User_info_from_csv_file"/>
             <column name="description"  value="Read csv file import data to user_info"/>
             <column name="cron"         value="*/5 * * * * ? *"/>
-            <column name="job_class"    value="com.demo.admin.schedule.CsvToUserSchedule"/>
+            <column name="job_class"    value="com.demo.batchTask.batchTask.CsvToUserSchedule"/>
             <column name="enable"       valueNumeric="1"/>
             <column name="created_by"   value="ming"/>
             <column name="created_at"   valueDate="${now}"/>
@@ -16,11 +16,23 @@
             <column name="updated_at"   valueDate="${now}"/>
             <column name="version"      value="1"/>
         </insert>
-        <insert tableName="schedule">
+        <insert tableName="batchTask">
             <column name="name"         value="Import_MPF_History"/>
             <column name="description"  value="Import MPF history"/>
             <column name="cron"         value="*/5 * * * * ? *"/>
-            <column name="job_class"    value="com.demo.schedule.schedule.MPFDailyDownloadScheduler"/>
+            <column name="job_class"    value="com.demo.batchTask.batchTask.MPFDailyDownloadScheduler"/>
+            <column name="enable"       valueNumeric="1"/>
+            <column name="created_by"   value="ming"/>
+            <column name="created_at"   valueDate="${now}"/>
+            <column name="updated_by"   value="ming"/>
+            <column name="updated_at"   valueDate="${now}"/>
+            <column name="version"      value="1"/>
+        </insert>
+        <insert tableName="batchTask">
+            <column name="name"         value="sale_import"/>
+            <column name="description"  value="import sales data and update inventory"/>
+            <column name="cron"         value="*/5 * * * * ? *"/>
+            <column name="job_class"    value="com.demo.batchTask.batchTask.MPFDailyDownloadScheduler"/>
             <column name="enable"       valueNumeric="1"/>
             <column name="created_by"   value="ming"/>
             <column name="created_at"   valueDate="${now}"/>

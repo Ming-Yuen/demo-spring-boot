@@ -2,8 +2,8 @@ package com.demo.schedule.config;
 
 import com.demo.common.config.AutowiredSpringBeanJobFactory;
 import com.demo.common.exception.ValidationException;
-import com.demo.schedule.entity.Schedule;
-import com.demo.schedule.service.ScheduleService;
+import com.demo.schedule.entity.BatchTask;
+import com.demo.schedule.service.BatchTaskService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,7 +24,7 @@ public class ScheduleConfig implements CommandLineRunner {
     @Value("${quartz.enabled}")
     private boolean quartzEnable;
     @Autowired
-    private ScheduleService scheduleService;
+    private BatchTaskService batchTaskService;
     @Autowired
     private AutowiredSpringBeanJobFactory autowiredSpringBeanJobFactory;
     @Override
@@ -34,37 +34,37 @@ public class ScheduleConfig implements CommandLineRunner {
             Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
             ObjectMapper objectMapper = new ObjectMapper();
             boolean scheduleIsEmpty = true;
-            List<Schedule> schedules = scheduleService.getAllSchedule();
-            log.info("Found a total of {} schedules", schedules.size());
-            for (Schedule schedule : schedules) {
+            List<BatchTask> batchTasks = batchTaskService.getAllTask();
+            log.info("Found a total of {} schedules", batchTasks.size());
+            for (BatchTask batchTask : batchTasks) {
                 try {
                     Class<?> jobClass = null;
                     try {
-                        jobClass = Class.forName(schedule.getJobClass());
+                        jobClass = Class.forName(batchTask.getJobClass());
                     } catch (ClassNotFoundException exception) {
-                        throw new ValidationException("Job id " + schedule.getId(), exception);
+                        throw new ValidationException("Job id " + batchTask.getId(), exception);
                     }
                     if (!Job.class.isAssignableFrom(jobClass)) {
-                        throw new ValidationException("Job id " + schedule.getId() + " job class is not Quartz Job sub interface class");
+                        throw new ValidationException("Job id " + batchTask.getId() + " job class is not Quartz Job sub interface class");
                     }
                     Map<String, String> scheduleConfig = null;
-                    if (schedule.getConfig() != null) {
+                    if (batchTask.getConfig() != null) {
                         try {
-                            scheduleConfig = objectMapper.readValue(schedule.getConfig(), new TypeReference<Map<String, String>>() {});
+                            scheduleConfig = objectMapper.readValue(batchTask.getConfig(), new TypeReference<Map<String, String>>() {});
                         } catch (JsonProcessingException e) {
-                            throw new ValidationException("Job id " + schedule.getId() + " is not json value");
+                            throw new ValidationException("Job id " + batchTask.getId() + " is not json value");
                         }
                     }
                     @SuppressWarnings("unchecked")
                     JobBuilder jobBuilder = JobBuilder.newJob((Class<? extends Job>) jobClass)
-                            .withIdentity(String.valueOf(schedule.getId()), "group1");
+                            .withIdentity(String.valueOf(batchTask.getId()), "group1");
                     if (scheduleConfig != null) {
                         jobBuilder.usingJobData(new JobDataMap(scheduleConfig));
                     }
                     JobDetail jobDetail = jobBuilder.build();
                     Trigger trigger1 = TriggerBuilder.newTrigger()
-                            .withIdentity(String.valueOf(schedule.getId()), "group1")
-                            .withSchedule(CronScheduleBuilder.cronSchedule(schedule.getCron()))
+                            .withIdentity(String.valueOf(batchTask.getId()), "group1")
+                            .withSchedule(CronScheduleBuilder.cronSchedule(batchTask.getCron()))
                             .build();
                     scheduler.scheduleJob(jobDetail, trigger1);
                     scheduleIsEmpty = false;

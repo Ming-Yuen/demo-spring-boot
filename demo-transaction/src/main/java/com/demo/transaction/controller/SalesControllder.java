@@ -21,6 +21,6 @@ public class SalesControllder {
     private SalesService salesService;
     @PostMapping(path = ControllerPath.create, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public DeltaResponse create(@Valid @RequestBody List<SalesRequest> request){
-        return salesService.create(request);
+        return salesService.updateSalesRequest(request);
     }
 }

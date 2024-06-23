@@ -1,9 +1,9 @@
-package com.demo.common.dto;
+package com.demo.schedule.dto;
 
 import lombok.Data;
 
 @Data
-public class ScheduleUpdateRequest {
+public class BatchTaskUpdateRequest {
     private String name;
     private String description;
     private String jobClass;
