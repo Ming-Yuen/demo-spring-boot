@@ -13,7 +13,6 @@ import com.demo.admin.service.UserService;
 import com.demo.common.exception.ValidationException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,8 +37,6 @@ public class MenuServiceImpl implements MenuService {
         }
         PrivilegeType[] privilegeTypes = userService.findByUserName(UserInfo.SelectUserRole.class, username).stream().map(x->x.privilegeType()).toArray(PrivilegeType[]::new);
 
-        Map<Long, MenuStructureResponse.MenuTree> menuTreeMap = new HashMap<>();
-
         List<PrivilegeType> privilegeTypeList = userService.getSubPrivilege(privilegeTypes);
         return convertToResponse(menuRepository.findByPrivilegeIn(privilegeTypeList.toArray(new PrivilegeType[]{})));
     }
@@ -57,7 +54,7 @@ public class MenuServiceImpl implements MenuService {
                 }
                 menuTree.getChild().add(menuMapper.convert(menuItem));
             }
-            menuTreeMap.put(menuItem.getCurr(), menuTree);
+            menuTreeMap.put(menuItem.getName(), menuTree);
         });
         return menuTreeResponse;
     }
