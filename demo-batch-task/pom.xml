@@ -9,7 +9,7 @@
         <version>1.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>demo-schedule</artifactId>
+    <artifactId>demo-batch-task</artifactId>
 
     <build>
         <plugins>
