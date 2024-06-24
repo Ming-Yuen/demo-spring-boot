@@ -10,7 +10,7 @@ public class ControllerPath {
     public static final String STRUCTURE = "/structure";
     public static final String MENU = "/menu";
     public static final String product = "/product";
-    public static final String schedule = "/schedule";
+    public static final String BATCH_TASK = "/batchTask";
     public static final String order = "/order";
     public static final String sales = "/sales";
     public static final String create = "/create";

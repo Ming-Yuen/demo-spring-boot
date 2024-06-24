@@ -1,14 +1,14 @@
 package com.demo.schedule.service;
 
 import com.demo.common.dto.ScheduleUpdateRequest;
-import com.demo.schedule.entity.Schedule;
+import com.demo.schedule.entity.BatchTask;
 
 import java.util.List;
 
-public interface ScheduleService {
+public interface BatchTaskService {
     void update(ScheduleUpdateRequest scheduleUpdateRequest);
 
-    Schedule findByName(String scheduleName);
+    BatchTask findByName(String batchTaskName);
 
-    List<Schedule> getAllSchedule();
+    List<BatchTask> getAllBatchTask();
 }
