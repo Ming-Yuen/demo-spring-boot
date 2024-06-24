@@ -22135,3 +22135,83 @@ This generated password is for development use only. Your security configuration
 2072 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Initializing Servlet ''
 2073 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Completed initialization in 1 ms
 2108 [main] INFO  c.d.a.controller.UserControllerTest - Started UserControllerTest in 1.711 seconds (process running for 2.698)
+173  [main] INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.demo.admin.controller.UserControllerTest]: UserControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+270  [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.demo.DemoAdminApplication for test class com.demo.admin.controller.UserControllerTest
+476  [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+500  [main] INFO  c.d.a.controller.UserControllerTest - Starting UserControllerTest using Java 17.0.10 with PID 22256 (started by Administrator in C:\Users\Administrator\demo\demo-spring-boot\demo-admin)
+501  [main] INFO  c.d.a.controller.UserControllerTest - No active profile set, falling back to 1 default profile: "default"
+1595 [main] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: c6f0e92d-1a13-4eaf-92f6-8e47f0ad92e5
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+1682 [main] INFO  o.s.s.w.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@1f7336b2, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@4c030fe1, org.springframework.security.web.context.SecurityContextHolderFilter@6f8ac8d5, org.springframework.security.web.header.HeaderWriterFilter@49122853, org.springframework.web.filter.CorsFilter@347123dc, org.springframework.security.web.csrf.CsrfFilter@df7d1d4, org.springframework.security.web.authentication.logout.LogoutFilter@2404abe2, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@64757d56, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@6fced25c, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@52433946, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@66ab924, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@6ac756b, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@156324b, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5403431a, org.springframework.security.web.access.ExceptionTranslationFilter@4a833595, org.springframework.security.web.access.intercept.AuthorizationFilter@68d8eb4f]
+1719 [main] INFO  o.s.b.t.m.w.SpringBootMockServletContext - Initializing Spring TestDispatcherServlet ''
+1719 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Initializing Servlet ''
+1720 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Completed initialization in 1 ms
+1746 [main] INFO  c.d.a.controller.UserControllerTest - Started UserControllerTest in 1.428 seconds (process running for 2.161)
+180  [main] INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.demo.admin.controller.UserControllerTest]: UserControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+285  [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.demo.DemoAdminApplication for test class com.demo.admin.controller.UserControllerTest
+533  [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+558  [main] INFO  c.d.a.controller.UserControllerTest - Starting UserControllerTest using Java 17.0.10 with PID 16700 (started by Administrator in C:\Users\Administrator\demo\demo-spring-boot\demo-admin)
+559  [main] INFO  c.d.a.controller.UserControllerTest - No active profile set, falling back to 1 default profile: "default"
+1702 [main] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: 70e88efd-f1ed-48c1-b002-3bf5723e1cd1
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+1800 [main] INFO  o.s.s.w.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@52433946, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@5403431a, org.springframework.security.web.context.SecurityContextHolderFilter@156324b, org.springframework.security.web.header.HeaderWriterFilter@6f8ac8d5, org.springframework.web.filter.CorsFilter@ab327c, org.springframework.security.web.csrf.CsrfFilter@4fa91d5b, org.springframework.security.web.authentication.logout.LogoutFilter@7e2c6fd6, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@5f0d8937, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@299fc582, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@3d798e76, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@1f7336b2, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1e29a81a, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@7b4b8199, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@763b0996, org.springframework.security.web.access.ExceptionTranslationFilter@e97f115, org.springframework.security.web.access.intercept.AuthorizationFilter@702096ef]
+1834 [main] INFO  o.s.b.t.m.w.SpringBootMockServletContext - Initializing Spring TestDispatcherServlet ''
+1834 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Initializing Servlet ''
+1835 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Completed initialization in 1 ms
+1858 [main] INFO  c.d.a.controller.UserControllerTest - Started UserControllerTest in 1.512 seconds (process running for 2.262)
+166  [main] INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.demo.admin.controller.UserControllerTest]: UserControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+268  [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.demo.DemoAdminApplication for test class com.demo.admin.controller.UserControllerTest
+470  [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+495  [main] INFO  c.d.a.controller.UserControllerTest - Starting UserControllerTest using Java 17.0.10 with PID 22388 (started by Administrator in C:\Users\Administrator\demo\demo-spring-boot\demo-admin)
+495  [main] INFO  c.d.a.controller.UserControllerTest - No active profile set, falling back to 1 default profile: "default"
+1555 [main] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: f02e2796-bbd0-48dc-b365-7e18ca272f52
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+1648 [main] INFO  o.s.s.w.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@6df2af02, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@779228dc, org.springframework.security.web.context.SecurityContextHolderFilter@e97f115, org.springframework.security.web.header.HeaderWriterFilter@4a833595, org.springframework.web.filter.CorsFilter@1f7336b2, org.springframework.security.web.csrf.CsrfFilter@45c90a05, org.springframework.security.web.authentication.logout.LogoutFilter@71139e77, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@7e31d53b, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@7b4b8199, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@4c030fe1, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@69fe7090, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@6f8ac8d5, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@370225c7, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@347123dc, org.springframework.security.web.access.ExceptionTranslationFilter@31f7eb8, org.springframework.security.web.access.intercept.AuthorizationFilter@45c423b3]
+1684 [main] INFO  o.s.b.t.m.w.SpringBootMockServletContext - Initializing Spring TestDispatcherServlet ''
+1684 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Initializing Servlet ''
+1685 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Completed initialization in 1 ms
+1709 [main] INFO  c.d.a.controller.UserControllerTest - Started UserControllerTest in 1.397 seconds (process running for 2.074)
+179  [main] INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.demo.admin.controller.UserControllerTest]: UserControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+284  [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.demo.DemoAdminApplication for test class com.demo.admin.controller.UserControllerTest
+488  [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+513  [main] INFO  c.d.a.controller.UserControllerTest - Starting UserControllerTest using Java 17.0.10 with PID 20744 (started by Administrator in C:\Users\Administrator\demo\demo-spring-boot\demo-admin)
+514  [main] INFO  c.d.a.controller.UserControllerTest - No active profile set, falling back to 1 default profile: "default"
+1612 [main] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: ab5e4dc7-cad1-4387-a5b5-a1b92567c458
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+1704 [main] INFO  o.s.s.w.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@4c030fe1, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@347123dc, org.springframework.security.web.context.SecurityContextHolderFilter@370225c7, org.springframework.security.web.header.HeaderWriterFilter@e97f115, org.springframework.web.filter.CorsFilter@52433946, org.springframework.security.web.csrf.CsrfFilter@58f7215c, org.springframework.security.web.authentication.logout.LogoutFilter@16cf7fd0, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@4813d0, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@3cf4dec7, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@5403431a, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@6df2af02, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@156324b, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@38a38ed4, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@ab327c, org.springframework.security.web.access.ExceptionTranslationFilter@31006a75, org.springframework.security.web.access.intercept.AuthorizationFilter@64757d56]
+1744 [main] INFO  o.s.b.t.m.w.SpringBootMockServletContext - Initializing Spring TestDispatcherServlet ''
+1744 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Initializing Servlet ''
+1745 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Completed initialization in 1 ms
+1768 [main] INFO  c.d.a.controller.UserControllerTest - Started UserControllerTest in 1.44 seconds (process running for 2.166)
+167  [main] INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.demo.admin.controller.UserControllerTest]: UserControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+263  [main] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.demo.DemoAdminApplication for test class com.demo.admin.controller.UserControllerTest
+479  [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+506  [main] INFO  c.d.a.controller.UserControllerTest - Starting UserControllerTest using Java 17.0.10 with PID 18572 (started by Administrator in C:\Users\Administrator\demo\demo-spring-boot\demo-admin)
+507  [main] INFO  c.d.a.controller.UserControllerTest - No active profile set, falling back to 1 default profile: "default"
+1615 [main] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: 00efcae7-b493-4abf-88ae-0eda7209e77f
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+1707 [main] INFO  o.s.s.w.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@4c030fe1, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@347123dc, org.springframework.security.web.context.SecurityContextHolderFilter@370225c7, org.springframework.security.web.header.HeaderWriterFilter@e97f115, org.springframework.web.filter.CorsFilter@52433946, org.springframework.security.web.csrf.CsrfFilter@58f7215c, org.springframework.security.web.authentication.logout.LogoutFilter@16cf7fd0, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@4813d0, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@3cf4dec7, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@5403431a, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@6df2af02, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@156324b, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@38a38ed4, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@ab327c, org.springframework.security.web.access.ExceptionTranslationFilter@31006a75, org.springframework.security.web.access.intercept.AuthorizationFilter@64757d56]
+1742 [main] INFO  o.s.b.t.m.w.SpringBootMockServletContext - Initializing Spring TestDispatcherServlet ''
+1743 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Initializing Servlet ''
+1745 [main] INFO  o.s.t.w.s.TestDispatcherServlet - Completed initialization in 1 ms
+1770 [main] INFO  c.d.a.controller.UserControllerTest - Started UserControllerTest in 1.458 seconds (process running for 2.141)

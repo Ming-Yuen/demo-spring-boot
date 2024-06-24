@@ -13,7 +13,6 @@ import com.demo.admin.service.UserService;
 import com.demo.common.exception.ValidationException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,7 +56,7 @@ public class MenuServiceImpl implements MenuService {
                 }
                 menuTree.getChild().add(menuMapper.convert(menuItem));
             }
-            menuTreeMap.put(menuItem.getCurr(), menuTree);
+            menuTreeMap.put(menuItem.getName(), menuTree);
         });
         return menuTreeResponse;
     }

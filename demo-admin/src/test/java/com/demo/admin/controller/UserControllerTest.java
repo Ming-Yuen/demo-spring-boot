@@ -53,8 +53,8 @@ class UserControllerTest {
     public void setUp() {
     }
 
-    @Test
-    void tokenEnquiry() {
+//    @Test
+//    void tokenEnquiry() {
 //        UserRegisterRequest userRegisterRequest = new UserRegisterRequest();
 //        userRegisterRequest.setUserName("ChanTaiMan");
 //        userRegisterRequest.setPassword("12345678");
@@ -64,7 +64,7 @@ class UserControllerTest {
 //        userRegisterRequest.setEmail("demo@email.com");
 //        userRegisterRequest.setPhone("12345678");
 //        userRegisterRequest.setRole(UserRole.user);
-    }
+//    }
 
     @Test
     void query() {
