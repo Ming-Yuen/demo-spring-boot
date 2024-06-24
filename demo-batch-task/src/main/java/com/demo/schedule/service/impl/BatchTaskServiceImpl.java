@@ -2,32 +2,32 @@ package com.demo.schedule.service.impl;
 
 import com.demo.schedule.dao.ScheduleDao;
 import com.demo.common.dto.ScheduleUpdateRequest;
+import com.demo.schedule.entity.BatchTask;
 import com.demo.schedule.mapper.ScheduleMapper;
-import com.demo.schedule.entity.Schedule;
-import com.demo.schedule.service.ScheduleService;
+import com.demo.schedule.service.BatchTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class ScheduleServiceImpl implements ScheduleService {
+public class BatchTaskServiceImpl implements BatchTaskService {
     @Autowired
     private ScheduleDao scheduleDao;
     @Autowired
     private ScheduleMapper scheduleMapper;
     @Override
     public void update(ScheduleUpdateRequest scheduleUpdateRequest) {
-        Schedule schedule = scheduleMapper.scheduleRequestConvertToSchedule(scheduleUpdateRequest);
-        scheduleDao.save(schedule);
+        BatchTask batchTask = scheduleMapper.scheduleRequestConvertToSchedule(scheduleUpdateRequest);
+        scheduleDao.save(batchTask);
     }
     @Override
-    public List<Schedule> getAllSchedule(){
+    public List<BatchTask> getAllBatchTask(){
         return scheduleDao.findByEnable(1);
     }
 
     @Override
-    public Schedule findByName(String scheduleName) {
-        return scheduleDao.findByName(scheduleName);
+    public BatchTask findByName(String batchTaskName) {
+        return scheduleDao.findByName(batchTaskName);
     }
 }
