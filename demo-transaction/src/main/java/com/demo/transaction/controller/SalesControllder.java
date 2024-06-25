@@ -19,7 +19,7 @@ public class SalesControllder {
     @Autowired
     private SalesService salesService;
     @PostMapping(path = ControllerPath.create, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public DeltaResponse create(@Valid @RequestBody List<SalesRequest> request){
-        return salesService.create(request);
+    public void create(@Valid @RequestBody List<SalesRequest> request){
+        salesService.updateSalesRequest(request);
     }
 }

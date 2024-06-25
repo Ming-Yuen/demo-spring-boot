@@ -34,7 +34,7 @@ public class ScheduleConfig implements CommandLineRunner {
             Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
             ObjectMapper objectMapper = new ObjectMapper();
             boolean scheduleIsEmpty = true;
-            List<BatchTask> batchTasks = batchTaskService.getAllBatchTask();
+            List<BatchTask> batchTasks = batchTaskService.getAllTask();
             log.info("Found a total of {} schedules", batchTasks.size());
             for (BatchTask batchTask : batchTasks) {
                 try {

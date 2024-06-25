@@ -1,6 +1,7 @@
 package com.demo.schedule.batch;
 
 import com.demo.admin.entity.UserInfo;
+import com.demo.admin.enums.PrivilegeType;
 import com.demo.admin.service.UserService;
 import com.demo.schedule.listener.JobCompletionNotificationListener;
 import lombok.RequiredArgsConstructor;
@@ -134,7 +135,7 @@ public class UserBatchImport {
             userInfo.setUserPassword(fieldSet.readString("password"));
             userInfo.setEmail(fieldSet.readString("email"));
             userInfo.setGender(fieldSet.readString("gender"));
-            userInfo.setPrivilege("user");
+            userInfo.setPrivilege(PrivilegeType.user);
             return userInfo;
         }
     }

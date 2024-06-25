@@ -37,8 +37,6 @@ public class MenuServiceImpl implements MenuService {
         }
         PrivilegeType[] privilegeTypes = userService.findByUserName(UserInfo.SelectUserRole.class, username).stream().map(x->x.privilegeType()).toArray(PrivilegeType[]::new);
 
-        Map<Long, MenuStructureResponse.MenuTree> menuTreeMap = new HashMap<>();
-
         List<PrivilegeType> privilegeTypeList = userService.getSubPrivilege(privilegeTypes);
         return convertToResponse(menuRepository.findByPrivilegeIn(privilegeTypeList.toArray(new PrivilegeType[]{})));
     }

@@ -3,32 +3,48 @@
 //import com.demo.admin.dto.UserRegisterRequest;
 //import com.demo.admin.entity.UserInfo;
 //import com.demo.admin.enums.Gender;
-//import com.demo.common.entity.enums.UserRole;
+//import com.demo.admin.enums.PrivilegeType;
+//import com.demo.admin.repository.UserRepository;
+//import com.demo.admin.service.UserService;
 //import org.junit.jupiter.api.BeforeEach;
 //import org.junit.jupiter.api.Test;
+//import org.junit.jupiter.api.extension.ExtendWith;
+//import org.mockito.InjectMocks;
+//import org.mockito.Mock;
+//import org.mockito.Mockito;
+//import org.mockito.junit.jupiter.MockitoExtension;
+//
+//import java.util.Arrays;
 //
 //import static org.junit.jupiter.api.Assertions.*;
+//import static org.mockito.ArgumentMatchers.any;
 //
+//@ExtendWith(MockitoExtension.class)
 //class UserServiceImplTest {
+//    @Mock
+//    private UserRepository userRepository;
+//    @InjectMocks
+//    private UserService userService;
 //
-//    @BeforeEach
-//    void setUp() {
-//        UserRegisterRequest userRegisterRequest = UserRegisterRequest.builder()
-//                .userName("ChanTaiMan").password("12345678").firstName("Tai Man").lastName("Chan")
-//                .gender(Gender.male).email("demo@gmail.com").phone("12345678").role(UserRole.user).build();
+//    @Test
+//    void updateUserRequest() {
+//        Mockito.when(userRepository.findByUserNameIn(any(), any())).thenReturn(Arrays.asList(new UserInfo()));
 //
+//        UserRegisterRequest userRegisterRequest = new UserRegisterRequest();
+//        userRegisterRequest.setUserName("ChanTaiMan");
+//        userRegisterRequest.setUserPassword("12345678");
+//        userRegisterRequest.setFirstName("Tai Man");
+//        userRegisterRequest.setLastName("Chan");
+//        userRegisterRequest.setGender(Gender.male);
+//        userRegisterRequest.setEmail("demo@gmail.com");
+//        userRegisterRequest.setPhone("12345678");
+//        userRegisterRequest.setPrivilege(PrivilegeType.user);
+//
+//        userService.updateUserRequest(Arrays.asList(userRegisterRequest));
 //    }
 //
 //    @Test
-//    void register() {
-//    }
-//
-//    @Test
-//    void saveUserEncryptPassword() {
-//    }
-//
-//    @Test
-//    void saveUser() {
+//    void updateUserMaster() {
 //    }
 //
 //    @Test
@@ -36,7 +52,7 @@
 //    }
 //
 //    @Test
-//    void getManageRoles() {
+//    void getSubPrivilege() {
 //    }
 //
 //    @Test
@@ -44,6 +60,6 @@
 //    }
 //
 //    @Test
-//    void query() {
+//    void userQueryRequest() {
 //    }
 //}

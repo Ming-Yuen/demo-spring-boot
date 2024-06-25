@@ -9,9 +9,9 @@ import java.util.List;
 public interface BatchTaskService {
     void update(BatchTaskUpdateRequest batchTaskUpdateRequest);
 
-    BatchTask findByName(String batchTaskName);
+    BatchTask findByName(String scheduleName);
 
-    List<BatchTask> getAllBatchTask();
+    List<BatchTask> getAllTask();
 
-    void invoke(BatchTaskInvokeRequest batchTaskInvokeRequest);
+    void invoke(BatchTaskInvokeRequest batchTaskInvokeRequest) ;
 }
