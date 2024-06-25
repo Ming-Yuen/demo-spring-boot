@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 @Repository
-public interface ScheduleDao extends CrudRepository<BatchTask, Long> {
+public interface BatchTaskDao extends CrudRepository<BatchTask, Long> {
     List<BatchTask> findByEnable(int i);
 
     BatchTask findByName(String scheduleName);
