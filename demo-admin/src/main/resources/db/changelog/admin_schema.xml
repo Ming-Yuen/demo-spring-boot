@@ -7,10 +7,10 @@
         <createTable tableName="menu_structure">
             <column name="id" type="BIGINT" autoIncrement="true"><constraints primaryKey="true"/></column>
             <column name="parent" type="varchar(30)"/>
-            <column name="curr" type="varchar(30)"><constraints nullable="false"/></column>
+            <column name="name" type="varchar(30)"><constraints nullable="false"/></column>
             <column name="type" type="varchar(9)"><constraints nullable="false"/></column>
             <column name="icon" type="varchar(3000)"/>
-            <column name="link" type="varchar(3000)"><constraints nullable="false"/></column>
+            <column name="link" type="varchar(3000)"/>
             <column name="created_by" type="varchar(30)"><constraints nullable="false"/></column>
             <column name="created_at" type="TIMESTAMP WITH TIME ZONE"><constraints nullable="false"/></column>
             <column name="updated_by" type="varchar(30)"><constraints nullable="false"/></column>
@@ -18,7 +18,7 @@
             <column name="privilege" type="varchar(9)"><constraints nullable="false"/></column>
             <column name="version" type="int"><constraints nullable="false"/></column>
         </createTable>
-        <addUniqueConstraint constraintName="uk_menu_structure" tableName="menu_structure" columnNames="curr"/>
+        <addUniqueConstraint constraintName="uk_menu_structure" tableName="menu_structure" columnNames="name"/>
 
         <createTable tableName="user_info">
             <column name="id" type="BIGINT" autoIncrement="true"><constraints primaryKey="true"/></column>

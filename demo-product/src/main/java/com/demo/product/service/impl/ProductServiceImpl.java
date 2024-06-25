@@ -53,7 +53,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductPrice getLatestProductPrice(OffsetDateTime txDatetime, String productId, String region) {
+    public ProductPrice getLatestProductPrice(OffsetDateTime txDatetime, String productId) {
         return productPriceDao.findFirstByEffectiveDateBeforeAndProductIdOrderByEffectiveDate(txDatetime, productId);
     }
 

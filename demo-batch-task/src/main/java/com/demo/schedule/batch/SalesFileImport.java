@@ -1,6 +1,5 @@
 package com.demo.schedule.batch;
 
-import com.demo.admin.entity.UserInfo;
 import com.demo.schedule.constant.JobNames;
 import com.demo.schedule.dto.SalesImportFile;
 import com.demo.schedule.listener.JobCompletionNotificationListener;
@@ -20,7 +19,6 @@ import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
-import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
@@ -40,7 +38,7 @@ public class SalesFileImport {
                 .<SalesImportFile, SalesOrder>chunk(1000, transactionManager)
                 .reader(reader())
                 .processor(new UserItemProcessor())
-                .writer(writer)
+                .writer(writer())
 //                .taskExecutor(taskExecutor())
                 .build();
     }
@@ -65,8 +63,8 @@ public class SalesFileImport {
         reader.setLinesToSkip(1);
         return reader;
     }
-    public ItemWriter<UserInfo> writer() {
-        return users->salesService..updateUserMaster(users.getItems().toArray(new UserInfo[]{}));
+    public ItemWriter<SalesOrder> writer() {
+        return users->salesService.updateSales(users.getItems().toArray(new SalesOrder[]{}));
     }
 
     public static class UserItemProcessor implements ItemProcessor<SalesImportFile, SalesOrder> {

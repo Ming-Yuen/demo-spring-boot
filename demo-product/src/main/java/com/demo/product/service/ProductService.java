@@ -16,7 +16,7 @@ public interface ProductService {
 
     boolean existsByProductId(String productId);
 
-    ProductPrice getLatestProductPrice(OffsetDateTime txDate, String region, String productId);
+    ProductPrice getLatestProductPrice(OffsetDateTime txDate, String productId);
 
     void save(ProductPrice... price);
 

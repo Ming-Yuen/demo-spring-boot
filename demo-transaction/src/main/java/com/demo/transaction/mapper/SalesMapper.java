@@ -10,7 +10,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface SalesMapper {
 
-    SalesOrder converToSales(SalesRequest order);
+    List<SalesOrderItem> requestConvertOrderItem(List<SalesRequest.SalesItem> salesItems);
 
-    List<SalesOrderItem> convertToSalesItem(List<SalesRequest.SalesItem> salesItems);
+    SalesOrder[] requestConvertOrder(List<SalesRequest> request);
 }

@@ -28,33 +28,26 @@ public class SalesServiceImpl implements SalesService {
     @Autowired
     private ProductService productService;
     @Override
-    public DeltaResponse create(List<SalesRequest> request) {
-        DeltaResponse response = new DeltaResponse();
-        request.parallelStream().forEach(order->{
-            try{
-                if(salesDao.existsByOrderId(order.getOrderId())) {
-                    response.getSuccess().add(order.getOrderId());
-                }else{
-                    SalesOrder salesOrder = salesMapper.converToSales(order);
-                    List<SalesOrderItem> salesOrderItems = salesMapper.convertToSalesItem(order.getSalesItems());
-                    salesOrderItems.parallelStream().forEach(orderItem->{
-                        ProductPrice productPrice = productService.getLatestProductPrice(DateUtil.convertOffsetDatetime(order.getTxDatetime().toLocalDate()), order.getRegion(), orderItem.getProductId());
-                        if(productPrice == null){
-                            throw new RuntimeException("Region " + order.getRegion() + ", product : " + orderItem.getProductId() + " price not found");
-                        }
-                    });
-                    salesDao.save(salesOrder);
-                    salesItemDao.saveAll(salesOrderItems);
+    public void updateSalesRequest(List<SalesRequest> request) {
+        SalesOrder[] salesOrder = salesMapper.requestConvertOrder(request);
+        updateSales(salesOrder);
+    }
 
+    @Override
+    public void updateSales(SalesOrder... salesOrders){
+        for(SalesOrder salesOrder : salesOrders){
+            if(salesDao.existsByOrderId(salesOrder.getOrderId())) {
 
-                    //inventory update
-                    //bonus
-                }
-            }catch (Exception e){
-                log.error("orderId : " + order.getOrderId(), e);
-                response.getFailedList().add(new DeltaResponse.ErrorRecord(Collections.singletonMap("orderId", order.getOrderId()), e.getMessage()));
+            }else{
+                salesOrder.getItems().forEach(orderItem->{
+                    ProductPrice productPrice = productService.getLatestProductPrice(DateUtil.convertOffsetDatetime(salesOrder.getTxDatetime().toLocalDate()), orderItem.getProductId());
+                    if(productPrice == null){
+                        throw new RuntimeException("product : " + orderItem.getProductId() + " price not found");
+                    }
+                });
+                salesDao.save(salesOrder);
+                salesItemDao.saveAll(salesOrder.getItems());
             }
-        });
-        return response;
+        }
     }
 }

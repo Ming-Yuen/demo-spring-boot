@@ -32,7 +32,7 @@ public class BatchTaskServiceImpl implements BatchTaskService {
         batchTaskDao.save(batchTask);
     }
     @Override
-    public List<BatchTask> getAllBatchTask(){
+    public List<BatchTask> getAllTask(){
         return batchTaskDao.findByEnable(1);
     }
 
