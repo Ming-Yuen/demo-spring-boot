@@ -5,6 +5,7 @@ public class ControllerPath {
     public static final String USER = "/user";
     public static final String TOKEN = "/token";
     public static final String UPDATE = "/update";
+    public static final String INVOKE = "/invoke";
     public static final String QUERY = "/query";
     public static final String menu = "/menu";
     public static final String STRUCTURE = "/structure";
