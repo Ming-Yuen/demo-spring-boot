@@ -1,8 +1,8 @@
 package com.demo.product.service.impl;
 
 import com.demo.common.util.LambdaUtil;
-import com.demo.product.dao.ProductDao;
-import com.demo.product.dao.ProductPriceDao;
+import com.demo.product.dao.ProductRepository;
+import com.demo.product.dao.ProductPriceRepository;
 import com.demo.product.dto.ProductEnquiryRequest;
 import com.demo.product.entity.Product;
 import com.demo.product.entity.ProductPrice;
@@ -26,41 +26,41 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ProductServiceImpl implements ProductService {
     @Autowired
-    private ProductDao productDao;
+    private ProductRepository productRepository;
     @Autowired
     private ProductMapper productMapper;
     @Autowired
-    private ProductPriceDao productPriceDao;
+    private ProductPriceRepository productPriceRepository;
     @Autowired
     private ProductPriceMapper productPriceMapper;
 
     @Override
     public List<Product> enquiry(ProductEnquiryRequest request) {
         Pageable pageable = PageRequest.of(request.getPageNumber(), request.getPageSize());
-        return productDao.findByEnable(1, pageable).toList();
+        return productRepository.findByEnable(1, pageable).toList();
     }
 
     @Override
     public void save(Product... products) {
         if (ArrayUtils.isNotEmpty(products)) {
-            productDao.saveAll(Arrays.asList(products));
+            productRepository.saveAll(Arrays.asList(products));
         }
     }
 
     @Override
     public boolean existsByProductId(String productId) {
-        return productDao.existsByProductId(productId);
+        return productRepository.existsByProductId(productId);
     }
 
     @Override
     public ProductPrice getLatestProductPrice(OffsetDateTime txDatetime, String productId) {
-        return productPriceDao.findFirstByEffectiveDateBeforeAndProductIdOrderByEffectiveDate(txDatetime, productId);
+        return productPriceRepository.findFirstByEffectiveDateBeforeAndProductIdOrderByEffectiveDate(txDatetime, productId);
     }
 
     @Override
     public void save(ProductPrice... price) {
         if (ArrayUtils.isNotEmpty(price)) {
-            productPriceDao.saveAll(Arrays.asList(price));
+            productPriceRepository.saveAll(Arrays.asList(price));
         }
     }
 
@@ -75,14 +75,14 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void update(Product... products) {
         String[] productIds = Arrays.stream(products).map(Product::getProductId).toArray(String[]::new);
-        Set<String> presentProductIds = productDao.findByProductId(productIds, Product.ProductId.class).stream().map(Product.ProductId::getProductId).collect(Collectors.toSet());
+        Set<String> presentProductIds = productRepository.findByProductIdIn(Product.ProductId.class, productIds).stream().map(Product.ProductId::productId).collect(Collectors.toSet());
 
-        productDao.saveAll(Arrays.stream(products).filter(product -> !presentProductIds.contains(product.getProductId())).collect(Collectors.toList()));
+        productRepository.saveAll(Arrays.stream(products).filter(product -> !presentProductIds.contains(product.getProductId())).collect(Collectors.toList()));
     }
     @Transactional
     @Override
     public void update(ProductPrice... productPrices) {
         String[] productIds = Arrays.stream(productPrices).map(ProductPrice::getProductId).toArray(String[]::new);
-        productPriceDao.findByProductId(productIds, ProductPrice.ProductPriceId.class).stream().map(ProductPrice.ProductPriceId::getProductId).collect(Collectors.toSet());
+        productPriceRepository.findByProductId(productIds, ProductPrice.ProductPriceId.class).stream().map(ProductPrice.ProductPriceId::getProductId).collect(Collectors.toSet());
     }
 }

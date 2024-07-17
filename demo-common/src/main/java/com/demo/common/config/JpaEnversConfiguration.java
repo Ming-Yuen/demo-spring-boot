@@ -1,9 +1,9 @@
 package com.demo.common.config;
 
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @Configuration
-@EnableJpaAuditing
+//@EnableJpaAuditing
+//@EnableJpaAuditing(auditorAwareRef = "auditorAware")
 public class JpaEnversConfiguration {
 }

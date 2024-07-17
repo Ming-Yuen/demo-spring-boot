@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ApiResponse<T> {
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Integer status;
+    private Integer status = 1;
     private String message;
     private T data;
     public ApiResponse setError(String message) {

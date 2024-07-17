@@ -26,7 +26,7 @@
                             <goal>repackage</goal>
                         </goals>
                         <configuration>
-                            <mainClass>DemoScheduleApplication</mainClass>
+                            <mainClass>DemoBatchTaskApplication</mainClass>
                         </configuration>
                     </execution>
                 </executions>
@@ -37,13 +37,19 @@
     <dependencies>
         <dependency>
             <groupId>org.demo.backend</groupId>
+            <artifactId>demo-common</artifactId>
+            <version>1.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.demo.backend</groupId>
             <artifactId>demo-admin</artifactId>
             <version>1.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.demo.backend</groupId>
-            <artifactId>demo-common</artifactId>
+            <artifactId>demo-product</artifactId>
             <version>1.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>

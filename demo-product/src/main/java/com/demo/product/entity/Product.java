@@ -1,11 +1,12 @@
 package com.demo.product.entity;
 
 import com.demo.common.entity.BaseEntity;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import jakarta.persistence.*;
-import java.time.LocalDate;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -25,8 +26,5 @@ public class Product extends BaseEntity {
     private String riskRating;
     private Integer enable;
 
-    @Data
-    public static class ProductId{
-        String productId;
-    }
+    public record ProductId(String productId){}
 }
