@@ -18,7 +18,6 @@ public class SalesOrderItem extends BaseEntity {
     @JoinColumn(name = "order_id", nullable = false)
     private SalesOrder salesOrderHeader;
 
-    private String orderId;
     private Integer itemSequence;
     private String productId;
     private BigDecimal amount;

@@ -9,6 +9,7 @@ import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
@@ -37,5 +38,5 @@ public class SalesOrder extends BaseEntity {
     private String remark;
 
     @OneToMany(mappedBy = "salesOrderHeader", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<SalesOrderItem> items;
+    private List<SalesOrderItem> items = new ArrayList<>();
 }

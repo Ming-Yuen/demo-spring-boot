@@ -1,25 +1,24 @@
 package com.demo.common.util;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.time.zone.ZoneRules;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Date;
 
 public class DateUtil {
-    private static final Map<String, DateTimeFormatter> formatterCache = new ConcurrentHashMap<>();
-    private static final ZoneRules ZoneRules = ZoneOffset.systemDefault().getRules();
-    public static OffsetDateTime convertOffsetDatetime(String format, String dateTimeString){
-        DateTimeFormatter formatter = formatterCache.computeIfAbsent(format, DateTimeFormatter::ofPattern);
-        LocalDateTime localDateTime = LocalDateTime.parse(dateTimeString, formatter);
-        ZoneOffset defaultOffset = ZoneRules.getOffset(localDateTime);
-        return OffsetDateTime.of(localDateTime, defaultOffset);
+    public static OffsetDateTime convertOffsetDatetime(String value, String format){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+        LocalDateTime localDateTime = LocalDateTime.parse(value, formatter);
+        return OffsetDateTime.of(localDateTime, ZoneOffset.UTC);
+    }
+
+    public static OffsetDateTime convertOffsetDatetime(Date date) {
+        Instant instant = date.toInstant();
+        OffsetDateTime offsetDateTime = instant.atOffset(ZoneOffset.UTC);
+        return offsetDateTime;
     }
 
     public static OffsetDateTime convertOffsetDatetime(LocalDate localDate){
         return localDate.atStartOfDay().atOffset(ZoneOffset.UTC);
     }
+
 }

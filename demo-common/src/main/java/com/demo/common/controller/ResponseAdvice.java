@@ -43,12 +43,6 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
         log.error(exception.getMessage(), exception);
         return new ApiResponse().setError(exception.toString());
     }
-    @ResponseBody
-    @ExceptionHandler(Throwable.class)
-    public Object throwable(Throwable t) {
-        log.error(t.getMessage(), t);
-        return new ApiResponse().setInternalError();
-    }
 
     @ResponseBody
     @ExceptionHandler(HandlerMethodValidationException.class)
@@ -66,6 +60,12 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
     @ResponseBody
     @ExceptionHandler(ExpiredJwtException.class)
     public Object expiredJwtException(ExpiredJwtException t) {
+        log.error(t.getMessage(), t);
+        return new ApiResponse().setError(t.getMessage());
+    }
+    @ResponseBody
+    @ExceptionHandler(IllegalArgumentException.class)
+    public Object illegalArgumentException(IllegalArgumentException t) {
         log.error(t.getMessage(), t);
         return new ApiResponse().setError(t.getMessage());
     }

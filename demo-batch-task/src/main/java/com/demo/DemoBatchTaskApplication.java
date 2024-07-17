@@ -10,8 +10,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableWebMvc
 @EnableCaching
 @EnableScheduling
-public class DemoTransactionApplication {
+public class DemoBatchTaskApplication {
     public static void main(String[] args) {
-        SpringApplication.run(DemoTransactionApplication.class);
+        SpringApplication.run(DemoBatchTaskApplication.class, args);
     }
 }
