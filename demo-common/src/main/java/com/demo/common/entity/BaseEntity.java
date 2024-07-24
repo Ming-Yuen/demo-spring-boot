@@ -1,12 +1,12 @@
 package com.demo.common.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 
-@EqualsAndHashCode(callSuper = true)
-@Data
+@Setter
+@Getter
 @MappedSuperclass
 public class BaseEntity extends AuditingEntity{
 

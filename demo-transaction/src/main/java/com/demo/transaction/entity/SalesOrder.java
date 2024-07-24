@@ -4,26 +4,26 @@ import com.demo.common.entity.BaseEntity;
 import com.demo.transaction.entity.enums.PaymentEnum;
 import com.demo.transaction.entity.enums.SalesStatusEnum;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@EqualsAndHashCode(callSuper = true)
 @Entity
-@Data
+@Setter
+@Getter
 public class SalesOrder extends BaseEntity {
-
+    @Column(name = "order_id")
     private String orderId;
     private OffsetDateTime txDatetime;
     private String storeCode;
     private String customerName;
     private String salesPerson;
-    private BigDecimal totalAmount;
-    private BigDecimal discount;
+    private BigDecimal totalAmount = BigDecimal.ZERO;
+    private BigDecimal discount = BigDecimal.ZERO;
 
     @Enumerated(EnumType.ORDINAL)
     private PaymentEnum paymentMethod;
@@ -37,6 +37,7 @@ public class SalesOrder extends BaseEntity {
     private String orderType;
     private String remark;
 
-    @OneToMany(mappedBy = "salesOrderHeader", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "salesOrder", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SalesOrderItem> items = new ArrayList<>();
+    public record OrderId(String orderId){}
 }

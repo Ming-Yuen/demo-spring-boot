@@ -4,14 +4,16 @@ import com.demo.common.entity.BaseEntity;
 
 import com.demo.admin.enums.PrivilegeType;
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Data
+@Setter
+@Getter
 public class UserInfo extends BaseEntity {
     @Column(nullable = false, updatable = false)
     private String userName;

@@ -1,8 +1,8 @@
 package com.demo.product.service.impl;
 
 import com.demo.common.util.LambdaUtil;
-import com.demo.product.dao.ProductRepository;
 import com.demo.product.dao.ProductPriceRepository;
+import com.demo.product.dao.ProductRepository;
 import com.demo.product.dto.ProductEnquiryRequest;
 import com.demo.product.entity.Product;
 import com.demo.product.entity.ProductPrice;
@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.OffsetDateTime;
@@ -53,8 +54,17 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductPrice getLatestProductPrice(OffsetDateTime txDatetime, String productId) {
-        return productPriceRepository.findFirstByEffectiveDateBeforeAndProductIdOrderByEffectiveDate(txDatetime, productId);
+    public Map<String, ProductPrice.ProductCurrentPrice> getLatestProductPrice(String[] productId, OffsetDateTime[] txDatetime) {
+        List<ProductPrice.ProductCurrentPrice> productPriceList = productPriceRepository.findByProductIdInAndEffectiveDateLessThanEqual(ProductPrice.ProductCurrentPrice.class, productId, OffsetDateTime.now());
+
+        Map<String, ProductPrice.ProductCurrentPrice> productCurrentPriceMap = new HashMap<>();
+        for(ProductPrice.ProductCurrentPrice productCurrentPrice : productPriceList){
+            ProductPrice.ProductCurrentPrice currentPrice = productCurrentPriceMap.get(productCurrentPrice.productId());
+            if(currentPrice == null || productCurrentPrice.effectiveDate().compareTo(currentPrice.effectiveDate()) > 0){
+                productCurrentPriceMap.put(productCurrentPrice.productId(), productCurrentPrice);
+            }
+        }
+        return productCurrentPriceMap;
     }
 
     @Override
@@ -71,18 +81,35 @@ public class ProductServiceImpl implements ProductService {
         update(productMapper.convert(latestProductList));
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public void update(Product... products) {
         String[] productIds = Arrays.stream(products).map(Product::getProductId).toArray(String[]::new);
         Set<String> presentProductIds = productRepository.findByProductIdIn(Product.ProductId.class, productIds).stream().map(Product.ProductId::productId).collect(Collectors.toSet());
 
-        productRepository.saveAll(Arrays.stream(products).filter(product -> !presentProductIds.contains(product.getProductId())).collect(Collectors.toList()));
+        List<Product> productList = Arrays.stream(products)
+                .filter(product -> !presentProductIds.contains(product.getProductId()))
+                .filter(LambdaUtil.distinctByKey(Product::getProductId))
+                .collect(Collectors.toList());
+        productRepository.saveAll(productList);
     }
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public void update(ProductPrice... productPrices) {
-        String[] productIds = Arrays.stream(productPrices).map(ProductPrice::getProductId).toArray(String[]::new);
-        productPriceRepository.findByProductId(productIds, ProductPrice.ProductPriceId.class).stream().map(ProductPrice.ProductPriceId::getProductId).collect(Collectors.toSet());
+        List<ProductPrice> presentProductList = Arrays.asList(productPrices).parallelStream()
+                .filter(element -> {
+                    ProductPrice.ProductCurrentPrice productPrice = productPriceRepository.findByProductIdAndEffectiveDate(ProductPrice.ProductCurrentPrice.class, element.getProductId(),element.getEffectiveDate());
+                    if(productPrice == null || productPrice.price().compareTo(element.getPrice()) != 0){
+                        return true;
+                    }
+                    return false;
+                })
+                .collect(Collectors.toList());
+        productPriceRepository.saveAll(presentProductList);
+    }
+
+    @Override
+    public List<ProductPrice> findByProductPrice(String... productId) {
+        return productPriceRepository.findByProductIdIn(productId);
     }
 }

@@ -1,10 +1,9 @@
 package com.demo.transaction.service.impl;
 
-import com.demo.common.util.DateUtil;
 import com.demo.product.entity.ProductPrice;
 import com.demo.product.service.ProductService;
-import com.demo.transaction.dao.SalesDao;
-import com.demo.transaction.dao.SalesItemDao;
+import com.demo.transaction.dao.SalesItemRepository;
+import com.demo.transaction.dao.SalesRepository;
 import com.demo.transaction.dto.SalesRequest;
 import com.demo.transaction.entity.SalesOrder;
 import com.demo.transaction.entity.SalesOrderItem;
@@ -13,18 +12,21 @@ import com.demo.transaction.service.SalesService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.List;
+import java.time.OffsetDateTime;
+import java.util.*;
+
 @Slf4j
 @Service
 public class SalesServiceImpl implements SalesService {
     @Autowired
-    private SalesDao salesDao;
+    private SalesRepository salesRepository;
     @Autowired
     private SalesMapper salesMapper;
     @Autowired
-    private SalesItemDao salesItemDao;
+    private SalesItemRepository salesItemRepository;
     @Autowired
     private ProductService productService;
     @Override
@@ -34,20 +36,27 @@ public class SalesServiceImpl implements SalesService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void updateSales(SalesOrder... salesOrders){
+        List<SalesOrder> salesOrderList = new ArrayList<>();
+        String[] orderIds = Arrays.stream(salesOrders).map(SalesOrder::getOrderId).toArray(String[]::new);
+        Set<SalesOrder.OrderId> presentOrderIds = salesRepository.findByOrderIdIn(orderIds);
+
+        OffsetDateTime[] txDatetime = Arrays.stream(salesOrders).map(SalesOrder::getTxDatetime).toArray(OffsetDateTime[]::new);
+        Map<String, ProductPrice.ProductCurrentPrice> productPriceMap = productService.getLatestProductPrice(orderIds, txDatetime);
+
         for(SalesOrder salesOrder : salesOrders){
-            if(salesDao.existsByOrderId(salesOrder.getOrderId())) {
+            if(presentOrderIds.contains(salesOrder.getOrderId())) {
 
             }else{
-                salesOrder.getItems().forEach(orderItem->{
-                    ProductPrice productPrice = productService.getLatestProductPrice(DateUtil.convertOffsetDatetime(salesOrder.getTxDatetime().toLocalDate()), orderItem.getProductId());
-                    if(productPrice == null){
+                for(SalesOrderItem orderItem : salesOrder.getItems()){
+                    if(productPriceMap.containsKey(orderItem.getProductId())){
                         throw new RuntimeException("product : " + orderItem.getProductId() + " price not found");
                     }
-                });
-                salesDao.save(salesOrder);
-                salesItemDao.saveAll(salesOrder.getItems());
+                }
             }
+            salesOrderList.add(salesOrder);
         }
+        salesRepository.saveAll(salesOrderList);
     }
 }

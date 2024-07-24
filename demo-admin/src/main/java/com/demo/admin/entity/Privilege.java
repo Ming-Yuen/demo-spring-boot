@@ -3,9 +3,11 @@ package com.demo.admin.entity;
 import com.demo.common.entity.BaseEntity;
 import com.demo.admin.enums.PrivilegeType;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Setter
+@Getter
 @Entity
 public class Privilege extends BaseEntity {
     @Column(nullable = false)

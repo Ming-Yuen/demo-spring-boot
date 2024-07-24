@@ -3,12 +3,14 @@ package com.demo.batckTask.entity;
 import com.demo.common.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Data
+@Setter
+@Getter
 public class BatchTask extends BaseEntity {
     @Column(nullable = false)
     private String name;
