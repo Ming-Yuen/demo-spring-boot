@@ -1,4 +1,4 @@
-package com.demo.common.filter;
+package com.demo.common.log;
 
 import com.demo.common.servlet.ServletResponseCache;
 import lombok.extern.slf4j.Slf4j;

@@ -14,9 +14,9 @@
             <column name="total_amount" type="decimal(16,4)"><constraints nullable="false"/></column>
             <column name="discount" type="decimal(16,4)"><constraints nullable="false"/></column>
             <column name="payment_method" type="varchar(30)"><constraints nullable="false"/></column>
-            <column name="statue" type="varchar(30)"><constraints nullable="false"/></column>
+            <column name="status" type="varchar(30)"><constraints nullable="false"/></column>
             <column name="priority" type="varchar(30)"><constraints nullable="false"/></column>
-            <column name="shipping_method" type="varchar(30)"><constraints nullable="false"/></column>
+            <column name="shipping_method" type="varchar(30)"><constraints nullable="true"/></column>
             <column name="shipping_address" type="varchar(3000)"><constraints nullable="true"/></column>
             <column name="order_source" type="varchar(30)"><constraints nullable="true"/></column>
             <column name="order_type" type="varchar(30)"><constraints nullable="true"/></column>
@@ -31,13 +31,14 @@
 
         <createTable tableName="sales_order_item">
             <column name="id" type="BIGINT" autoIncrement="true"><constraints primaryKey="true"/></column>
+            <column name="tx_datetime" type="TIMESTAMP WITH TIME ZONE"><constraints nullable="false"/></column>
             <column name="order_id" type="varchar(30)"><constraints nullable="false"/></column>
             <column name="item_sequence" type="int"><constraints nullable="false"/></column>
             <column name="product_id" type="varchar(30)"><constraints nullable="false"/></column>
             <column name="amount" type="decimal(16,4)"><constraints nullable="false"/></column>
             <column name="qty" type="int"><constraints nullable="false"/></column>
             <column name="unit_price" type="decimal(16,4)"><constraints nullable="false"/></column>
-            <column name="discount_method" type="varchar(30)"><constraints nullable="false"/></column>
+            <column name="discount_method" type="varchar(30)"><constraints nullable="true"/></column>
             <column name="discount" type="decimal(16,4)"><constraints nullable="false"/></column>
             <column name="created_by" type="varchar(30)"><constraints nullable="false"/></column>
             <column name="created_at" type="TIMESTAMP WITH TIME ZONE"><constraints nullable="false"/></column>
@@ -45,7 +46,7 @@
             <column name="updated_at" type="TIMESTAMP WITH TIME ZONE"><constraints nullable="false"/></column>
             <column name="version" type="int"><constraints nullable="false"/></column>
         </createTable>
-        <addUniqueConstraint constraintName="uk_sales_order_item" tableName="sales_order_item" columnNames="product_id,item_sequence"/>
+        <addUniqueConstraint constraintName="uk_sales_order_item" tableName="sales_order_item" columnNames="order_id,product_id,item_sequence"/>
     </changeSet>
 
     <changeSet id="transaction_schema_sequence" author="ming" dbms="oracle">

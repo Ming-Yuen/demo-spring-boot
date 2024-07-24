@@ -38,14 +38,14 @@ import java.util.*;
 @AllArgsConstructor
 @Configuration
 public class SalesFileImport {
+    private BatchTaskMapper batchTaskMapper;
     private ProductService productService;
     private SalesService salesService;
-    private BatchTaskMapper batchTaskMapper;
     public static String filePath = String.join(File.separator, System.getProperty("user.home"), "Documents", "Testing", "sales_data.csv");
     @Bean
     public Step salesFileImportStep(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(JobNames.SALES_IMPORT+"Step", jobRepository)
-                .<List<SalesImportFile>, List<SalesOrder>>chunk(1000, transactionManager)
+                .<List<SalesImportFile>, List<SalesOrder>>chunk(100, transactionManager)
                 .reader(new AggregateItemReader<SalesImportFile>(reader(), SalesImportFile::getOrderId))
                 .processor(new SalesItemProcessor())
                 .writer(new SalesItemWriter())
@@ -85,7 +85,6 @@ public class SalesFileImport {
             return batchTaskMapper.convertFileFormat(salesImportFile);
         }
     }
-
     public class SalesItemWriter implements ItemWriter<List<SalesOrder>> {
         @Override
         public void write(Chunk<? extends List<SalesOrder>> chunk) {
@@ -93,6 +92,7 @@ public class SalesFileImport {
             SalesOrderItem[] salesOrderItems = Arrays.stream(orders).map(item->item.getItems()).flatMap(Collection::stream).toArray(SalesOrderItem[]::new);
 
             productService.update(batchTaskMapper.toProduct(salesOrderItems));
+            productService.update(batchTaskMapper.toProductPrice(salesOrderItems));
             salesService.updateSales(orders);
         }
     }

@@ -13,7 +13,7 @@ public class SpringSecurityAuditorAware implements AuditorAware<String> {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null || !authentication.isAuthenticated()) {
-            return Optional.of("system");
+            return Optional.empty();
         }
 
         String username = authentication.getName();

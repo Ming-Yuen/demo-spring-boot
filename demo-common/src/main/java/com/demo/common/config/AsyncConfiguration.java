@@ -5,9 +5,11 @@ import org.springframework.aop.interceptor.AsyncExecutionAspectSupport;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.security.task.DelegatingSecurityContextTaskExecutor;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -17,7 +19,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 @EnableAsync
 public class AsyncConfiguration implements AsyncConfigurer {
     @Bean(name = AsyncExecutionAspectSupport.DEFAULT_TASK_EXECUTOR_BEAN_NAME)
-    public ThreadPoolTaskExecutor asyncExecutor() {
+    public TaskExecutor asyncExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         int corePoolSize = 10;
         executor.setCorePoolSize(corePoolSize);
@@ -31,7 +33,7 @@ public class AsyncConfiguration implements AsyncConfigurer {
         // 使用自定义的跨线程的请求级别线程工厂类19         int awaitTerminationSeconds = 5;
         executor.setAwaitTerminationSeconds(5);
         executor.initialize();
-        return executor;
+        return new DelegatingSecurityContextTaskExecutor(executor);
     }
 
     @Override
