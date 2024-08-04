@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+<<<<<<< HEAD:demo-product/src/main/java/com/demo/product/controller/InventoryController.java
+=======
+import jakarta.validation.Valid;
+>>>>>>> d414bcab456dc1ad320d34b2c37933f206063ba1:demo-transaction/src/main/java/com/demo/product/controller/InventoryController.java
 import java.util.List;
 
 @RestController
