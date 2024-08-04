@@ -1,13 +1,13 @@
 package com.demo.product.dao;
 
 import com.demo.product.entity.ProductPrice;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.repository.CrudRepository;
 
 import java.time.OffsetDateTime;
 import java.util.List;
 
-public interface ProductPriceRepository extends CrudRepository<ProductPrice, Long>, JpaSpecificationExecutor<ProductPrice>{
+public interface ProductPriceRepository extends JpaRepository<ProductPrice, Long>, JpaSpecificationExecutor<ProductPrice>{
 
     <T> List<T> findByProductIdInAndEffectiveDateLessThanEqual(Class<T> type, String[] productId, OffsetDateTime current);
     List<ProductPrice> findByProductIdIn(String... productIds);

@@ -10,6 +10,8 @@ import com.demo.product.mapper.ProductMapper;
 import com.demo.product.mapper.ProductPriceMapper;
 import com.demo.product.service.ProductService;
 import com.demo.product.vo.ProductUpdateRequest;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,8 @@ public class ProductServiceImpl implements ProductService {
     private ProductPriceRepository productPriceRepository;
     @Autowired
     private ProductPriceMapper productPriceMapper;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public List<Product> enquiry(ProductEnquiryRequest request) {

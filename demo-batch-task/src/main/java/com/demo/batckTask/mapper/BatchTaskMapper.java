@@ -4,6 +4,7 @@ import com.demo.batckTask.dto.BatchTaskUpdateRequest;
 import com.demo.batckTask.dto.SalesImportFile;
 import com.demo.batckTask.entity.BatchTask;
 import com.demo.common.mapper.CustomMapper;
+import com.demo.product.dto.InventoryAdjustmentRequest;
 import com.demo.product.entity.Product;
 import com.demo.product.entity.ProductPrice;
 import com.demo.transaction.entity.SalesOrder;
@@ -58,4 +59,6 @@ public interface BatchTaskMapper {
     @Mapping(target = "price", source = "unitPrice")
     @Mapping(target = "effectiveDate", source = "txDatetime")
     ProductPrice toProductPrice(SalesOrderItem salesOrderItems);
+
+    List<InventoryAdjustmentRequest> toProductInventory(SalesOrderItem[] salesOrderItems);
 }
