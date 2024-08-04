@@ -45,14 +45,11 @@ public class SalesFileImport {
     private BatchTaskMapper batchTaskMapper;
     private ProductService productService;
     private SalesService salesService;
-<<<<<<< HEAD
     private InventoryService inventoryService;
     public static String filePath = String.join(File.separator, System.getProperty("user.home"), "Documents", "Testing", "sales_data.csv");
 
     private final JobRepository jobRepository;
     private final PlatformTransactionManager platformTransactionManager;
-=======
-    public static String filePath = String.join(File.separator, System.getProperty("user.home"), "Documents", "Testing", "sales_data.csv");
     @Bean
     public Step salesFileImportStep(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(JobNames.SALES_IMPORT+"Step", jobRepository)
@@ -71,32 +68,24 @@ public class SalesFileImport {
                 .start(insertToPending)
                 .build();
     }
->>>>>>> d414bcab456dc1ad320d34b2c37933f206063ba1
     public ItemReader<SalesImportFile> reader() {
         FlatFileItemReader<SalesImportFile> reader = new FlatFileItemReader<>();
         reader.setResource(new FileSystemResource(filePath));
 
         Map<Class<?>, PropertyEditorSupport> customEditors = new HashMap<>();
-<<<<<<< HEAD
-=======
 //        customEditors.put(OffsetDateTime.class, new OffsetDateTimeEditor("yyyy-MM-dd HH:mm:ss.SSS"));
->>>>>>> d414bcab456dc1ad320d34b2c37933f206063ba1
         reader.setLineMapper(new DefaultLineMapper<SalesImportFile>() {{
             setLineTokenizer(new DelimitedLineTokenizer() {{
                 setNames("orderId","txDatetime","storeCode","customerName","salesPerson","productId","amount","qty","unitPrice");
             }});
             setFieldSetMapper(new BeanWrapperFieldSetMapper<SalesImportFile>() {{
                 setTargetType(SalesImportFile.class);
-<<<<<<< HEAD
-=======
 //                setCustomEditors();
->>>>>>> d414bcab456dc1ad320d34b2c37933f206063ba1
             }});
         }});
         reader.setLinesToSkip(1);
         return reader;
     }
-<<<<<<< HEAD
     public Step prepareData() {
         return new StepBuilder(JobNames.SALES_IMPORT+"prepareData", jobRepository)
                 .<List<SalesImportFile>, List<SalesOrder>>chunk(100, platformTransactionManager)
@@ -133,8 +122,6 @@ public class SalesFileImport {
 //                .next(other())
                 .build();
     }
-=======
->>>>>>> d414bcab456dc1ad320d34b2c37933f206063ba1
 
     public class SalesItemProcessor implements ItemProcessor<List<SalesImportFile>, List<SalesOrder>> {
         @Override
@@ -151,10 +138,7 @@ public class SalesFileImport {
             productService.update(batchTaskMapper.toProduct(salesOrderItems));
             productService.update(batchTaskMapper.toProductPrice(salesOrderItems));
             salesService.updateSales(orders);
-<<<<<<< HEAD
-            inventoryService.adjustmentRequest(batchTaskMapper.toProductInventory(salesOrderItems));
-=======
->>>>>>> d414bcab456dc1ad320d34b2c37933f206063ba1
+            inventoryService.adjustment(batchTaskMapper.toProductInventory(salesOrderItems));
         }
     }
 }
