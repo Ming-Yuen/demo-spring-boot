@@ -5,10 +5,7 @@ import com.demo.batckTask.dto.SalesImportFile;
 import com.demo.batckTask.listener.JobCompletionNotificationListener;
 import com.demo.batckTask.mapper.BatchTaskMapper;
 import com.demo.batckTask.util.AggregateItemReader;
-<<<<<<< HEAD
 import com.demo.product.service.InventoryService;
-=======
->>>>>>> d414bcab456dc1ad320d34b2c37933f206063ba1
 import com.demo.product.service.ProductService;
 import com.demo.transaction.entity.SalesOrder;
 import com.demo.transaction.entity.SalesOrderItem;
@@ -86,42 +83,6 @@ public class SalesFileImport {
         reader.setLinesToSkip(1);
         return reader;
     }
-    public Step prepareData() {
-        return new StepBuilder(JobNames.SALES_IMPORT+"prepareData", jobRepository)
-                .<List<SalesImportFile>, List<SalesOrder>>chunk(100, platformTransactionManager)
-                .reader(new AggregateItemReader<SalesImportFile>(reader(), SalesImportFile::getOrderId))
-                .processor(new SalesItemProcessor())
-                .writer(new SalesItemWriter())
-                .build();
-    }
-//    @Bean
-//    public Step saveSalesOrder() {
-//        return new StepBuilder(JobNames.SALES_IMPORT+"saveSalesOrder", jobRepository)
-//                .<List<SalesImportFile>, List<SalesOrder>>chunk(100, platformTransactionManager)
-//                .reader(new AggregateItemReader<SalesImportFile>(reader(), SalesImportFile::getOrderId))
-//                .processor(new SalesItemProcessor())
-//                .writer(new SalesItemWriter())
-//                .build();
-//    }
-//    @Bean
-//    public Step other() {
-//        return new StepBuilder(JobNames.SALES_IMPORT+"other", jobRepository)
-//                .<List<SalesImportFile>, List<SalesOrder>>chunk(100, platformTransactionManager)
-//                .reader(new AggregateItemReader<SalesImportFile>(reader(), SalesImportFile::getOrderId))
-//                .processor(new SalesItemProcessor())
-//                .writer(new SalesItemWriter())
-//                .build();
-//    }
-    @Bean
-    public Job salesFileImportJob() {
-        return new JobBuilder(JobNames.SALES_IMPORT, jobRepository)
-                .incrementer(new RunIdIncrementer())
-                .listener(new JobCompletionNotificationListener())
-                .start(prepareData())
-//                .next(saveSalesOrder())
-//                .next(other())
-                .build();
-    }
 
     public class SalesItemProcessor implements ItemProcessor<List<SalesImportFile>, List<SalesOrder>> {
         @Override
@@ -137,6 +98,8 @@ public class SalesFileImport {
 
             productService.update(batchTaskMapper.toProduct(salesOrderItems));
             productService.update(batchTaskMapper.toProductPrice(salesOrderItems));
+            inventoryService.update(batchTaskMapper.toProductInventory(salesOrderItems));
+
             salesService.updateSales(orders);
             inventoryService.adjustment(batchTaskMapper.toProductInventory(salesOrderItems));
         }
