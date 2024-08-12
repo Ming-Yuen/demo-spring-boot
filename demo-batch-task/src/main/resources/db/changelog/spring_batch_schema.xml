@@ -62,7 +62,9 @@
             <column name="SHORT_CONTEXT" type="VARCHAR(2500)"><constraints nullable="false"/></column>
             <column name="SERIALIZED_CONTEXT" type="CLOB"/>
         </createTable>
+    </changeSet>
 
+    <changeSet id="Spring_Batch_schema_sequence_data" author="ming" dbms="oracle">
         <insert tableName="BATCH_JOB_INSTANCE">
             <column name="JOB_INSTANCE_ID" value="0"/>
             <column name="VERSION" value="0"/>
@@ -86,7 +88,26 @@
         </insert>
     </changeSet>
 
-    <changeSet id="Batch_Task_schema_sequence" author="ming" dbms="oracle">
+    <changeSet id="Spring_Batch_schema_sequence_table" author="ming" dbms="mysql,mariadb">
+        <createTable tableName="BATCH_JOB_SEQ">
+            <column name="ID" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="BATCH_STEP_EXECUTION_SEQ">
+            <column name="ID" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="BATCH_JOB_EXECUTION_SEQ">
+            <column name="ID" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="Spring_Batch_schema_sequence" author="ming" dbms="oracle">
         <createSequence sequenceName="BATCH_STEP_EXECUTION_SEQ" startValue="1" incrementBy="1" ordered="true"/>
         <createSequence sequenceName="BATCH_JOB_SEQ" startValue="1" incrementBy="1" ordered="true"/>
         <createSequence sequenceName="BATCH_JOB_EXECUTION_SEQ" startValue="1" incrementBy="1" ordered="true"/>

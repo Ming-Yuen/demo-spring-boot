@@ -43,6 +43,6 @@ public class AsyncConfiguration implements AsyncConfigurer {
 
     @Override
     public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
-        return (ex, method, params) -> log.error(String.format("执行异步任务'%s'", method), ex);
+        return (ex, method, params) -> log.error(String.format("Executing asynchronous tasks'%s'", method), ex);
     }
 }

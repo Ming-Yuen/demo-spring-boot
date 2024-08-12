@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.demo.product.dao.ProductMapper">
+    <select id="findByProductIdIn" parameterType="java.util.List" resultType="java.lang.String">
+        select product_id from product where product_id in
+        <foreach item="product" collection="productIds" open="(" separator="," close=")">
+            #{product.productId}
+        </foreach>
+    </select>
+    <insert id="insert" parameterType="java.util.List">
+        INSERT INTO Product (product_id, product_name,company,category,risk_rating,enable,created_by,created_at,updated_by,updated_at,version) VALUES
+        <foreach item="product" collection="products" separator=",">
+            (#{product.productId}, #{product.productName},#{product.company},#{product.category},#{product.riskRating},#{product.enable},#{product.createdBy},#{product.createdAt},#{product.updatedBy},#{product.updatedAt},#{product.version})
+        </foreach>
+    </insert>
+    <update id="updateProducts">
+        <foreach collection="products" item="product" separator=";">
+            UPDATE Product
+            SET product_name = #{product.productName},company = #{product.company},category = #{product.category},risk_rating = #{product.riskRating},enable = #{product.enable},updated_by = #{product.updatedBy},updated_at = #{product.updatedAt},version = version + 1
+            WHERE product_id = #{product.productId}
+        </foreach>
+    </update>
+</mapper>

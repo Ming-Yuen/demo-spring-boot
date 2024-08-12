@@ -1,9 +1,7 @@
 package com.demo.admin.service;
 
-import com.demo.admin.dto.UserQueryRequest;
 import com.demo.admin.dto.UserRegisterRequest;
-import com.demo.admin.entity.UserInfo;
-import com.demo.admin.enums.PrivilegeType;
+import com.demo.admin.entity.Users;
 
 import java.util.List;
 
@@ -11,11 +9,11 @@ public interface UserService {
 
     void updateUserRequest(List<UserRegisterRequest> user);
     String login(String username, String password);
+    void updateUser(List<Users> usersRecords);
 
-    <T> List<T> findByUserName(Class<T> type, String... usernames);
+    Users findByFirstUserName(String username);
 
-    List<PrivilegeType> getSubPrivilege(PrivilegeType... privilegeType);
+    Integer findByPrivilegeType(String username);
 
-    List<UserInfo> userQueryRequest(UserQueryRequest request);
-    void updateUserMaster(UserInfo... userInfoRecords);
+    boolean existsByFirstUsername(String admin);
 }

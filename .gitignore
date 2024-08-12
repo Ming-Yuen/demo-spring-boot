@@ -3,8 +3,6 @@ target/
 .vscode/
 .settings/
 .log/
-<<<<<<< HEAD
+log/
 .zip/
-=======
-.zip/
->>>>>>> d414bcab456dc1ad320d34b2c37933f206063ba1
+**/[Ll]ogs

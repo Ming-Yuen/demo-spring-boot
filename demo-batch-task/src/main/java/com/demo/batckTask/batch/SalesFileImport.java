@@ -3,7 +3,7 @@ package com.demo.batckTask.batch;
 import com.demo.batckTask.constant.JobNames;
 import com.demo.batckTask.dto.SalesImportFile;
 import com.demo.batckTask.listener.JobCompletionNotificationListener;
-import com.demo.batckTask.mapper.BatchTaskMapper;
+import com.demo.batckTask.mapping.BatchTaskMapping;
 import com.demo.batckTask.util.AggregateItemReader;
 import com.demo.product.service.InventoryService;
 import com.demo.product.service.ProductService;
@@ -34,12 +34,13 @@ import org.springframework.transaction.PlatformTransactionManager;
 import java.beans.PropertyEditorSupport;
 import java.io.File;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @AllArgsConstructor
 @Configuration
 public class SalesFileImport {
-    private BatchTaskMapper batchTaskMapper;
+    private BatchTaskMapping batchTaskMapping;
     private ProductService productService;
     private SalesService salesService;
     private InventoryService inventoryService;
@@ -50,7 +51,7 @@ public class SalesFileImport {
     @Bean
     public Step salesFileImportStep(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         return new StepBuilder(JobNames.SALES_IMPORT+"Step", jobRepository)
-                .<List<SalesImportFile>, List<SalesOrder>>chunk(100, transactionManager)
+                .<List<SalesImportFile>, List<SalesOrder>>chunk(500, transactionManager)
                 .reader(new AggregateItemReader<SalesImportFile>(reader(), SalesImportFile::getOrderId))
                 .processor(new SalesItemProcessor())
                 .writer(new SalesItemWriter())
@@ -87,21 +88,21 @@ public class SalesFileImport {
     public class SalesItemProcessor implements ItemProcessor<List<SalesImportFile>, List<SalesOrder>> {
         @Override
         public List<SalesOrder> process(List<SalesImportFile> salesImportFile) {
-            return batchTaskMapper.convertFileFormat(salesImportFile);
+            return batchTaskMapping.convertFileFormat(salesImportFile);
         }
     }
     public class SalesItemWriter implements ItemWriter<List<SalesOrder>> {
         @Override
         public void write(Chunk<? extends List<SalesOrder>> chunk) {
-            SalesOrder[] orders = chunk.getItems().stream().flatMap(Collection::stream).toArray(SalesOrder[]::new);
-            SalesOrderItem[] salesOrderItems = Arrays.stream(orders).map(item->item.getItems()).flatMap(Collection::stream).toArray(SalesOrderItem[]::new);
+            List<SalesOrder> orders = chunk.getItems().stream().flatMap(Collection::stream).collect(Collectors.toList());
+            SalesOrderItem[] salesOrderItems = orders.stream().map(item->item.getItems()).flatMap(Collection::stream).toArray(SalesOrderItem[]::new);
 
-            productService.update(batchTaskMapper.toProduct(salesOrderItems));
-            productService.update(batchTaskMapper.toProductPrice(salesOrderItems));
-            inventoryService.update(batchTaskMapper.toProductInventory(salesOrderItems));
+            productService.updateProduct(batchTaskMapping.toProduct(salesOrderItems));
+            productService.updateProductPrice(batchTaskMapping.toProductPrice(salesOrderItems));
+            inventoryService.insert(batchTaskMapping.toProductInventory(salesOrderItems));
 
             salesService.updateSales(orders);
-            inventoryService.adjustment(batchTaskMapper.toProductInventory(salesOrderItems));
+            inventoryService.adjustment(batchTaskMapping.toProductInventory(salesOrderItems));
         }
     }
 }

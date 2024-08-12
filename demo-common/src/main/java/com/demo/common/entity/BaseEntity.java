@@ -1,20 +1,20 @@
 package com.demo.common.entity;
 
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.io.Serializable;
+import java.time.OffsetDateTime;
 
 
 @Setter
 @Getter
-@MappedSuperclass
-public class BaseEntity extends AuditingEntity{
+public class BaseEntity implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-    @Version
-    @Column(name = "version", nullable = false, updatable = false)
     private Integer version = 1;
+    private String createdBy;
+    private OffsetDateTime createdAt;
+    private String updatedBy;
+    private OffsetDateTime updatedAt;
 }

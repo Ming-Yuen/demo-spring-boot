@@ -1,45 +1,34 @@
 package com.demo.admin.service.impl;
 
-import com.demo.admin.dto.UserQueryRequest;
+import com.demo.admin.dao.PrivilegeMapper;
+import com.demo.admin.dao.UserMapper;
 import com.demo.admin.dto.UserRegisterRequest;
-import com.demo.admin.entity.Privilege;
-import com.demo.admin.entity.UserInfo;
-import com.demo.admin.mapper.UserMapper;
-import com.demo.admin.service.UserService;
-import com.demo.admin.repository.UserRepository;
-import com.demo.admin.repository.PrivilegeRepository;
+import com.demo.admin.entity.Users;
+import com.demo.admin.mapping.UserMapping;
 import com.demo.admin.security.JwtUtil;
-import com.demo.admin.enums.PrivilegeType;
-import com.demo.common.util.LambdaUtil;
-//import com.demo.common.util.RedisUtil;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
+import com.demo.admin.service.UserService;
+import com.github.pagehelper.PageHelper;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 public class UserServiceImpl implements UserService {
-    private UserRepository userRepository;
     private UserMapper userMapper;
-    private PrivilegeRepository privilegeRepository;
+    private UserMapping userMapping;
+    private PrivilegeMapper privilegeMapper;
     private JwtUtil jwt;
-    @PersistenceContext
-    private EntityManager entityManager;
     private Long expiration;
 
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, PrivilegeRepository privilegeRepository, JwtUtil jwt, @Value("${jwt.expiration}") Long expiration) {
-        this.userRepository = userRepository;
+    public UserServiceImpl(UserMapper userMapper, UserMapping userMapping, PrivilegeMapper privilegeMapper, JwtUtil jwt, @Value("${jwt.expiration}") Long expiration) {
         this.userMapper = userMapper;
-        this.privilegeRepository = privilegeRepository;
+        this.userMapping = userMapping;
+        this.privilegeMapper = privilegeMapper;
         this.jwt = jwt;
         this.expiration = expiration;
     }
@@ -48,64 +37,60 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void updateUserRequest(List<UserRegisterRequest> request){
-        UserInfo[] userInfo = userMapper.userRegisterRequestToUser(request.toArray(new UserRegisterRequest[]{}));
-        updateUserMaster(userInfo);
+        updateUser(userMapping.userRegisterRequestToUser(request));
     }
     @Transactional
     @Override
-    public void updateUserMaster(UserInfo... userInfoRecords) {
-        userInfoRecords = Arrays.stream(userInfoRecords).filter(LambdaUtil.distinctByKey(UserInfo::getUserName)).toArray(UserInfo[]::new);
-        List<UserInfo> usersToInsert = new ArrayList<>();
-        List<UserInfo> usersToUpdate = new ArrayList<>();
+    public void updateUser(List<Users> usersRecords) {
+        Set<String> existingUserNames = userMapper.findByExistingUserName(usersRecords, PageHelper.startPage(0, 1));
+        List<Users> usersToInsert = new ArrayList<>();
+        List<Users> usersToUpdate = new ArrayList<>();
 
-        List<UserInfo.SelectUserName> userNameList = findByUserName(UserInfo.SelectUserName.class, Arrays.stream(userInfoRecords).map(UserInfo::getUserName).toArray(String[] :: new));
-        Map<String, UserInfo.SelectUserName> userInfoMap = userNameList == null ? null : userNameList.stream().collect(Collectors.toMap(UserInfo.SelectUserName::userName, Function.identity()));
-        for(UserInfo userInfo : userInfoRecords) {
-            UserInfo.SelectUserName old_userInfo = userInfoMap == null ? null : userInfoMap.get(userInfo.getUserName());
-            if (old_userInfo == null) {
-                usersToInsert.add(userInfo);
-                entityManager.persist(userInfo);
+        for(Users users : usersRecords) {
+            if (existingUserNames.contains(users.getUserName())) {
+                usersToUpdate.add(users);
             } else {
-                userInfo.setId(old_userInfo.id());
-                usersToUpdate.add(userInfo);
-                entityManager.merge(userInfo);
+                usersToInsert.add(users);
             }
         }
+        if(!usersToInsert.isEmpty()) {
+            userMapper.insertUsers(usersToInsert);
+        }
+        if(!usersToUpdate.isEmpty()) {
+            userMapper.updateUsers(usersToUpdate);
+        }
     }
 
     @Override
-    public <T> List<T> findByUserName(Class<T> type, String... usernames){
-        return userRepository.findByUserNameIn(type, usernames);
+    public Users findByFirstUserName(String username) {
+        return userMapper.findByFirstUserName(username);
     }
+
     @Override
-    public List<PrivilegeType> getSubPrivilege(PrivilegeType... privilegeTypes){
-        Set<PrivilegeType> privilegeList = new HashSet<PrivilegeType>();
-        List<Privilege.SelectSubPrivilege> selectSubPrivilegesList = privilegeRepository.findByPrivilegeIn(Privilege.SelectSubPrivilege.class, privilegeTypes);
-
-        privilegeList.addAll(selectSubPrivilegesList.stream().map(x->x.subPrivileges()).collect(Collectors.toSet()));
-
-        return privilegeList.stream().toList();
+    public Integer findByPrivilegeType(String username) {
+        return userMapper.findByPrivilegeType(username);
     }
+
+    @Override
+    public boolean existsByFirstUsername(String admin) {
+        return userMapper.existsByUsername(admin) != null;
+    }
+
     @Override
     public String login(String username, String password) {
-        List<UserInfo.SelectUserPassword> userInfoList = findByUserName(UserInfo.SelectUserPassword.class, username);
-        if(userInfoList.isEmpty()){
+        String userPassword = userMapper.findByFirstUserPassword(username);
+        if(userPassword == null){
             throw new IllegalArgumentException("User is not registered");
         }
-        UserInfo.SelectUserPassword userInfo = userInfoList.get(0);
-        if(!password.equals(userInfo.userPassword())){
+        if(!password.equals(userPassword)){
             throw new IllegalArgumentException("Incorrect password");
         }
 //        String token = (String) redisUtil.get("token."+user.getUserName());
 //        if(token != null){
 //            return token;
 //        }
-        String token = jwt.generateToken(userInfo.userName(), userInfo.userPassword());
+        String token = jwt.generateToken(username, userPassword);
 //        redisUtil.set("token."+user.getUserName(), token, expiration, TimeUnit.SECONDS);
         return token;
-    }
-    @Override
-    public List<UserInfo> userQueryRequest(UserQueryRequest request) {
-        return findByUserName(UserInfo.class, request.getUserNameList());
     }
 }

@@ -1,10 +1,7 @@
 package com.demo.admin.dto;
 
-import com.demo.admin.enums.Gender;
-import com.demo.admin.enums.PrivilegeType;
-import jakarta.validation.constraints.NotNull;
-
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
@@ -16,9 +13,9 @@ public class UserRegisterRequest {
     @NotBlank
     private String userPassword;
     @NotNull
-    private Gender gender;
+    private String gender;
     private String email;
     private String phone;
     @NotNull
-    private PrivilegeType privilege;
+    private Integer privilege;
 }

@@ -7,11 +7,11 @@
         <createTable tableName="currency">
             <column name="id" type="BIGINT" autoIncrement="true"><constraints primaryKey="true"/></column>
             <column name="unit" type="varchar(9)"><constraints nullable="false"/></column>
-            <column name="rate" type="decimal(4,16)"><constraints nullable="false"/></column>
+            <column name="rate" type="decimal(16,4)"><constraints nullable="false"/></column>
             <column name="created_by" type="varchar(30)"><constraints nullable="false"/></column>
-            <column name="created_at" type="TIMESTAMP WITH TIME ZONE"><constraints nullable="false"/></column>
+            <column name="created_at" type="${timestamp}" defaultValueComputed="${now}"><constraints nullable="false"/></column>
             <column name="updated_by" type="varchar(30)"><constraints nullable="false"/></column>
-            <column name="updated_at" type="TIMESTAMP WITH TIME ZONE"><constraints nullable="false"/></column>
+            <column name="updated_at" type="${timestamp}" defaultValueComputed="${now}"><constraints nullable="false"/></column>
             <column name="version" type="int"><constraints nullable="false"/></column>
         </createTable>
         <addUniqueConstraint constraintName="uk_currency" tableName="currency" columnNames="unit"/>
@@ -25,9 +25,9 @@
             <column name="risk_rating" type="varchar(30)"><constraints nullable="false"/></column>
             <column name="enable" type="int"><constraints nullable="false"/></column>
             <column name="created_by" type="varchar(30)"><constraints nullable="false"/></column>
-            <column name="created_at" type="TIMESTAMP WITH TIME ZONE"><constraints nullable="false"/></column>
+            <column name="created_at" type="${timestamp}" defaultValueComputed="${now}"><constraints nullable="false"/></column>
             <column name="updated_by" type="varchar(30)"><constraints nullable="false"/></column>
-            <column name="updated_at" type="TIMESTAMP WITH TIME ZONE"><constraints nullable="false"/></column>
+            <column name="updated_at" type="${timestamp}" defaultValueComputed="${now}"><constraints nullable="false"/></column>
             <column name="version" type="int"><constraints nullable="false"/></column>
         </createTable>
         <addUniqueConstraint constraintName="uk_product" tableName="product" columnNames="product_id"/>
@@ -36,12 +36,12 @@
             <column name="id" type="BIGINT" autoIncrement="true"><constraints primaryKey="true"/></column>
             <column name="product_id" type="varchar(30)"><constraints nullable="false"/></column>
             <column name="price" type="decimal(16,4)"><constraints nullable="false"/></column>
-            <column name="effective_date" type="TIMESTAMP WITH TIME ZONE"><constraints nullable="false"/></column>
-            <column name="expiry_date" type="TIMESTAMP WITH TIME ZONE"><constraints nullable="true"/></column>
+            <column name="effective_date" type="${timestamp}"><constraints nullable="false"/></column>
+            <column name="expiry_date" type="${timestamp}"><constraints nullable="true"/></column>
             <column name="created_by" type="varchar(30)"><constraints nullable="false"/></column>
-            <column name="created_at" type="TIMESTAMP WITH TIME ZONE"><constraints nullable="false"/></column>
+            <column name="created_at" type="${timestamp}" defaultValueComputed="${now}"><constraints nullable="false"/></column>
             <column name="updated_by" type="varchar(30)"><constraints nullable="false"/></column>
-            <column name="updated_at" type="TIMESTAMP WITH TIME ZONE"><constraints nullable="false"/></column>
+            <column name="updated_at" type="${timestamp}" defaultValueComputed="${now}"><constraints nullable="false"/></column>
             <column name="version" type="int"><constraints nullable="false"/></column>
         </createTable>
         <createIndex indexName="idx_product_price" tableName="product_price">
@@ -55,9 +55,9 @@
             <column name="product_id" type="varchar(30)"><constraints nullable="false"/></column>
             <column name="qty" type="int"><constraints nullable="false"/></column>
             <column name="created_by" type="varchar(30)"><constraints nullable="false"/></column>
-            <column name="created_at" type="TIMESTAMP WITH TIME ZONE"><constraints nullable="false"/></column>
+            <column name="created_at" type="${timestamp}" defaultValueComputed="${now}"><constraints nullable="false"/></column>
             <column name="updated_by" type="varchar(30)"><constraints nullable="false"/></column>
-            <column name="updated_at" type="TIMESTAMP WITH TIME ZONE"><constraints nullable="false"/></column>
+            <column name="updated_at" type="${timestamp}" defaultValueComputed="${now}"><constraints nullable="false"/></column>
             <column name="version" type="int"><constraints nullable="false"/></column>
         </createTable>
         <addUniqueConstraint constraintName="uk_inventory" tableName="inventory" columnNames="product_id"/>

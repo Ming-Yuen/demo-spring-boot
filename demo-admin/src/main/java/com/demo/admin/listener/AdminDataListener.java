@@ -1,16 +1,17 @@
 package com.demo.admin.listener;
 
-import com.demo.admin.entity.UserInfo;
-import com.demo.admin.enums.PrivilegeType;
+import com.demo.admin.constant.UserConstant;
+import com.demo.admin.entity.Users;
+import com.demo.admin.security.AdminUserDetails;
 import com.demo.admin.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import java.time.OffsetDateTime;
-import java.util.List;
+import java.util.Arrays;
 
 @Slf4j
 @Component
@@ -20,21 +21,22 @@ public class AdminDataListener implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        List<UserInfo.SelectUserName> userInfoList = userService.findByUserName(UserInfo.SelectUserName.class,"admin");
-        if(CollectionUtils.isEmpty(userInfoList)){
-            UserInfo userInfo = new UserInfo();
-            userInfo.setUserName("admin");
-            userInfo.setFirstName("temp");
-            userInfo.setLastName("temp");
-            userInfo.setUserPassword("admin");
-            userInfo.setPrivilege(PrivilegeType.admin);
-            userInfo.setGender("none");
-            userInfo.setCreatedBy(userInfo.getUserName());
-            userInfo.setCreatedAt(OffsetDateTime.now());
-            userInfo.setUpdatedBy(userInfo.getUserName());
-            userInfo.setUpdatedAt(OffsetDateTime.now());
+        boolean existing = userService.existsByFirstUsername("admin");
+        if(!existing){
+            Users users = new Users();
+            users.setId(1L);
+            users.setUserName("admin");
+            users.setFirstName("temp");
+            users.setLastName("temp");
+            users.setUserPassword("admin");
+            users.setPrivilege(UserConstant.PRIVILEGE_ADMIN);
+            users.setGender("none");
 
-            userService.updateUserMaster(userInfo);
+            AdminUserDetails userDetails = new AdminUserDetails(users);;
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            userService.updateUser(Arrays.asList(users));
         }
     }
 }
