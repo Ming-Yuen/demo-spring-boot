@@ -11,7 +11,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableWebMvc
 @EnableCaching
 @EnableScheduling
-@MapperScan(basePackages = {"com.demo.admin.dao", "com.demo.product.dao", "com.demo.transaction.dao", "com.demo.batckTask.dao"})
 public class DemoBatchTaskApplication {
     public static void main(String[] args) {
         SpringApplication.run(DemoBatchTaskApplication.class, args);

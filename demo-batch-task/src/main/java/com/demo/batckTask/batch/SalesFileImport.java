@@ -3,6 +3,7 @@ package com.demo.batckTask.batch;
 import com.demo.batckTask.constant.JobNames;
 import com.demo.batckTask.dto.SalesImportFile;
 import com.demo.batckTask.listener.JobCompletionNotificationListener;
+import com.demo.batckTask.listener.LoggingItemReadListener;
 import com.demo.batckTask.mapping.BatchTaskMapping;
 import com.demo.batckTask.util.AggregateItemReader;
 import com.demo.product.service.InventoryService;
@@ -44,6 +45,7 @@ public class SalesFileImport {
     private ProductService productService;
     private SalesService salesService;
     private InventoryService inventoryService;
+    private LoggingItemReadListener loggingItemReadListener;
     public static String filePath = String.join(File.separator, System.getProperty("user.home"), "Documents", "Testing", "sales_data.csv");
 
     private final JobRepository jobRepository;
@@ -55,6 +57,7 @@ public class SalesFileImport {
                 .reader(new AggregateItemReader<SalesImportFile>(reader(), SalesImportFile::getOrderId))
                 .processor(new SalesItemProcessor())
                 .writer(new SalesItemWriter())
+                .listener(loggingItemReadListener)
 //                .taskExecutor(taskExecutor())
                 .build();
     }
@@ -62,7 +65,7 @@ public class SalesFileImport {
     public Job salesFileImportJob(final JobRepository jobRepository,Step insertToPending) {
         return new JobBuilder(JobNames.SALES_IMPORT, jobRepository)
                 .incrementer(new RunIdIncrementer())
-                .listener(new JobCompletionNotificationListener())
+                .listener(new JobCompletionNotificationListener(loggingItemReadListener))
                 .start(insertToPending)
                 .build();
     }

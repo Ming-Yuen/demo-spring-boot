@@ -28,6 +28,7 @@ public interface BatchTaskMapper {
     SalesOrder toSalesOrder(SalesImportFile line);
     @Mapping(target = "txDatetime", source = "salesImportFile.txDatetime", qualifiedByName = "yyyy/MM/dd HH:mm:ss.SSS")
     @Mapping(target = "salesOrder", source = "salesOrder")
+    @Mapping(target = "orderId", source = "salesOrder.orderId")
     @Mapping(target = "itemSequence", source = "sequence")
     @Mapping(target = "discount", constant = "0")
     SalesOrderItem toSalesOrderItem(SalesImportFile salesImportFile, SalesOrder salesOrder, int sequence);

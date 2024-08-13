@@ -1,4 +1,4 @@
-package com.demo.common.interceptorfilter;
+package com.demo.common.interceptor;
 
 import com.demo.common.entity.BaseEntity;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +21,7 @@ import java.util.Map;
         @Signature(type = Executor.class, method = "update", args = {MappedStatement.class, Object.class})
 })
 @Slf4j
-public class AuditInterceptor implements Interceptor {
+public class BaseEntityAuditInterceptor implements Interceptor {
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
         Object[] args = invocation.getArgs();
