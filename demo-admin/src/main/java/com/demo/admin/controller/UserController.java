@@ -1,20 +1,23 @@
 package com.demo.admin.controller;
 
-import com.demo.admin.dto.*;
+import com.demo.admin.dto.TokenRequest;
+import com.demo.admin.dto.UserRegisterRequest;
 import com.demo.admin.service.UserService;
-import com.demo.admin.vo.UserQueryResponse;
 import com.demo.admin.vo.UserRegisterResponse;
 import com.demo.common.controller.ControllerPath;
 import com.demo.common.dto.ApiResponse;
 import com.demo.common.util.ValidList;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,8 +37,8 @@ public class UserController {
         String token = userService.login(request.getUsername(), request.getPassword());
         return new ResponseEntity<>(new ApiResponse<>().isSuccess(token), HttpStatus.OK);
     }
-    @PostMapping(path = ControllerPath.QUERY, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ApiResponse<UserQueryResponse>> query(@Valid @RequestBody UserQueryRequest request){
-        return new ResponseEntity<>(new ApiResponse<>().isSuccess(userService.userQueryRequest(request)), HttpStatus.OK);
-    }
+//    @PostMapping(path = ControllerPath.QUERY, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<ApiResponse<UserQueryResponse>> query(@Valid @RequestBody UserQueryRequest request){
+//        return new ResponseEntity<>(new ApiResponse<>().isSuccess(userService.userQueryRequest(request)), HttpStatus.OK);
+//    }
 }

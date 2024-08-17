@@ -8,5 +8,5 @@ import java.util.List;
 public interface SalesService {
     void updateSalesRequest(List<SalesRequest> request);
 
-    void updateSales(SalesOrder... salesOrder);
+    void updateSales(List<SalesOrder> salesOrder);
 }

@@ -1,13 +1,12 @@
 package com.demo.transaction.service.impl;
 
-import com.demo.product.entity.ProductPrice;
 import com.demo.product.service.ProductService;
-import com.demo.transaction.dao.SalesItemRepository;
-import com.demo.transaction.dao.SalesRepository;
+import com.demo.transaction.dao.SaleMapper;
+import com.demo.transaction.dao.SalesItemMapper;
 import com.demo.transaction.dto.SalesRequest;
 import com.demo.transaction.entity.SalesOrder;
 import com.demo.transaction.entity.SalesOrderItem;
-import com.demo.transaction.mapper.SalesMapper;
+import com.demo.transaction.mapper.SalesMapping;
 import com.demo.transaction.service.SalesService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.*;
 
@@ -22,28 +22,26 @@ import java.util.*;
 @Service
 public class SalesServiceImpl implements SalesService {
     @Autowired
-    private SalesRepository salesRepository;
+    private SaleMapper saleMapper;
     @Autowired
-    private SalesMapper salesMapper;
+    private SalesMapping salesMapping;
     @Autowired
-    private SalesItemRepository salesItemRepository;
+    private SalesItemMapper salesItemMapper;
     @Autowired
     private ProductService productService;
     @Override
     public void updateSalesRequest(List<SalesRequest> request) {
-        SalesOrder[] salesOrder = salesMapper.requestConvertOrder(request);
-        updateSales(salesOrder);
+        updateSales(salesMapping.requestConvertOrder(request));
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void updateSales(SalesOrder... salesOrders){
+    public void updateSales(List<SalesOrder> salesOrders){
         List<SalesOrder> salesOrderList = new ArrayList<>();
-        String[] orderIds = Arrays.stream(salesOrders).map(SalesOrder::getOrderId).toArray(String[]::new);
-        Set<SalesOrder.OrderId> presentOrderIds = salesRepository.findByOrderIdIn(orderIds);
+        String[] orderIds = salesOrders.stream().map(SalesOrder::getOrderId).toArray(String[]::new);
+        Set<String> presentOrderIds = saleMapper.findByOrderIdIn(orderIds);
 
-        OffsetDateTime[] txDatetime = Arrays.stream(salesOrders).map(SalesOrder::getTxDatetime).toArray(OffsetDateTime[]::new);
-        Map<String, ProductPrice.ProductCurrentPrice> productPriceMap = productService.getLatestProductPrice(orderIds, txDatetime);
+        OffsetDateTime[] txDatetime = salesOrders.stream().map(SalesOrder::getTxDatetime).toArray(OffsetDateTime[]::new);
+        Map<String, BigDecimal> productPriceMap = productService.findByProductPriceAndEffectiveDate(orderIds, txDatetime);
 
         for(SalesOrder salesOrder : salesOrders){
             if(presentOrderIds.contains(salesOrder.getOrderId())) {
@@ -57,6 +55,6 @@ public class SalesServiceImpl implements SalesService {
             }
             salesOrderList.add(salesOrder);
         }
-        salesRepository.saveAll(salesOrderList);
+        saleMapper.insert(salesOrderList);
     }
 }

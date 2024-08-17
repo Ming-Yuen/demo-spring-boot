@@ -1,10 +1,10 @@
 package com.demo.batckTask.service.impl;
 
-import com.demo.batckTask.dao.BatchTaskDao;
+import com.demo.batckTask.dao.BatchTaskMapper;
 import com.demo.batckTask.dto.BatchTaskInvokeRequest;
 import com.demo.batckTask.dto.BatchTaskUpdateRequest;
 import com.demo.batckTask.entity.BatchTask;
-import com.demo.batckTask.mapper.BatchTaskMapper;
+import com.demo.batckTask.mapping.BatchTaskMapping;
 import com.demo.batckTask.service.BatchTaskService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,24 +19,25 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 @Slf4j
 @Service
 @AllArgsConstructor
 public class BatchTaskServiceImpl implements BatchTaskService {
-    private BatchTaskDao batchTaskDao;
-    private BatchTaskMapper scheduleMapper;
+    private BatchTaskMapper batchTaskMapper;
+    private BatchTaskMapping scheduleMapper;
     private JobLauncher jobLauncher;
     private final ApplicationContext applicationContext;
     private JobExplorer jobExplorer;
     @Override
     public void update(BatchTaskUpdateRequest batchTaskUpdateRequest) {
         BatchTask batchTask = scheduleMapper.batchTaskRequestConvertToRequest(batchTaskUpdateRequest);
-        batchTaskDao.save(batchTask);
+        batchTaskMapper.insert(batchTask);
     }
     @Override
     public List<BatchTask> getAllTask(){
-        return batchTaskDao.findByEnable(1);
+        return batchTaskMapper.findByEnable("1");
     }
 
 
@@ -67,6 +68,6 @@ public class BatchTaskServiceImpl implements BatchTaskService {
 
     @Override
     public BatchTask findByName(String batchTaskName) {
-        return batchTaskDao.findByName(batchTaskName);
+        return batchTaskMapper.findByName(batchTaskName);
     }
 }

@@ -16,6 +16,6 @@ public class ControllerPath {
     public static final String sales = "/sales";
     public static final String create = "/create";
     public static final String inventory = "/inventory";
-    public static final String adjustment = "/adjustment";
+    public static final String ADJUSTMENT = "/adjustment";
     public static final String DEFAULT = "/default";
 }

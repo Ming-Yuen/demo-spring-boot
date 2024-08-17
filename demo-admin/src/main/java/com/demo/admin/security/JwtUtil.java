@@ -45,13 +45,7 @@ public class JwtUtil {
                 .getBody();
     }
 
-    public boolean validateToken(String token, UserDetails userDetails) {
-        String username = getUserNameFromToken(token);
-        boolean userValidate = username.equals(userDetails.getUsername());
-        if(!userValidate){
-            log.trace("Incorrect username");
-            return false;
-        }
+    public boolean validateToken(String token) {
         boolean expired = isTokenExpired(token);
         if(expired){
             log.trace("Token expired");

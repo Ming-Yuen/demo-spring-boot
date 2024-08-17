@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.demo.admin.dao.MenuMapper">
+    <insert id="insert">
+        INSERT INTO menu_structure (parent, icon,name,type,link,privilege,created_by,created_at,updated_by,updated_at,version) VALUES
+        <foreach item="menu" collection="list" separator=",">
+            (#{menu.parent}, #{menu.name},#{menu.link},#{menu.privilege},#{menu.createdBy},#{menu.createdAt},#{menu.updatedBy},#{menu.updatedAt},#{menu.version})
+        </foreach>
+    </insert>
+</mapper>

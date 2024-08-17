@@ -4,6 +4,7 @@ import com.demo.batckTask.dto.BatchTaskUpdateRequest;
 import com.demo.batckTask.dto.SalesImportFile;
 import com.demo.batckTask.entity.BatchTask;
 import com.demo.common.mapper.CustomMapper;
+import com.demo.product.entity.Inventory;
 import com.demo.product.entity.Product;
 import com.demo.product.entity.ProductPrice;
 import com.demo.transaction.entity.SalesOrder;
@@ -27,6 +28,7 @@ public interface BatchTaskMapper {
     SalesOrder toSalesOrder(SalesImportFile line);
     @Mapping(target = "txDatetime", source = "salesImportFile.txDatetime", qualifiedByName = "yyyy/MM/dd HH:mm:ss.SSS")
     @Mapping(target = "salesOrder", source = "salesOrder")
+    @Mapping(target = "orderId", source = "salesOrder.orderId")
     @Mapping(target = "itemSequence", source = "sequence")
     @Mapping(target = "discount", constant = "0")
     SalesOrderItem toSalesOrderItem(SalesImportFile salesImportFile, SalesOrder salesOrder, int sequence);
@@ -58,4 +60,6 @@ public interface BatchTaskMapper {
     @Mapping(target = "price", source = "unitPrice")
     @Mapping(target = "effectiveDate", source = "txDatetime")
     ProductPrice toProductPrice(SalesOrderItem salesOrderItems);
+
+    List<Inventory> toProductInventory(SalesOrderItem[] salesOrderItems);
 }

@@ -4,8 +4,6 @@ import com.demo.transaction.entity.enums.PaymentEnum;
 import com.demo.transaction.entity.enums.SalesStatusEnum;
 import lombok.Data;
 
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -21,10 +19,8 @@ public class SalesRequest {
     private BigDecimal totalAmount;
     private BigDecimal discount;
 
-    @Enumerated(EnumType.ORDINAL)
     private PaymentEnum paymentMethod;
 
-    @Enumerated(EnumType.ORDINAL)
     private SalesStatusEnum status;
     private String priority;
     private String shippingMethod;
