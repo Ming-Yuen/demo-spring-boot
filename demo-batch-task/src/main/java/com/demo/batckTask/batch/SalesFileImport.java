@@ -45,24 +45,25 @@ public class SalesFileImport {
     private ProductService productService;
     private SalesService salesService;
     private InventoryService inventoryService;
-    private LoggingItemReadListener loggingItemReadListener;
+    private LoggingItemReadListener<SalesImportFile> loggingItemReadListener;
     public static String filePath = String.join(File.separator, System.getProperty("user.home"), "Documents", "Testing", "sales_data.csv");
 
     private final JobRepository jobRepository;
     private final PlatformTransactionManager platformTransactionManager;
     @Bean
     public Step salesFileImportStep(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
-        return new StepBuilder(JobNames.SALES_IMPORT+"Step", jobRepository)
-                .<List<SalesImportFile>, List<SalesOrder>>chunk(500, transactionManager)
+        String stepName = JobNames.SALES_IMPORT + "Step";
+        return new StepBuilder(stepName, jobRepository)
+                .<List<SalesImportFile>, List<SalesOrder>>chunk(50, transactionManager)
                 .reader(new AggregateItemReader<SalesImportFile>(reader(), SalesImportFile::getOrderId))
                 .processor(new SalesItemProcessor())
                 .writer(new SalesItemWriter())
                 .listener(loggingItemReadListener)
-//                .taskExecutor(taskExecutor())
                 .build();
     }
+
     @Bean
-    public Job salesFileImportJob(final JobRepository jobRepository,Step insertToPending) {
+    public Job salesFileImportJob(final JobRepository jobRepository, Step insertToPending) {
         return new JobBuilder(JobNames.SALES_IMPORT, jobRepository)
                 .incrementer(new RunIdIncrementer())
                 .listener(new JobCompletionNotificationListener(loggingItemReadListener))

@@ -22,13 +22,18 @@ public class SqlExecutionTimeInterceptor implements Interceptor {
         long startTime = System.currentTimeMillis();
         Object result = invocation.proceed();
         long executionTime = System.currentTimeMillis() - startTime;
+
+        MappedStatement mappedStatement = (MappedStatement) invocation.getArgs()[0];
+        String sqlId = mappedStatement.getId();
+
         if (executionTime > THRESHOLD) {
-            MappedStatement mappedStatement = (MappedStatement) invocation.getArgs()[0];
-            String sqlId = mappedStatement.getId();
-            log.debug("SQL statement ID：" + sqlId + " of the execution time：" + executionTime + "ms");
+            log.debug("SQL statement ID：" + sqlId + " execution time：" + executionTime + "ms");
+
+            if (invocation.getMethod().getName().equals("update")) {
+                int affectedRows = (int) result;
+                log.debug("SQL statement ID：" + sqlId + " affected rows：" + affectedRows);
+            }
         }
         return result;
     }
-
-    // 其他方法...
 }

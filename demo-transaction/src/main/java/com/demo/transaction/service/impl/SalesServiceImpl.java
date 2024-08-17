@@ -35,7 +35,6 @@ public class SalesServiceImpl implements SalesService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void updateSales(List<SalesOrder> salesOrders){
         List<SalesOrder> salesOrderList = new ArrayList<>();
         String[] orderIds = salesOrders.stream().map(SalesOrder::getOrderId).toArray(String[]::new);
