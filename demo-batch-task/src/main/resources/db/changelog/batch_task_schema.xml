@@ -2,8 +2,8 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
-    <changeSet id="BatchTask" author="ming">
-        <createTable tableName="BatchTask">
+    <changeSet id="batch_task" author="ming">
+        <createTable tableName="batch_task">
             <column name="id" type="BIGINT" autoIncrement="true"><constraints primaryKey="true"/></column>
             <column name="name" type="varchar(30)"><constraints nullable="false"/></column>
             <column name="description" type="varchar(3000)"><constraints nullable="false"/></column>
@@ -17,9 +17,9 @@
             <column name="updated_at" type="${timestamp}" defaultValueComputed="${now}"><constraints nullable="false"/></column>
             <column name="version" type="int"><constraints nullable="false"/></column>
         </createTable>
-        <addUniqueConstraint constraintName="idx_BatchTask" tableName="BatchTask" columnNames="name"/>
+        <addUniqueConstraint constraintName="idx_batch_task" tableName="batch_task" columnNames="name"/>
     </changeSet>
-    <changeSet id="BatchTask_schema_sequence" author="ming" dbms="oracle">
-        <createSequence sequenceName="BatchTask_sequence" startValue="1" incrementBy="50" ordered="true"/>
+    <changeSet id="batch_task_schema_sequence" author="ming" dbms="oracle">
+        <createSequence sequenceName="batch_task_sequence" startValue="1" incrementBy="50" ordered="true"/>
     </changeSet>
 </databaseChangeLog>

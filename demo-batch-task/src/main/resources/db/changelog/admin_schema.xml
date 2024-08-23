@@ -42,7 +42,7 @@
         <createTable tableName="privilege">
             <column name="id" type="BIGINT" autoIncrement="true"><constraints primaryKey="true"/></column>
             <column name="privilege" type="varchar(30)"><constraints nullable="false"/></column>
-            <column name="subPrivilege" type="varchar(9)"><constraints nullable="false"/></column>
+            <column name="sub_privilege" type="varchar(9)"><constraints nullable="false"/></column>
             <column name="created_by" type="varchar(30)"><constraints nullable="false"/></column>
             <column name="created_at"  type="${timestamp}" defaultValueComputed="${now}"><constraints nullable="false"/></column>
             <column name="updated_by" type="varchar(30)"><constraints nullable="false"/></column>

@@ -5,7 +5,7 @@
 
 <mapper namespace="com.demo.batckTask.dao.BatchTaskMapper">
     <insert id="insert">
-        INSERT INTO BatchTask (name,description,job_class,cron,enable,config,created_by,created_at,updated_by,updated_at,version) VALUES
+        INSERT INTO batch_task (name,description,job_class,cron,enable,config,created_by,created_at,updated_by,updated_at,version) VALUES
         <foreach item="task" collection="tasks" separator=",">
             (#{task.name},#{task.jobClass},#{task.cron},#{task.enable},#{task.config},#{task.createdBy},#{task.createdAt},#{task.updatedBy},#{task.updatedAt},#{task.version})
         </foreach>

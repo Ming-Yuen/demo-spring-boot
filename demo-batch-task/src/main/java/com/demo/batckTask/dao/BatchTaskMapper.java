@@ -8,9 +8,9 @@ import org.apache.ibatis.annotations.Select;
 import java.util.List;
 @Mapper
 public interface BatchTaskMapper {
-    @Select("select * from batchTask where enable = 1")
-    List<BatchTask> findByEnable(@Param("num") String enable);
-    @Select("select * from batchTask where taskName = #{taskName}")
+    @Select("select * from batch_task where enable = 1")
+    List<BatchTask> findByEnable();
+    @Select("select * from batch_task where taskName = #{taskName}")
     BatchTask findByName(String taskName);
 
     void insert(@Param("tasks") BatchTask batchTask);

@@ -3,8 +3,8 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
 
-    <changeSet id="BatchTask_data" author="ming">
-        <insert tableName="BatchTask">
+    <changeSet id="batch_task_data" author="ming">
+        <insert tableName="batch_task">
             <column name="name"         value="Import_User_info_fromCsv_file"/>
             <column name="description"  value="Read csv file import data to user_info"/>
             <column name="cron"         value="*/5 * * * * ? *"/>
@@ -16,7 +16,7 @@
             <column name="updated_at"   valueDate="${now}"/>
             <column name="version"      value="1"/>
         </insert>
-        <insert tableName="BatchTask">
+        <insert tableName="batch_task">
             <column name="name"         value="Import_MPF_History"/>
             <column name="description"  value="Import MPF history"/>
             <column name="cron"         value="*/5 * * * * ? *"/>

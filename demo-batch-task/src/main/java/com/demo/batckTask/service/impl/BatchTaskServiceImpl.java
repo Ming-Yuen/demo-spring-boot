@@ -37,7 +37,7 @@ public class BatchTaskServiceImpl implements BatchTaskService {
     }
     @Override
     public List<BatchTask> getAllTask(){
-        return batchTaskMapper.findByEnable("1");
+        return batchTaskMapper.findByEnable();
     }
 
 
