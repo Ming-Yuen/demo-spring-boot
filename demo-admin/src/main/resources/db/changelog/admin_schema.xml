@@ -1,0 +1,60 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
+
+    <changeSet id="admin_schema" author="ming">
+        <createTable tableName="menu_structure">
+            <column name="id" type="BIGINT" autoIncrement="true"><constraints primaryKey="true"/></column>
+            <column name="parent" type="varchar(30)"/>
+            <column name="name" type="varchar(30)"><constraints nullable="false"/></column>
+            <column name="type" type="varchar(9)"><constraints nullable="false"/></column>
+            <column name="icon" type="varchar(3000)"/>
+            <column name="link" type="varchar(3000)"/>
+            <column name="created_by" type="varchar(30)"><constraints nullable="false"/></column>
+            <column name="created_at"  type="${timestamp}" defaultValueComputed="${now}"><constraints nullable="false"/></column>
+            <column name="updated_by" type="varchar(30)"><constraints nullable="false"/></column>
+            <column name="updated_at"  type="${timestamp}" defaultValueComputed="${now}"><constraints nullable="false"/></column>
+            <column name="privilege" type="varchar(9)"><constraints nullable="false"/></column>
+            <column name="version" type="int"><constraints nullable="false"/></column>
+        </createTable>
+        <addUniqueConstraint constraintName="uk_menu_structure" tableName="menu_structure" columnNames="name"/>
+
+        <createTable tableName="users">
+            <column name="id" type="BIGINT" autoIncrement="true"><constraints primaryKey="true"/></column>
+            <column name="user_name" type="varchar(30)"><constraints nullable="false"/></column>
+            <column name="first_name" type="varchar(30)"><constraints nullable="false"/></column>
+            <column name="last_name" type="varchar(30)"><constraints nullable="false"/></column>
+            <column name="user_password" type="varchar(30)"><constraints nullable="false"/></column>
+            <column name="gender" type="varchar(9)"><constraints nullable="false"/></column>
+            <column name="phone" type="varchar(30)"/>
+            <column name="email" type="varchar(30)"/>
+            <column name="resign_date" type="date"/>
+            <column name="created_by" type="varchar(30)"><constraints nullable="false"/></column>
+            <column name="created_at"  type="${timestamp}" defaultValueComputed="${now}"><constraints nullable="false"/></column>
+            <column name="updated_by" type="varchar(30)"><constraints nullable="false"/></column>
+            <column name="updated_at"  type="${timestamp}" defaultValueComputed="${now}"><constraints nullable="false"/></column>
+            <column name="privilege" type="varchar(9)"><constraints nullable="false"/></column>
+            <column name="version" type="int"><constraints nullable="false"/></column>
+        </createTable>
+        <addUniqueConstraint constraintName="uk_users" tableName="users" columnNames="user_name"/>
+
+        <createTable tableName="privilege">
+            <column name="id" type="BIGINT" autoIncrement="true"><constraints primaryKey="true"/></column>
+            <column name="privilege" type="varchar(30)"><constraints nullable="false"/></column>
+            <column name="sub_privilege" type="varchar(9)"><constraints nullable="false"/></column>
+            <column name="created_by" type="varchar(30)"><constraints nullable="false"/></column>
+            <column name="created_at"  type="${timestamp}" defaultValueComputed="${now}"><constraints nullable="false"/></column>
+            <column name="updated_by" type="varchar(30)"><constraints nullable="false"/></column>
+            <column name="updated_at"  type="${timestamp}" defaultValueComputed="${now}"><constraints nullable="false"/></column>
+            <column name="version" type="int"><constraints nullable="false"/></column>
+        </createTable>
+        <addUniqueConstraint constraintName="ukPrivilege" tableName="privilege" columnNames="privilege"/>
+    </changeSet>
+
+    <changeSet id="admin_schema_sequence" author="ming" dbms="oracle">
+        <createSequence sequenceName="menu_structure_seq" startValue="1" incrementBy="50" ordered="true"/>
+        <createSequence sequenceName="users_seq" startValue="1" incrementBy="50" ordered="true"/>
+        <createSequence sequenceName="privilege_seq" startValue="1" incrementBy="50" ordered="true"/>
+    </changeSet>
+</databaseChangeLog>

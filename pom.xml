@@ -25,6 +25,7 @@
         <spring.cloud.version>2023.0.0</spring.cloud.version>
         <lombok.version>1.18.20</lombok.version>
         <mysql.version>8.0.28</mysql.version>
+        <cloud.consul.version>4.1.2</cloud.consul.version>
     </properties>
 
     <parent>
@@ -36,24 +37,24 @@
 
 
     <build>
-            <resources>
-                <resource>
-                    <directory>src/main/java</directory>
-                    <includes>
-                        <include>**/*.xml</include>
-                        <include>**/*.properties</include>
-                    </includes>
-                    <filtering>true</filtering>
-                </resource>
-                <resource>
-                    <directory>src/main/resources</directory>
-                    <includes>
-                        <include>**/*.xml</include>
-                        <include>**/*.properties</include>
-                    </includes>
-                    <filtering>true</filtering>
-                </resource>
-            </resources>
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                    <include>**/*.properties</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                    <include>**/*.properties</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -83,32 +84,6 @@
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
-<!--            <plugin>-->
-<!--                <groupId>org.liquibase</groupId>-->
-<!--                <artifactId>liquibase-maven-plugin</artifactId>-->
-<!--                <version>4.5.0</version>-->
-<!--                <configuration>-->
-<!--                    <propertyFile>src/main/resources/liquibase.properties</propertyFile>-->
-<!--                    <changeLogFile>src/main/resources/db/changelog/db.changelog-entities.xml</changeLogFile>-->
-<!--                    <diffChangeLogFile>src/main/resources/db/changelog/db.changelog-entities-diff.xml</diffChangeLogFile>-->
-<!--                    <diffExcludeObjects>SCHEMA:TABLE_NAME</diffExcludeObjects>-->
-<!--                </configuration>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <phase>process-classes</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>update</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--                <dependencies>-->
-<!--                    <dependency>-->
-<!--                        <groupId>org.liquibase.ext</groupId>-->
-<!--                        <artifactId>liquibase-hibernate5</artifactId>-->
-<!--                        <version>4.1.1</version>-->
-<!--                    </dependency>-->
-<!--                </dependencies>-->
-<!--            </plugin>-->
         </plugins>
     </build>
 
@@ -119,6 +94,7 @@
             <version>3.9.0</version>
             <scope>test</scope>
         </dependency>
+        <!--cloud -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-dependencies</artifactId>
@@ -126,7 +102,11 @@
             <type>pom</type>
             <scope>import</scope>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-consul-discovery</artifactId>
+            <version>${cloud.consul.version}</version>
+        </dependency>
 
         <!-- Mockito JUnit Jupiter -->
         <dependency>
@@ -221,14 +201,6 @@
             <artifactId>liquibase-core</artifactId>
             <version>4.28.0</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.liquibase.ext</groupId>-->
-<!--            <artifactId>liquibase-hibernate5</artifactId>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-data-mongodb</artifactId>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
@@ -264,14 +236,6 @@
             <artifactId>mapstruct-jdk8</artifactId>
             <version>${mapstruct.version}</version>
         </dependency>
-
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.cloud</groupId>-->
-<!--            <artifactId>spring-cloud-dependencies</artifactId>-->
-<!--            <version>2022.0.1</version>-->
-<!--            <type>pom</type>-->
-<!--            <scope>import</scope>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>com.github.javafaker</groupId>
             <artifactId>javafaker</artifactId>
@@ -281,10 +245,5 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-quartz</artifactId>
         </dependency>
-        <!--rabbitmq-->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-amqp</artifactId>-->
-<!--        </dependency>-->
     </dependencies>
 </project>
