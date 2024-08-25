@@ -5,14 +5,15 @@ import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.session.RowBounds;
 
 import java.util.List;
 import java.util.Set;
 
 @Mapper
 public interface UserMapper {
-    @Select("SELECT 1 FROM users WHERE user_name = #{username} limit 1")
-    Integer existsByUsername(@Param("username") String username);
+    @Select("SELECT 1 FROM users WHERE user_name = #{username}")
+    Integer existsByUsername(@Param("username") String username, RowBounds rowBounds);
     @Select("SELECT user_password FROM users WHERE user_name = #{username} limit 1")
     String findByFirstUserPassword(@Param("username") String username);
 

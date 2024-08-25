@@ -13,6 +13,5 @@ public interface MenuMapper {
     long deleteByType(@Param("type") String type);
     @Select("SELECT * FROM MenuStructure WHERE privilege <= #{privilege} ")
     List<MenuStructure> findByPrivilege(@Param("privilege") Integer privilege);
-
     void insert(@Param("menuStructureList") List<MenuStructure> menuStructureList);
 }

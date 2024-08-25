@@ -10,6 +10,7 @@ import com.demo.admin.service.UserService;
 import com.github.pagehelper.PageHelper;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -73,7 +74,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean existsByFirstUsername(String admin) {
-        return userMapper.existsByUsername(admin) != null;
+        RowBounds rowbounds = new RowBounds(0,1);
+        return userMapper.existsByUsername(admin, rowbounds) != null;
     }
 
     @Override
