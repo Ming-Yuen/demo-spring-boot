@@ -6,3 +6,4 @@ target/
 log/
 .zip/
 **/[Ll]ogs
+demo-spring-boot.log

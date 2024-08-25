@@ -1,8 +1,8 @@
 package com.demo.admin.controller;
 
-import com.demo.admin.dto.MenuQueryRequest;
-import com.demo.admin.dto.MenuUpdateRequest;
-import com.demo.admin.vo.MenuStructureResponse;
+import com.demo.common.dto.MenuQueryRequest;
+import com.demo.common.dto.MenuUpdateRequest;
+import com.demo.common.vo.MenuStructureResponse;
 import com.demo.admin.service.MenuService;
 import com.demo.common.controller.ControllerPath;
 import com.demo.common.dto.ApiResponse;

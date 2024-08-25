@@ -1,7 +1,7 @@
 package com.demo.batckTask.controller;
 
-import com.demo.batckTask.dto.BatchTaskInvokeRequest;
-import com.demo.batckTask.dto.BatchTaskUpdateRequest;
+import com.demo.common.dto.BatchTaskInvokeRequest;
+import com.demo.common.dto.BatchTaskUpdateRequest;
 import com.demo.batckTask.service.BatchTaskService;
 import com.demo.common.controller.ControllerPath;
 import com.demo.common.dto.ApiResponse;

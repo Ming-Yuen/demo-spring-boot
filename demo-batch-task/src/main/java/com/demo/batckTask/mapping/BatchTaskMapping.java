@@ -1,7 +1,7 @@
 package com.demo.batckTask.mapping;
 
-import com.demo.batckTask.dto.BatchTaskUpdateRequest;
-import com.demo.batckTask.dto.SalesImportFile;
+import com.demo.common.dto.BatchTaskUpdateRequest;
+import com.demo.common.dto.SalesImportFile;
 import com.demo.batckTask.entity.BatchTask;
 import com.demo.common.mapper.CustomMapper;
 import com.demo.product.entity.Inventory;

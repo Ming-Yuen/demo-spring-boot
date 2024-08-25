@@ -1,4 +1,4 @@
-package com.demo.transaction.entity.enums;
+package com.demo.common.enums;
 
 public enum SalesStatusEnum {
     sales(10), cancel(20);

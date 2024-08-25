@@ -1,7 +1,7 @@
 package com.demo.batckTask.service;
 
-import com.demo.batckTask.dto.BatchTaskInvokeRequest;
-import com.demo.batckTask.dto.BatchTaskUpdateRequest;
+import com.demo.common.dto.BatchTaskInvokeRequest;
+import com.demo.common.dto.BatchTaskUpdateRequest;
 import com.demo.batckTask.entity.BatchTask;
 
 import java.util.List;

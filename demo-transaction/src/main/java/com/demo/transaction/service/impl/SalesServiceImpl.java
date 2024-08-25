@@ -3,7 +3,7 @@ package com.demo.transaction.service.impl;
 import com.demo.product.service.ProductService;
 import com.demo.transaction.dao.SaleMapper;
 import com.demo.transaction.dao.SalesItemMapper;
-import com.demo.transaction.dto.SalesRequest;
+import com.demo.common.dto.SalesRequest;
 import com.demo.transaction.entity.SalesOrder;
 import com.demo.transaction.entity.SalesOrderItem;
 import com.demo.transaction.mapper.SalesMapping;
@@ -11,8 +11,6 @@ import com.demo.transaction.service.SalesService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;

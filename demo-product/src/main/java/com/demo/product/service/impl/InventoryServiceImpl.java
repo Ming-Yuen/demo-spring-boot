@@ -1,12 +1,12 @@
 package com.demo.product.service.impl;
 
 import com.demo.product.dao.InventoryMapper;
-import com.demo.product.dto.InventoryAdjustmentRequest;
-import com.demo.product.dto.InventoryUpdateRequest;
+import com.demo.common.dto.InventoryAdjustmentRequest;
+import com.demo.common.dto.InventoryUpdateRequest;
 import com.demo.product.entity.Inventory;
 import com.demo.product.mapper.InventoryMapping;
 import com.demo.product.service.InventoryService;
-import com.demo.product.vo.InventoryAdjustmentResponse;
+import com.demo.common.vo.InventoryAdjustmentResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

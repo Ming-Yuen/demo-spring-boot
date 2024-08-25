@@ -1,7 +1,7 @@
 package com.demo.product.mapper;
 
-import com.demo.product.dto.InventoryAdjustmentRequest;
-import com.demo.product.dto.InventoryUpdateRequest;
+import com.demo.common.dto.InventoryAdjustmentRequest;
+import com.demo.common.dto.InventoryUpdateRequest;
 import com.demo.product.entity.Inventory;
 import org.mapstruct.Mapper;
 

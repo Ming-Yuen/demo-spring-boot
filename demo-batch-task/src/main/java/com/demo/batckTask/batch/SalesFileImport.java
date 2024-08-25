@@ -1,7 +1,7 @@
 package com.demo.batckTask.batch;
 
 import com.demo.batckTask.constant.JobNames;
-import com.demo.batckTask.dto.SalesImportFile;
+import com.demo.common.dto.SalesImportFile;
 import com.demo.batckTask.listener.JobCompletionNotificationListener;
 import com.demo.batckTask.listener.LoggingItemReadListener;
 import com.demo.batckTask.mapping.BatchTaskMapping;

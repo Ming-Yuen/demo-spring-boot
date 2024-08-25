@@ -2,7 +2,7 @@ package com.demo.product.mapper;
 
 import com.demo.common.mapper.CustomMapper;
 import com.demo.product.entity.ProductPrice;
-import com.demo.product.vo.manulife.MPFDailyResponse;
+import com.demo.common.vo.MPFDailyResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;

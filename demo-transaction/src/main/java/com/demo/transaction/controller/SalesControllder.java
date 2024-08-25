@@ -1,7 +1,7 @@
 package com.demo.transaction.controller;
 
 import com.demo.common.controller.ControllerPath;
-import com.demo.transaction.dto.SalesRequest;
+import com.demo.common.dto.SalesRequest;
 import com.demo.transaction.service.SalesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

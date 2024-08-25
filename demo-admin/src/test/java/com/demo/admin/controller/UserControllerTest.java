@@ -1,7 +1,7 @@
 //package com.demo.admin.controller;
 //
 //import com.demo.admin.constant.UserConstant;
-//import com.demo.admin.dto.UserRegisterRequest;
+//import com.demo.common.dto.UserRegisterRequest;
 //import com.demo.admin.security.JwtUtil;
 //import com.demo.admin.service.UserService;
 //import com.demo.common.controller.ControllerPath;

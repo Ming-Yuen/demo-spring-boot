@@ -1,9 +1,9 @@
 package com.demo.product.service;
 
-import com.demo.product.dto.InventoryAdjustmentRequest;
-import com.demo.product.dto.InventoryUpdateRequest;
+import com.demo.common.dto.InventoryAdjustmentRequest;
+import com.demo.common.dto.InventoryUpdateRequest;
 import com.demo.product.entity.Inventory;
-import com.demo.product.vo.InventoryAdjustmentResponse;
+import com.demo.common.vo.InventoryAdjustmentResponse;
 
 import java.util.List;
 

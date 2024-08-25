@@ -1,4 +1,4 @@
-package com.demo.admin.vo;
+package com.demo.common.vo;
 
 import com.demo.common.dto.ApiResponse;
 import lombok.Data;

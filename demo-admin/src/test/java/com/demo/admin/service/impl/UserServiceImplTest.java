@@ -1,6 +1,6 @@
 //package com.demo.admin.service.impl;
 //
-//import com.demo.admin.dto.UserRegisterRequest;
+//import com.demo.common.dto.UserRegisterRequest;
 //import com.demo.admin.entity.UserInfo;
 //import com.demo.admin.enums.Gender;
 //import com.demo.admin.enums.PrivilegeType;

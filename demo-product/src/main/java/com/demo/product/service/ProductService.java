@@ -1,10 +1,10 @@
 package com.demo.product.service;
 
 
-import com.demo.product.dto.ProductEnquiryRequest;
+import com.demo.common.dto.ProductEnquiryRequest;
 import com.demo.product.entity.Product;
 import com.demo.product.entity.ProductPrice;
-import com.demo.product.vo.ProductUpdateRequest;
+import com.demo.common.vo.ProductUpdateRequest;
 import com.github.pagehelper.PageInfo;
 
 import java.math.BigDecimal;

@@ -1,4 +1,4 @@
-package com.demo.product.vo.manulife;
+package com.demo.common.vo;
 
 import lombok.Data;
 

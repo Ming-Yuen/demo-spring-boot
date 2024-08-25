@@ -1,4 +1,4 @@
-package com.demo.admin.enums;
+package com.demo.common.enums;
 
 public enum Gender {
 
