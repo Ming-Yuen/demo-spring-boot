@@ -1,6 +1,6 @@
 package com.demo.transaction.mapper;
 
-import com.demo.transaction.dto.SalesRequest;
+import com.demo.common.dto.SalesRequest;
 import com.demo.transaction.entity.SalesOrder;
 import com.demo.transaction.entity.SalesOrderItem;
 import org.mapstruct.Mapper;

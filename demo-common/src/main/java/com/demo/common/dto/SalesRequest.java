@@ -1,7 +1,7 @@
-package com.demo.transaction.dto;
+package com.demo.common.dto;
 
-import com.demo.transaction.entity.enums.PaymentEnum;
-import com.demo.transaction.entity.enums.SalesStatusEnum;
+import com.demo.common.enums.PaymentEnum;
+import com.demo.common.enums.SalesStatusEnum;
 import lombok.Data;
 
 import java.math.BigDecimal;

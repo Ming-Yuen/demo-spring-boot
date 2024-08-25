@@ -1,8 +1,8 @@
 package com.demo.admin.mapping;
 
-import com.demo.admin.dto.MenuUpdateRequest;
+import com.demo.common.dto.MenuUpdateRequest;
 import com.demo.admin.entity.MenuStructure;
-import com.demo.admin.vo.MenuStructureResponse;
+import com.demo.common.vo.MenuStructureResponse;
 import org.mapstruct.Mapper;
 
 import java.util.List;

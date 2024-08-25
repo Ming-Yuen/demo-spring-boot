@@ -1,4 +1,4 @@
-package com.demo.batckTask.dto;
+package com.demo.common.dto;
 
 import lombok.Data;
 

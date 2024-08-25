@@ -1,17 +1,15 @@
 package com.demo.admin.controller;
 
-import com.demo.admin.dto.TokenRequest;
-import com.demo.admin.dto.UserRegisterRequest;
+import com.demo.common.dto.TokenRequest;
+import com.demo.common.dto.UserRegisterRequest;
 import com.demo.admin.service.UserService;
-import com.demo.admin.vo.UserRegisterResponse;
+import com.demo.common.vo.UserRegisterResponse;
 import com.demo.common.controller.ControllerPath;
 import com.demo.common.dto.ApiResponse;
 import com.demo.common.util.ValidList;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,18 +25,14 @@ import java.util.stream.Collectors;
 public class UserController {
     private UserService userService;
     @PostMapping(path = ControllerPath.UPDATE, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ApiResponse<UserRegisterResponse>> update(@RequestBody @Validated  ValidList<UserRegisterRequest> request){
+    public UserRegisterResponse update(@RequestBody @Validated  ValidList<UserRegisterRequest> request){
         userService.updateUserRequest(request);
         List<String> userNameList = request.stream().map(UserRegisterRequest::getUserName).collect(Collectors.toList());
-        return new ResponseEntity<>(new ApiResponse<>().isSuccess(userNameList), HttpStatus.OK);
+        return new UserRegisterResponse(userNameList);
     }
     @PostMapping(path = ControllerPath.TOKEN, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ApiResponse<String>> tokenEnquiry(@Valid @RequestBody TokenRequest request){
+    public ApiResponse tokenEnquiry(@Valid @RequestBody TokenRequest request){
         String token = userService.login(request.getUsername(), request.getPassword());
-        return new ResponseEntity<>(new ApiResponse<>().isSuccess(token), HttpStatus.OK);
+        return new ApiResponse<>().isSuccess(token);
     }
-//    @PostMapping(path = ControllerPath.QUERY, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<ApiResponse<UserQueryResponse>> query(@Valid @RequestBody UserQueryRequest request){
-//        return new ResponseEntity<>(new ApiResponse<>().isSuccess(userService.userQueryRequest(request)), HttpStatus.OK);
-//    }
 }

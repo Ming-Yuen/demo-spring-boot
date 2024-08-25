@@ -1,8 +1,8 @@
 package com.demo.batckTask.service.impl;
 
 import com.demo.batckTask.dao.BatchTaskMapper;
-import com.demo.batckTask.dto.BatchTaskInvokeRequest;
-import com.demo.batckTask.dto.BatchTaskUpdateRequest;
+import com.demo.common.dto.BatchTaskInvokeRequest;
+import com.demo.common.dto.BatchTaskUpdateRequest;
 import com.demo.batckTask.entity.BatchTask;
 import com.demo.batckTask.mapping.BatchTaskMapping;
 import com.demo.batckTask.service.BatchTaskService;
@@ -19,7 +19,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 @Slf4j
 @Service

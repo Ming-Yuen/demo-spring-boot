@@ -2,10 +2,10 @@ package com.demo.admin.service.impl;
 
 import com.demo.admin.mapping.MenuMapping;
 import com.demo.admin.dao.MenuMapper;
-import com.demo.admin.dto.MenuQueryRequest;
-import com.demo.admin.dto.MenuUpdateRequest;
+import com.demo.common.dto.MenuQueryRequest;
+import com.demo.common.dto.MenuUpdateRequest;
 import com.demo.admin.entity.MenuStructure;
-import com.demo.admin.vo.MenuStructureResponse;
+import com.demo.common.vo.MenuStructureResponse;
 import com.demo.admin.service.MenuService;
 import com.demo.admin.service.UserService;
 import com.demo.common.exception.ValidationException;

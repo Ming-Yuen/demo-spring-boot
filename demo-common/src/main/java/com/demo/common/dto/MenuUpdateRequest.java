@@ -1,6 +1,5 @@
-package com.demo.admin.dto;
+package com.demo.common.dto;
 
-import com.demo.admin.entity.enums.MenuType;
 import lombok.Data;
 
 import jakarta.validation.Valid;

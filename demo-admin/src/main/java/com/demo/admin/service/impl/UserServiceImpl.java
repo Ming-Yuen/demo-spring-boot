@@ -2,7 +2,7 @@ package com.demo.admin.service.impl;
 
 import com.demo.admin.dao.PrivilegeMapper;
 import com.demo.admin.dao.UserMapper;
-import com.demo.admin.dto.UserRegisterRequest;
+import com.demo.common.dto.UserRegisterRequest;
 import com.demo.admin.entity.Users;
 import com.demo.admin.mapping.UserMapping;
 import com.demo.admin.security.JwtUtil;

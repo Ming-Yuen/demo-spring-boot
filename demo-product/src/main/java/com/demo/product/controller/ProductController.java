@@ -2,10 +2,10 @@ package com.demo.product.controller;
 
 import com.demo.common.controller.ControllerPath;
 import com.demo.common.dto.ApiResponse;
-import com.demo.product.dto.ProductEnquiryRequest;
+import com.demo.common.dto.ProductEnquiryRequest;
 import com.demo.product.entity.Product;
 import com.demo.product.service.ProductService;
-import com.demo.product.vo.ProductUpdateRequest;
+import com.demo.common.vo.ProductUpdateRequest;
 import com.github.pagehelper.PageInfo;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

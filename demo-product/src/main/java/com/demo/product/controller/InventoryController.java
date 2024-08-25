@@ -1,10 +1,10 @@
 package com.demo.product.controller;
 
 import com.demo.common.controller.ControllerPath;
-import com.demo.product.dto.InventoryAdjustmentRequest;
-import com.demo.product.dto.InventoryUpdateRequest;
+import com.demo.common.dto.InventoryAdjustmentRequest;
+import com.demo.common.dto.InventoryUpdateRequest;
 import com.demo.product.service.InventoryService;
-import com.demo.product.vo.InventoryAdjustmentResponse;
+import com.demo.common.vo.InventoryAdjustmentResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

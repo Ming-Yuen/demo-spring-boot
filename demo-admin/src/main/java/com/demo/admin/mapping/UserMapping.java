@@ -1,6 +1,6 @@
 package com.demo.admin.mapping;
 
-import com.demo.admin.dto.UserRegisterRequest;
+import com.demo.common.dto.UserRegisterRequest;
 import com.demo.admin.entity.Users;
 import org.mapstruct.Mapper;
 

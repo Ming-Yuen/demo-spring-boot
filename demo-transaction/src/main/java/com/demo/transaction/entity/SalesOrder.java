@@ -1,8 +1,8 @@
 package com.demo.transaction.entity;
 
 import com.demo.common.entity.BaseEntity;
-import com.demo.transaction.entity.enums.PaymentEnum;
-import com.demo.transaction.entity.enums.SalesStatusEnum;
+import com.demo.common.enums.PaymentEnum;
+import com.demo.common.enums.SalesStatusEnum;
 import lombok.Getter;
 import lombok.Setter;
 
