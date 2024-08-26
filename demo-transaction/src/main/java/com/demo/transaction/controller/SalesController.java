@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(ControllerPath.sales)
-public class SalesControllder {
+public class SalesController {
     @Autowired
     private SalesService salesService;
     @PostMapping(path = ControllerPath.create, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
