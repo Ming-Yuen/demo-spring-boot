@@ -49,7 +49,38 @@
             <column name="updated_at"  type="${timestamp}" defaultValueComputed="${now}"><constraints nullable="false"/></column>
             <column name="version" type="int"><constraints nullable="false"/></column>
         </createTable>
-        <addUniqueConstraint constraintName="ukPrivilege" tableName="privilege" columnNames="privilege"/>
+        <addUniqueConstraint constraintName="uk_privilege" tableName="privilege" columnNames="privilege"/>
+
+<!--        <createTable tableName="vip">-->
+<!--            <column name="id" type="BIGINT" autoIncrement="true"><constraints primaryKey="true"/></column>-->
+<!--            <column name="vip_code" type="varchar(30)"><constraints nullable="false"/></column>-->
+<!--            <column name="bonus" type="varchar(9)"><constraints nullable="false"/></column>-->
+<!--            <column name="created_by" type="varchar(30)"><constraints nullable="false"/></column>-->
+<!--            <column name="created_at"  type="${timestamp}" defaultValueComputed="${now}"><constraints nullable="false"/></column>-->
+<!--            <column name="updated_by" type="varchar(30)"><constraints nullable="false"/></column>-->
+<!--            <column name="updated_at"  type="${timestamp}" defaultValueComputed="${now}"><constraints nullable="false"/></column>-->
+<!--            <column name="version" type="int"><constraints nullable="false"/></column>-->
+<!--        </createTable>-->
+
+<!--        <createIndex indexName="idx_vip_bonus" tableName="vip_bonus">-->
+<!--            <column name="vip_code"/>-->
+<!--        </createIndex>-->
+
+        <createTable tableName="vip_bonus">
+            <column name="id" type="BIGINT" autoIncrement="true"><constraints primaryKey="true"/></column>
+            <column name="vip_code" type="varchar(30)"><constraints nullable="false"/></column>
+            <column name="tx_datetime" type="${timestamp}"><constraints nullable="false"/></column>
+            <column name="bonus" type="INT"><constraints nullable="false"/></column>
+            <column name="created_by" type="varchar(30)"><constraints nullable="false"/></column>
+            <column name="created_at"  type="${timestamp}" defaultValueComputed="${now}"><constraints nullable="false"/></column>
+            <column name="updated_by" type="varchar(30)"><constraints nullable="false"/></column>
+            <column name="updated_at"  type="${timestamp}" defaultValueComputed="${now}"><constraints nullable="false"/></column>
+            <column name="version" type="int"><constraints nullable="false"/></column>
+        </createTable>
+
+        <createIndex indexName="idx_vip_bonus" tableName="vip_bonus">
+            <column name="vip_code"/>
+        </createIndex>
     </changeSet>
 
     <changeSet id="admin_schema_sequence" author="ming" dbms="oracle">

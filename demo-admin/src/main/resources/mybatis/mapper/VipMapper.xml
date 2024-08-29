@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.demo.admin.dao.VipMapper">
+    <insert id="insert" parameterType="java.util.List">
+        INSERT INTO vip_bonus (vip_code, txDatetime,bonus,created_by,created_at,updated_by,updated_at,version) VALUES
+        <foreach item="vip" collection="vips" separator=",">
+            (#{vip.vipCode}, #{vip.txDatetime},#{vip.bonus},#{vip.createdBy},#{vip.createdAt},#{vip.updatedBy},#{vip.updatedAt},1)
+        </foreach>
+    </insert>
+</mapper>

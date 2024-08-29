@@ -64,12 +64,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Users findByFirstUserName(String username) {
-        return userMapper.findByFirstUserName(username);
+        return userMapper.findByFirstUserName(username, new RowBounds(0,1));
     }
 
     @Override
     public Integer findByPrivilegeType(String username) {
-        return userMapper.findByPrivilegeType(username);
+        return userMapper.findByPrivilegeType(username, new RowBounds(0,1));
     }
 
     @Override
@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String login(String username, String password) {
-        String userPassword = userMapper.findByFirstUserPassword(username);
+        String userPassword = userMapper.findByFirstUserPassword(username,new RowBounds(0,1));
         if(userPassword == null){
             throw new IllegalArgumentException("User is not registered");
         }

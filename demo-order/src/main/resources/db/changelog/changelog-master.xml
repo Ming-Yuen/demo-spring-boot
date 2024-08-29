@@ -11,9 +11,5 @@
     <property name="timestamp" value="TIMESTAMP WITH TIME ZONE" dbms="oracle"/>
     <property name="timestamp" value="TIMESTAMP" dbms="mssql,mariadb"/>
 
-    <include file="db/changelog/spring_batch_schema.xml"/>
-    <include file="db/changelog/admin_schema.xml"/>
-    <include file="db/changelog/admin_frontend_data.xml"/>
-    <include file="db/changelog/batch_task_schema.xml"/>
-<!--    <include file="db/changelog/batch_task_data.xml"/>-->
+    <include file="db/changelog/order_schema.xml"/>
 </databaseChangeLog>

@@ -1,0 +1,13 @@
+package com.demo.admin.mapping;
+
+import com.demo.admin.entity.VipBonus;
+import com.demo.common.dto.VipBonusAdjustmentRequest;
+import com.demo.common.util.ValidList;
+import org.mapstruct.Mapper;
+
+import java.util.List;
+
+@Mapper(componentModel = "spring")
+public interface VipMapping {
+    List<VipBonus> convertUpdateBonus(ValidList<VipBonusAdjustmentRequest> request);
+}

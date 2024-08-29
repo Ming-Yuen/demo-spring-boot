@@ -11,9 +11,7 @@
     <modules>
         <module>demo-common</module>
         <module>demo-admin</module>
-        <module>demo-transaction</module>
-        <module>demo-batch-task</module>
-        <module>demo-product</module>
+        <module>demo-order</module>
     </modules>
 
     <properties>

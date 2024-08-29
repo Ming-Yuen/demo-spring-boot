@@ -14,14 +14,14 @@ import java.util.Set;
 public interface UserMapper {
     @Select("SELECT 1 FROM users WHERE user_name = #{username}")
     Integer existsByUsername(@Param("username") String username, RowBounds rowBounds);
-    @Select("SELECT user_password FROM users WHERE user_name = #{username} limit 1")
-    String findByFirstUserPassword(@Param("username") String username);
+    @Select("SELECT user_password FROM users WHERE user_name = #{username}")
+    String findByFirstUserPassword(@Param("username") String username, RowBounds rowBounds);
 
     Set<String> findByExistingUserName(@Param("users") List<Users> users, Page rowBounds);
     void insertUsers(@Param("users") List<Users> users);
     void updateUsers(@Param("users") List<Users> users);
-    @Select("SELECT * FROM users WHERE user_name = #{username} limit 1")
-    Users findByFirstUserName(@Param("username") String username);
-    @Select("SELECT privilegeType FROM users WHERE user_name = #{username} limit 1")
-    Integer findByPrivilegeType(@Param("username") String username);
+    @Select("SELECT * FROM users WHERE user_name = #{username}")
+    Users findByFirstUserName(@Param("username") String usernam, RowBounds rowBoundse);
+    @Select("SELECT privilegeType FROM users WHERE user_name = #{username}")
+    Integer findByPrivilegeType(@Param("username") String username, RowBounds rowBounds);
 }
