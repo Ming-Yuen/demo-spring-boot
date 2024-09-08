@@ -2,7 +2,9 @@ package com.demo.order.controller;
 
 import com.demo.common.controller.ControllerPath;
 import com.demo.common.dto.SalesRequest;
-import com.demo.common.vo.InventoryAdjustmentResponse;
+import com.demo.common.util.ValidList;
+import com.demo.common.vo.SalesResponse;
+import com.demo.common.vo.VipBonusAdjustmentResponse;
 import com.demo.common.web.DemoRestTemplate;
 import com.demo.order.service.SalesService;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,13 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 
-import java.util.List;
-
 @RestController
 @RequestMapping(ControllerPath.sales)
 public class SalesController {
-    @Value("${spring.cloud.consul.discovery.service-name}")
-    private String INVENTORY_SRV_DOMAIN;
+    @Value("${cloud.server.admin.domain}")
+    private String ADMIN_SRV_DOMAIN;
     private final SalesService salesService;
     private final DemoRestTemplate demoRestTemplate;
     public SalesController(SalesService salesService, DemoRestTemplate demoRestTemplate) {
@@ -28,8 +28,9 @@ public class SalesController {
         this.demoRestTemplate = demoRestTemplate;
     }
     @PostMapping(path = ControllerPath.create, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void create(@Valid @RequestBody List<SalesRequest> request){
+    public SalesResponse create(@Valid @RequestBody ValidList<SalesRequest> request){
         salesService.updateSalesRequest(request);
-        demoRestTemplate.postForEntity(INVENTORY_SRV_DOMAIN, salesService.convertInventoryRequest(request), InventoryAdjustmentResponse.class);
+        demoRestTemplate.postForEntity("http://"+ADMIN_SRV_DOMAIN+ControllerPath.VIP+ControllerPath.UPDATE, salesService.convertVipBonusAdjustmentRequest(request), VipBonusAdjustmentResponse.class);
+        return new SalesResponse();
     }
 }

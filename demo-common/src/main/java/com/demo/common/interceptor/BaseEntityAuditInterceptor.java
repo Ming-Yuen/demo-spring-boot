@@ -44,13 +44,15 @@ public class BaseEntityAuditInterceptor implements Interceptor {
                             for(Object entity : list){
                                 setAuditFields(entity, sqlCommandType, updateBy);
                             }
+                        }else {
+                            setAuditFields(param, sqlCommandType, updateBy);
                         }
                     }
                 }
-                if (paramMap.containsKey("list")) {
-                    List<?> paramList = (List<?>) paramMap.get("list");
-                    paramList.forEach(entity->setAuditFields(entity, sqlCommandType, updateBy));
-                }
+//                if (paramMap.containsKey("list")) {
+//                    List<?> paramList = (List<?>) paramMap.get("list");
+//                    paramList.forEach(entity->setAuditFields(entity, sqlCommandType, updateBy));
+//                }
             } else {
                 setAuditFields(parameter, sqlCommandType, updateBy);
             }

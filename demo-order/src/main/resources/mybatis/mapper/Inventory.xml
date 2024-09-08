@@ -12,15 +12,15 @@
     </select>
     <insert id="insert">
         INSERT INTO Inventory (product_id,qty,created_by,created_at,updated_by,updated_at,version) VALUES
-        <foreach collection="inventories" open="(" item="inv" separator="," close=")">
+<!--        <foreach collection="inventories" open="(" item="inv" separator="," close=")">-->
             (#{inv.productId},#{inv.qty},#{inv.createdBy},#{inv.createdAt},#{inv.updatedBy},#{inv.updatedAt},#{inv.version})
-        </foreach>
+<!--        </foreach>-->
     </insert>
     <update id="updateAdjustment">
-        <foreach collection="inventories" item="inv" separator=";">
+<!--        <foreach collection="inventories" item="inv" separator=";">-->
             UPDATE Inventory
             SET product_id = #{inv.productId},qty = #{inv.qty},updated_by = #{inv.updatedBy},updated_at = #{inv.updatedAt},version = version + 1
             WHERE product_id = #{inv.productId}
-        </foreach>
+<!--        </foreach>-->
     </update>
 </mapper>

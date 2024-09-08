@@ -1,6 +1,6 @@
-package com.demo.admin.security;
+package com.demo.common.security;
 
-import com.demo.admin.entity.Users;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -9,13 +9,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Arrays;
 import java.util.Collection;
 
+
+@AllArgsConstructor
 @Data
 public class AdminUserDetails implements UserDetails {
-    private Users admin;
-
-    public AdminUserDetails(Users admin) {
-        this.admin = admin;
-    }
+    private String userName;
+    private String userPassword;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -25,12 +24,12 @@ public class AdminUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return admin.getUserPassword();
+        return userPassword;
     }
 
     @Override
     public String getUsername() {
-        return admin.getUserName();
+        return userName;
     }
 
     @Override

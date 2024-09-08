@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.demo.order.dao.SaleItemMapper">
+    <insert id="insert">
+        INSERT INTO sales_order_item (order_id, tx_datetime,item_sequence,product_id,amount,qty,unit_price,discount_method,discount,created_by,created_at,updated_by,updated_at,version) VALUES
+        <!--        <foreach item="order" collection="salesOrders" separator=",">-->
+        (#{param.orderId}, #{param.txDatetime},#{param.itemSequence},#{param.productId},#{param.amount},#{param.qty},#{param.unitPrice},#{param.discountMethod},#{param.discount},#{param.createdBy},#{param.createdAt},#{param.updatedBy},#{param.updatedAt},#{param.version})
+        <!--        </foreach>-->
+    </insert>
+</mapper>

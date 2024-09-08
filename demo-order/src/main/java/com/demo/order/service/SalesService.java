@@ -1,7 +1,7 @@
 package com.demo.order.service;
 
-import com.demo.common.dto.InventoryAdjustmentRequest;
 import com.demo.common.dto.SalesRequest;
+import com.demo.common.dto.VipBonusAdjustmentRequest;
 import com.demo.order.entity.SalesOrder;
 
 import java.util.List;
@@ -11,5 +11,5 @@ public interface SalesService {
 
     void updateSales(List<SalesOrder> salesOrder);
 
-    List<InventoryAdjustmentRequest>  convertInventoryRequest(List<SalesRequest> request);
+    List<VipBonusAdjustmentRequest>  convertVipBonusAdjustmentRequest(List<SalesRequest> request);
 }

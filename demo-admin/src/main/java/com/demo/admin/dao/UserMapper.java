@@ -1,7 +1,6 @@
 package com.demo.admin.dao;
 
 import com.demo.admin.entity.Users;
-import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -16,8 +15,7 @@ public interface UserMapper {
     Integer existsByUsername(@Param("username") String username, RowBounds rowBounds);
     @Select("SELECT user_password FROM users WHERE user_name = #{username}")
     String findByFirstUserPassword(@Param("username") String username, RowBounds rowBounds);
-
-    Set<String> findByExistingUserName(@Param("users") List<Users> users, Page rowBounds);
+    Set<String> findByExistingUserName(@Param("users") List<Users> users, RowBounds rowBounds);
     void insertUsers(@Param("users") List<Users> users);
     void updateUsers(@Param("users") List<Users> users);
     @Select("SELECT * FROM users WHERE user_name = #{username}")

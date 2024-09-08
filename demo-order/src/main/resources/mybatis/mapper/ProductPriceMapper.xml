@@ -21,15 +21,15 @@
     </select>
     <insert id="insert" parameterType="java.util.List">
         INSERT INTO product_price (product_id, price,effective_date,expiry_date,created_by,created_at,updated_by,updated_at,version) VALUES
-        <foreach item="user" collection="list" separator=",">
-            (#{user.productId}, #{user.price},#{user.effectiveDate},#{user.expiryDate},#{user.createdBy},#{user.createdAt},#{user.updatedBy},#{user.updatedAt},#{user.version})
-        </foreach>
+<!--        <foreach item="user" collection="list" separator=",">-->
+            (#{param.productId}, #{param.price},#{param.effectiveDate},#{param.expiryDate},#{param.createdBy},#{param.createdAt},#{param.updatedBy},#{param.updatedAt},#{param.version})
+<!--        </foreach>-->
     </insert>
-    <update id="updateProductPrices">
-        <foreach collection="productPrices" item="price" separator=";">
+    <update id="updateProductPrice">
+<!--        <foreach collection="productPrice" item="price" separator=";">-->
             UPDATE product_price
             SET price = #{price.price},expiry_date = #{price.expiryDate},updated_by = #{price.updatedBy},updated_at = #{price.updatedAt},version = version + 1
             WHERE product_id = #{price.productId} and effective_date = #{price.effectiveDate}
-        </foreach>
+<!--        </foreach>-->
     </update>
 </mapper>

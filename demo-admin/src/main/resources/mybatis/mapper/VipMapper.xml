@@ -3,9 +3,9 @@
 
 <mapper namespace="com.demo.admin.dao.VipMapper">
     <insert id="insert" parameterType="java.util.List">
-        INSERT INTO vip_bonus (vip_code, txDatetime,bonus,created_by,created_at,updated_by,updated_at,version) VALUES
-        <foreach item="vip" collection="vips" separator=",">
-            (#{vip.vipCode}, #{vip.txDatetime},#{vip.bonus},#{vip.createdBy},#{vip.createdAt},#{vip.updatedBy},#{vip.updatedAt},1)
-        </foreach>
+        INSERT INTO vip_bonus (vip_code, tx_Datetime,bonus,created_by,created_at,updated_by,updated_at,version) VALUES
+<!--        <foreach item="vip" collection="param" separator=",">-->
+            (#{param.vipCode}, #{param.txDatetime},#{param.bonus},#{param.createdBy},#{param.createdAt},#{param.updatedBy},#{param.updatedAt},1)
+<!--        </foreach>-->
     </insert>
 </mapper>

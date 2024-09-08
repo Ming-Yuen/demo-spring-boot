@@ -9,8 +9,8 @@ import java.util.Set;
 @Mapper
 public interface InventoryMapper {
 
-    void insert(@Param("inventories") List<Inventory> inventories);
+    void insert(@Param("inv") Inventory inventories);
 
-    void updateAdjustment(@Param("inventories") List<Inventory> inventories);
+    void updateAdjustment(@Param("inv") Inventory inventories);
     Set<String> findByProductIds(@Param("inventories") List<Inventory> inventories);
 }

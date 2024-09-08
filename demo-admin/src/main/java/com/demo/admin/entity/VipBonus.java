@@ -8,8 +8,7 @@ import java.time.OffsetDateTime;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class VipBonus extends BaseEntity {
-    private String vipCode;
     private OffsetDateTime txDatetime;
+    private String vipCode;
     private Integer bonus;
-
 }

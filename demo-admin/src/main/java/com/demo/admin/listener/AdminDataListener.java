@@ -2,7 +2,7 @@ package com.demo.admin.listener;
 
 import com.demo.admin.constant.UserConstant;
 import com.demo.admin.entity.Users;
-import com.demo.admin.security.AdminUserDetails;
+import com.demo.common.security.AdminUserDetails;
 import com.demo.admin.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class AdminDataListener implements CommandLineRunner {
             users.setPrivilege(UserConstant.PRIVILEGE_ADMIN);
             users.setGender("none");
 
-            AdminUserDetails userDetails = new AdminUserDetails(users);;
+            AdminUserDetails userDetails = new AdminUserDetails(users.getUserName(), users.getUserPassword());;
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
 

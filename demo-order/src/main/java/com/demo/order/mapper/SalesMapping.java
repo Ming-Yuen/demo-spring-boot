@@ -3,23 +3,32 @@ package com.demo.order.mapper;
 import com.demo.common.dto.InventoryAdjustmentRequest;
 import com.demo.common.dto.SalesImportFile;
 import com.demo.common.dto.SalesRequest;
+import com.demo.common.dto.VipBonusAdjustmentRequest;
 import com.demo.common.mapper.CustomMapper;
 import com.demo.order.entity.*;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring", uses = CustomMapper.class)
 public interface SalesMapping {
+    List<SalesOrder> salesRequestToSalesOrder(List<SalesRequest> salesRequests);
+    default SalesOrder salesRequestToSalesOrder(SalesRequest salesRequest){
+        SalesOrder salesOrder = salesRequestToSalesOrder1(salesRequest);
+        salesOrder.setItems(salesRequest.getItems().stream().map(salesItem -> salesRequestsItemToSalesOrderItem(salesOrder, salesItem)).collect(Collectors.toList()));
+        return salesOrder;
+    }
 
-    List<SalesOrderItem> requestConvertOrderItem(List<SalesRequest.SalesItem> salesItems);
+    @Mapping(target = "discount", ignore = true)
+    SalesOrderItem salesRequestsItemToSalesOrderItem(SalesOrder salesOrder, SalesRequest.SalesItem salesItem);
 
-    List<SalesOrder> requestConvertOrder(List<SalesRequest> request);
-    List<InventoryAdjustmentRequest> convertInventoryRequest(List<SalesRequest.SalesItem> collect);
+    @Named("salesRequestToSalesOrder1")
+    SalesOrder salesRequestToSalesOrder1(SalesRequest salesRequest);
     @Mapping(target = "adjQty", source = "qty")
     InventoryAdjustmentRequest convertInventoryRequest(SalesRequest.SalesItem salesItem);
     @Mapping(target = "items", ignore = true)
@@ -29,7 +38,6 @@ public interface SalesMapping {
     @Mapping(target = "priority", constant = "LOW")
     SalesOrder toSalesOrder(SalesImportFile line);
     @Mapping(target = "txDatetime", source = "salesImportFile.txDatetime", qualifiedByName = "yyyy/MM/dd HH:mm:ss.SSS")
-    @Mapping(target = "salesOrder", source = "salesOrder")
     @Mapping(target = "orderId", source = "salesOrder.orderId")
     @Mapping(target = "itemSequence", source = "sequence")
     @Mapping(target = "discount", constant = "0")
@@ -64,4 +72,13 @@ public interface SalesMapping {
     ProductPrice toProductPrice(SalesOrderItem salesOrderItems);
 
     List<Inventory> toProductInventory(SalesOrderItem[] salesOrderItems);
+
+    List<VipBonusAdjustmentRequest> salesRequestToVipBonusAdjustmentRequest(List<SalesRequest> request);
+    default VipBonusAdjustmentRequest salesRequestToVipBonusAdjustmentRequest1(SalesRequest salesRequest){
+        VipBonusAdjustmentRequest vipBonusAdjustmentRequest = new VipBonusAdjustmentRequest();
+        vipBonusAdjustmentRequest.setTxDatetime(salesRequest.getTxDatetime());
+        vipBonusAdjustmentRequest.setVipCode(salesRequest.getCustomerName());
+        vipBonusAdjustmentRequest.setAdjBonus(salesRequest.getItems().stream().map(salesItem -> salesItem.getAmount()).reduce(BigDecimal.ZERO, BigDecimal::add));
+        return vipBonusAdjustmentRequest;
+    }
 }

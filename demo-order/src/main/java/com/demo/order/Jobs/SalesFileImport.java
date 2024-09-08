@@ -5,12 +5,14 @@ import com.demo.common.dto.SalesImportFile;
 import com.demo.common.listener.JobCompletionNotificationListener;
 import com.demo.common.listener.LoggingItemReadListener;
 import com.demo.common.util.AggregateItemReader;
+import com.demo.common.util.Json;
 import com.demo.order.mapper.SalesMapping;
 import com.demo.order.service.InventoryService;
 import com.demo.order.service.ProductService;
 import com.demo.order.entity.SalesOrder;
 import com.demo.order.entity.SalesOrderItem;
 import com.demo.order.service.SalesService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -54,7 +56,7 @@ public class SalesFileImport {
     public Step salesFileImportStep(final JobRepository jobRepository, final PlatformTransactionManager transactionManager) {
         String stepName = JobNames.SALES_IMPORT + "Step";
         return new StepBuilder(stepName, jobRepository)
-                .<List<SalesImportFile>, List<SalesOrder>>chunk(50, transactionManager)
+                .<List<SalesImportFile>, List<SalesOrder>>chunk(1, transactionManager)
                 .reader(new AggregateItemReader<SalesImportFile>(reader(), SalesImportFile::getOrderId))
                 .processor(new SalesItemProcessor())
                 .writer(new SalesItemWriter())
@@ -97,7 +99,7 @@ public class SalesFileImport {
     }
     public class SalesItemWriter implements ItemWriter<List<SalesOrder>> {
         @Override
-        public void write(Chunk<? extends List<SalesOrder>> chunk) {
+        public void write(Chunk<? extends List<SalesOrder>> chunk) throws JsonProcessingException {
             List<SalesOrder> orders = chunk.getItems().stream().flatMap(Collection::stream).collect(Collectors.toList());
             SalesOrderItem[] salesOrderItems = orders.stream().map(item->item.getItems()).flatMap(Collection::stream).toArray(SalesOrderItem[]::new);
 

@@ -1,8 +1,8 @@
-package com.demo.admin.security;
+package com.demo.common.security;
 
-import com.demo.admin.filter.JwtAuthenticationTokenFilter;
-import com.demo.admin.filter.RestAuthenticationEntryPoint;
-import com.demo.admin.filter.RestfulAccessDeniedHandler;
+import com.demo.common.filter.JwtAuthenticationTokenFilter;
+import com.demo.common.filter.RestAuthenticationEntryPoint;
+import com.demo.common.filter.RestfulAccessDeniedHandler;
 import com.demo.common.controller.ControllerPath;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;

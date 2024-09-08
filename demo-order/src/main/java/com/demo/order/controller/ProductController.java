@@ -6,7 +6,6 @@ import com.demo.common.dto.ProductEnquiryRequest;
 import com.demo.common.vo.ProductUpdateRequest;
 import com.demo.order.entity.Product;
 import com.demo.order.service.ProductService;
-import com.github.pagehelper.PageInfo;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -23,7 +22,7 @@ public class ProductController {
     @Autowired
     private ProductService productService;
     @PostMapping(path = ControllerPath.QUERY, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public PageInfo<Product> enquiry(@Valid @RequestBody ProductEnquiryRequest request){
+    public List<Product> enquiry(@Valid @RequestBody ProductEnquiryRequest request){
         return productService.enquiry(request);
     }
 

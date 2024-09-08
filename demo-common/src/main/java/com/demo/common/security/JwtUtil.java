@@ -1,4 +1,4 @@
-package com.demo.admin.security;
+package com.demo.common.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

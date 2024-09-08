@@ -3,6 +3,7 @@ package com.demo.order.entity;
 import com.demo.common.entity.BaseEntity;
 import com.demo.common.enums.PaymentEnum;
 import com.demo.common.enums.SalesStatusEnum;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -5,9 +5,8 @@ import com.demo.admin.dao.UserMapper;
 import com.demo.common.dto.UserRegisterRequest;
 import com.demo.admin.entity.Users;
 import com.demo.admin.mapping.UserMapping;
-import com.demo.admin.security.JwtUtil;
+import com.demo.common.security.JwtUtil;
 import com.demo.admin.service.UserService;
-import com.github.pagehelper.PageHelper;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.RowBounds;
@@ -43,7 +42,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void updateUser(List<Users> usersRecords) {
-        Set<String> existingUserNames = userMapper.findByExistingUserName(usersRecords, PageHelper.startPage(0, 1));
+        Set<String> existingUserNames = userMapper.findByExistingUserName(usersRecords, new RowBounds(0, 1));
         List<Users> usersToInsert = new ArrayList<>();
         List<Users> usersToUpdate = new ArrayList<>();
 

@@ -81,4 +81,10 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
         );
         return new ApiResponse().setError(message.toString());
     }
+    @ResponseBody
+    @ExceptionHandler(Throwable.class)
+    public Object validationException(Throwable exception) {
+        log.error(exception.getMessage(), exception);
+        return new ApiResponse().setInternalError();
+    }
 }

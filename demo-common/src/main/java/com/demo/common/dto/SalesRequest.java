@@ -29,12 +29,15 @@ public class SalesRequest {
     private String orderType;
     private String remark;
 //    @Delegate
-    private List<SalesItem> salesItems;
+    private List<SalesItem> items;
     @Data
     public static class SalesItem{
+        private Integer itemSequence;
         private String productId;
         private BigDecimal amount;
-        private int qty;
-
+        private Integer qty;
+        private BigDecimal unitPrice;
+        private String discountMethod;
+        private BigDecimal discount;
     }
 }

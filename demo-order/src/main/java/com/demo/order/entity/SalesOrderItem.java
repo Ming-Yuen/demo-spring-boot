@@ -12,7 +12,6 @@ import java.time.OffsetDateTime;
 public class SalesOrderItem extends BaseEntity {
 
     private String orderId;
-    private SalesOrder salesOrder;
     private OffsetDateTime txDatetime;
     private Integer itemSequence;
     private String productId;

@@ -12,4 +12,5 @@
     <property name="timestamp" value="TIMESTAMP" dbms="mssql,mariadb"/>
 
     <include file="db/changelog/order_schema.xml"/>
+    <include file="db/changelog/product_schema.xml"/>
 </databaseChangeLog>

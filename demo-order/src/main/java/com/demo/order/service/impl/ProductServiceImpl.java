@@ -1,5 +1,6 @@
 package com.demo.order.service.impl;
 
+import com.demo.common.annotation.BatchProcess;
 import com.demo.common.util.LambdaUtil;
 import com.demo.common.dto.ProductEnquiryRequest;
 import com.demo.order.entity.Product;
@@ -7,13 +8,15 @@ import com.demo.order.entity.ProductPrice;
 import com.demo.order.dao.ProductMapper;
 import com.demo.order.dao.ProductPriceMapper;
 import com.demo.order.mapper.ProductMapping;
-import com.demo.order.mapper.ProductPriceMapping;
 import com.demo.order.service.ProductService;
 import com.demo.common.vo.ProductUpdateRequest;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.ibatis.session.ExecutorType;
+import org.apache.ibatis.session.RowBounds;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,44 +27,38 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
+@AllArgsConstructor
 public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductMapper productMapper;
-    @Autowired
     private ProductMapping productMapping;
-    @Autowired
     private ProductPriceMapper productPriceMapper;
-    @Autowired
-    private ProductPriceMapping productPriceMapping;
+    private SqlSessionFactory sqlSessionFactory;
 
     @Override
-    public PageInfo<Product> enquiry(ProductEnquiryRequest request) {
-        PageHelper.startPage(request.getPageNumber(), request.getPageSize());
-        return new PageInfo<>(productMapper.findByEnable(1));
+    public List<Product> enquiry(ProductEnquiryRequest request) {
+        return productMapper.findByEnable(1, new RowBounds(request.getPageNumber(), request.getPageSize()));
     }
 
     @Override
+    @BatchProcess
     public void updateProduct(List<Product> products) {
         if (CollectionUtils.isNotEmpty(products)) {
-            Set<String> existingProductIds = productMapper.findByProductIdIn(products);
-            ArrayList<Product> productsForInsert = new ArrayList<>();
-            ArrayList<Product> productsForUpdate = new ArrayList<>();
-            for(Product product : products) {
-                if(existingProductIds.contains(product.getProductId())){
-                    productsForUpdate.add(product);
-                }else{
-                    productsForInsert.add(product);
-                    existingProductIds.add(product.getProductId());
+            try (SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH, false)) {
+                ProductMapper batchMapper = sqlSession.getMapper(ProductMapper.class);
+                Set<String> existingProductIds = productMapper.findByProductIdIn(products);
+                for (Product product : products) {
+                    if (existingProductIds.contains(product.getProductId())) {
+                        batchMapper.updateProducts(product);
+                        existingProductIds.add(product.getProductId());
+                    } else {
+                        batchMapper.insert(product);
+                    }
                 }
-            }
-            if(!productsForInsert.isEmpty()) {
-                productMapper.insert(productsForInsert);
-            }
-            if(!productsForUpdate.isEmpty()) {
-                productMapper.updateProducts(productsForUpdate);
             }
         }
     }
+
 
     @Override
     public Map<String, BigDecimal> findByProductPriceAndEffectiveDate(String[] productId, OffsetDateTime[] txDatetime) {
@@ -69,27 +66,24 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @BatchProcess
     public void updateProductPrice(List<ProductPrice> productPrices) {
         if (CollectionUtils.isNotEmpty(productPrices)) {
-            Set<String> existingProductIds = productPriceMapper.findByProductIdAndEffectiveDate(productPrices);
-            if(existingProductIds.isEmpty()){
-                productPriceMapper.insert(productPrices);
-            }
-            ArrayList<ProductPrice> productsForInsert = new ArrayList<>();
-            ArrayList<ProductPrice> productsForUpdate = new ArrayList<>();
-            for(ProductPrice productPrice : productPrices) {
-                if(existingProductIds.contains(productPrice.getProductId())){
-                    productsForUpdate.add(productPrice);
-                }else{
-                    productsForInsert.add(productPrice);
-                    existingProductIds.add(productPrice.getProductId());
+            try (SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH, false)) {
+                Set<String> existingProductIds = productPriceMapper.findByProductIdAndEffectiveDate(productPrices);
+
+                ProductPriceMapper batchMapper = sqlSession.getMapper(ProductPriceMapper.class);
+                if (existingProductIds.isEmpty()) {
+                    productPrices.stream().forEach(productPrice->batchMapper.insert(productPrice));
                 }
-            }
-            if(!productsForInsert.isEmpty()) {
-                productPriceMapper.insert(productsForInsert);
-            }
-            if(!productsForUpdate.isEmpty()) {
-                productPriceMapper.updateProductPrices(productsForUpdate);
+                for (ProductPrice productPrice : productPrices) {
+                    if (existingProductIds.contains(productPrice.getProductId())) {
+                        batchMapper.updateProductPrice(productPrice);
+                        existingProductIds.add(productPrice.getProductId());
+                    } else {
+                        batchMapper.insert(productPrice);
+                    }
+                }
             }
         }
     }

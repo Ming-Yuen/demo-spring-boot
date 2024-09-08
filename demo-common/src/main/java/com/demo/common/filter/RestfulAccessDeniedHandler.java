@@ -1,4 +1,4 @@
-package com.demo.admin.filter;
+package com.demo.common.filter;
 
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
