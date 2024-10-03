@@ -9,6 +9,8 @@ import com.demo.common.dto.ApiResponse;
 import com.demo.common.util.ValidList;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,8 +23,9 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(ControllerPath.USER)
-@AllArgsConstructor
+//@AllArgsConstructor
 public class UserController {
+    @Autowired
     private UserService userService;
     @PostMapping(path = ControllerPath.UPDATE, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public UserRegisterResponse update(@RequestBody @Validated  ValidList<UserRegisterRequest> request){
@@ -30,9 +33,12 @@ public class UserController {
         List<String> userNameList = request.stream().map(UserRegisterRequest::getUserName).collect(Collectors.toList());
         return new UserRegisterResponse(userNameList);
     }
+    @Value ("${demo}")
+    private String config;
     @PostMapping(path = ControllerPath.TOKEN, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ApiResponse tokenEnquiry(@Valid @RequestBody TokenRequest request){
         String token = userService.login(request.getUsername(), request.getPassword());
+        System.out.println("----------"+config);
         return new ApiResponse<>().isSuccess(token);
     }
 }
