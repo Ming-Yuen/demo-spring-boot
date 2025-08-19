@@ -33,12 +33,9 @@ public class UserController {
         List<String> userNameList = request.stream().map(UserRegisterRequest::getUserName).collect(Collectors.toList());
         return new UserRegisterResponse(userNameList);
     }
-    @Value ("${demo}")
-    private String config;
     @PostMapping(path = ControllerPath.TOKEN, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ApiResponse tokenEnquiry(@Valid @RequestBody TokenRequest request){
         String token = userService.login(request.getUsername(), request.getPassword());
-        System.out.println("----------"+config);
         return new ApiResponse<>().isSuccess(token);
     }
 }
